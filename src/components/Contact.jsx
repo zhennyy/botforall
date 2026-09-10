@@ -1,4 +1,21 @@
+import { useState } from 'react'
+
+const EMAIL = 'zhennyy@gmail.com'
+
 export default function Contact() {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL)
+    } catch {
+      // clipboard API unavailable — fall back to a manual copy prompt
+      window.prompt('Скопируйте адрес:', EMAIL)
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1800)
+  }
+
   return (
     <section id="contact">
       <div className="wrap">
@@ -8,12 +25,15 @@ export default function Contact() {
             <p>Магазин, ассистент, бронирование, заявки: опишите задачу, ответим и прикинем сроки.</p>
           </div>
           <div>
-            <div className="composer">
-              <span>Написать: zhennyy@gmail.com</span>
-              <a className="send" href="mailto:zhennyy@gmail.com?subject=Хочу%20бота%20в%20Telegram" aria-label="Написать письмо">
-                ↗
-              </a>
-            </div>
+            <button
+              type="button"
+              className="composer"
+              onClick={handleCopy}
+              aria-label="Скопировать адрес zhennyy@gmail.com"
+            >
+              <span>{copied ? 'Скопировано ✓' : `Написать: ${EMAIL}`}</span>
+              <span className="send" aria-hidden="true">{copied ? '✓' : '↗'}</span>
+            </button>
           </div>
         </div>
       </div>

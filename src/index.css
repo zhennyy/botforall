@@ -591,14 +591,26 @@ section.tight { padding-block: 40px; }
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 999px;
   padding: 8px 8px 8px 20px;
   position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
-.composer span { flex: 1; color: rgba(255,255,255,0.62); font-size: 0.92rem; }
+.composer:hover, .composer:active {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.composer span:first-child { flex: 1; color: rgba(255,255,255,0.62); font-size: 0.92rem; }
 
 .send {
   width: 40px; height: 40px;
