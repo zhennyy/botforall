@@ -86,41 +86,57 @@ body::before {
   filter: blur(70px);
 }
 
-body::after {
-  content: '';
+.stars {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.55;
-  background-image:
-    radial-gradient(1.6px 1.6px at 8% 12%, var(--ink-faint), transparent),
-    radial-gradient(1.2px 1.2px at 22% 38%, var(--accent), transparent),
-    radial-gradient(1.6px 1.6px at 36% 8%, var(--ink-faint), transparent),
-    radial-gradient(1.2px 1.2px at 52% 28%, var(--ink-faint), transparent),
-    radial-gradient(1.8px 1.8px at 68% 14%, var(--accent-2), transparent),
-    radial-gradient(1.2px 1.2px at 78% 42%, var(--ink-faint), transparent),
-    radial-gradient(1.6px 1.6px at 90% 20%, var(--ink-faint), transparent),
-    radial-gradient(1.2px 1.2px at 14% 62%, var(--ink-faint), transparent),
-    radial-gradient(1.8px 1.8px at 30% 78%, var(--accent), transparent),
-    radial-gradient(1.2px 1.2px at 46% 58%, var(--ink-faint), transparent),
-    radial-gradient(1.6px 1.6px at 62% 72%, var(--ink-faint), transparent),
-    radial-gradient(1.2px 1.2px at 84% 66%, var(--ink-faint), transparent),
-    radial-gradient(1.8px 1.8px at 95% 84%, var(--accent-2), transparent),
-    radial-gradient(1.2px 1.2px at 6% 90%, var(--ink-faint), transparent),
-    radial-gradient(1.6px 1.6px at 58% 92%, var(--ink-faint), transparent);
-  background-size: 100% 100%;
-  animation: twinkle 5s ease-in-out infinite alternate;
 }
 
-@keyframes twinkle {
-  0% { opacity: 0.3; }
-  50% { opacity: 0.65; }
-  100% { opacity: 0.4; }
+.stars::before,
+.stars::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 25% 45%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 40% 10%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 55% 30%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 70% 60%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 85% 20%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 15% 75%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 33% 90%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 60% 80%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 90% 70%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 5% 55%, var(--ink-faint), transparent),
+    radial-gradient(1px 1px at 78% 92%, var(--ink-faint), transparent);
+  background-size: 480px 480px;
+  opacity: 0.18;
+  animation: star-twinkle-a 6s ease-in-out infinite;
+}
+
+.stars::after {
+  background-position: 90px 140px;
+  background-size: 560px 560px;
+  opacity: 0.12;
+  animation: star-twinkle-b 8s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes star-twinkle-a {
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.22; }
+}
+
+@keyframes star-twinkle-b {
+  0%, 100% { opacity: 0.06; }
+  50% { opacity: 0.16; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::after { animation: none; opacity: 0.45; }
+  .stars::before, .stars::after { animation: none; opacity: 0.12; }
 }
 
 h1, h2, h3 {
