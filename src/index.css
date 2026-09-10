@@ -243,23 +243,6 @@ nav .wrap {
 
 header.hero { padding-block: 76px 60px; position: relative; overflow: hidden; }
 
-.hero-glow {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-out);
-  background: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--accent) 22%, transparent),
-    transparent 70%
-  );
-}
-
-@media (hover: hover) and (pointer: fine) {
-  header.hero:hover .hero-glow { opacity: 1; }
-}
 
 .blob {
   position: absolute;
