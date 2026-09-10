@@ -86,49 +86,6 @@ body::before {
   filter: blur(70px);
 }
 
-.milky-way {
-  position: fixed;
-  inset: -25% -35%;
-  z-index: -1;
-  pointer-events: none;
-  transform: rotate(-22deg);
-  background:
-    linear-gradient(
-      100deg,
-      transparent 0%,
-      color-mix(in srgb, var(--accent) 8%, transparent) 30%,
-      color-mix(in srgb, var(--ink-soft) 16%, transparent) 48%,
-      color-mix(in srgb, var(--accent-2) 8%, transparent) 62%,
-      transparent 100%
-    );
-  filter: blur(36px);
-  opacity: 0.55;
-}
-
-.milky-way::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1.2px 1.2px at 46% 20%, var(--ink-soft), transparent),
-    radial-gradient(1px 1px at 50% 35%, var(--ink-faint), transparent),
-    radial-gradient(1.4px 1.4px at 44% 48%, var(--ink-soft), transparent),
-    radial-gradient(1px 1px at 52% 60%, var(--ink-faint), transparent),
-    radial-gradient(1.2px 1.2px at 48% 72%, var(--ink-soft), transparent),
-    radial-gradient(1px 1px at 54% 15%, var(--ink-faint), transparent),
-    radial-gradient(1.4px 1.4px at 42% 85%, var(--ink-soft), transparent),
-    radial-gradient(1px 1px at 56% 45%, var(--ink-faint), transparent);
-  background-size: 120px 220px;
-  background-repeat: repeat;
-  mask-image: linear-gradient(100deg, transparent 30%, black 48%, black 55%, transparent 70%);
-  -webkit-mask-image: linear-gradient(100deg, transparent 30%, black 48%, black 55%, transparent 70%);
-  opacity: 0.7;
-}
-
-@media (max-width: 640px) {
-  .milky-way { inset: -25% -60%; }
-}
-
 .stars {
   position: fixed;
   inset: 0;

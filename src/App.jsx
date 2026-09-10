@@ -9,7 +9,6 @@ import Footer from './components/Footer'
 export default function App() {
   return (
     <>
-      <div className="milky-way" aria-hidden="true" />
       <div className="stars" aria-hidden="true" />
       <Nav />
       <Hero />
