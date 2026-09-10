@@ -85,60 +85,6 @@ body::before {
     radial-gradient(520px 460px at 20% 85%, rgba(124, 108, 232, 0.12), transparent 60%);
   filter: blur(70px);
 }
-
-.stars {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.stars::before,
-.stars::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-repeat: repeat;
-  background-image:
-    radial-gradient(1.6px 1.6px at 10% 15%, var(--ink-soft), transparent),
-    radial-gradient(1.2px 1.2px at 25% 45%, var(--ink-faint), transparent),
-    radial-gradient(1.8px 1.8px at 40% 10%, var(--ink-soft), transparent),
-    radial-gradient(1.2px 1.2px at 55% 30%, var(--ink-faint), transparent),
-    radial-gradient(1.6px 1.6px at 70% 60%, var(--ink-soft), transparent),
-    radial-gradient(1.2px 1.2px at 85% 20%, var(--ink-faint), transparent),
-    radial-gradient(1.8px 1.8px at 15% 75%, var(--ink-soft), transparent),
-    radial-gradient(1.2px 1.2px at 33% 90%, var(--ink-faint), transparent),
-    radial-gradient(1.6px 1.6px at 60% 80%, var(--ink-soft), transparent),
-    radial-gradient(1.2px 1.2px at 90% 70%, var(--ink-faint), transparent),
-    radial-gradient(1.8px 1.8px at 5% 55%, var(--ink-soft), transparent),
-    radial-gradient(1.2px 1.2px at 78% 92%, var(--ink-faint), transparent);
-  background-size: 340px 340px;
-  opacity: 0.55;
-  animation: star-twinkle-a 4s ease-in-out infinite;
-}
-
-.stars::after {
-  background-position: 90px 140px;
-  background-size: 400px 400px;
-  opacity: 0.4;
-  animation: star-twinkle-b 5.5s ease-in-out infinite;
-  animation-delay: 1.2s;
-}
-
-@keyframes star-twinkle-a {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.75; }
-}
-
-@keyframes star-twinkle-b {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.55; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .stars::before, .stars::after { animation: none; opacity: 0.4; }
-}
-
 h1, h2, h3 {
   font-family: 'Unbounded', 'Golos Text', sans-serif;
   text-wrap: balance;
