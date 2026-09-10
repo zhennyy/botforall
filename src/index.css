@@ -56,7 +56,7 @@
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 20px 48px -20px rgba(0, 0, 0, 0.6);
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 html, body, #root { height: 100%; }
 
@@ -270,7 +270,7 @@ header.hero { padding-block: 76px 60px; position: relative; overflow: hidden; }
   box-shadow: var(--shadow);
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
-.stat:hover { transform: translateY(-3px); box-shadow: 0 24px 48px -20px rgba(124, 108, 232, 0.35); }
+.stat:hover, .stat:active { transform: translateY(-3px); box-shadow: 0 24px 48px -20px rgba(124, 108, 232, 0.35); }
 .stat b {
   display: block;
   font-family: 'Unbounded', sans-serif;
@@ -437,7 +437,7 @@ section.tight { padding-block: 40px; }
   color: var(--ink-soft);
   transition: transform 0.15s var(--ease-out), border-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
 }
-.chip:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+.chip:hover, .chip:active { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
 
 /* project threads */
 
@@ -455,7 +455,7 @@ section.tight { padding-block: 40px; }
   overflow: hidden;
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
 }
-.project:hover { transform: translateY(-4px); box-shadow: 0 28px 56px -24px rgba(124, 108, 232, 0.4); border-color: var(--accent-soft); }
+.project:hover, .project:active { transform: translateY(-4px); box-shadow: 0 28px 56px -24px rgba(124, 108, 232, 0.4); border-color: var(--accent-soft); }
 
 .project + .project { margin-top: 28px; }
 
@@ -540,7 +540,7 @@ section.tight { padding-block: 40px; }
   box-shadow: var(--shadow);
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
-.step:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -20px rgba(124, 108, 232, 0.35); }
+.step:hover, .step:active { transform: translateY(-4px); box-shadow: 0 24px 48px -20px rgba(124, 108, 232, 0.35); }
 
 .step .ticks {
   font-family: 'Unbounded', sans-serif;
@@ -612,7 +612,7 @@ section.tight { padding-block: 40px; }
   flex: none;
   transition: background 0.15s var(--ease-out), transform 0.15s var(--ease-out);
 }
-.send:hover { background: var(--accent-hover); transform: scale(1.08); }
+.send:hover, .send:active { background: var(--accent-hover); transform: scale(1.08); }
 
 footer {
   padding-block: 32px 48px;
