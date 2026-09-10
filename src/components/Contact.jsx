@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 const EMAIL = 'zhennyy@gmail.com'
-const MAILTO = `mailto:${EMAIL}?subject=${encodeURIComponent('Хочу бота в Telegram')}`
 
 export default function Contact() {
   const [copied, setCopied] = useState(false)
@@ -10,14 +9,10 @@ export default function Contact() {
     try {
       await navigator.clipboard.writeText(EMAIL)
     } catch {
-      // clipboard API unavailable — skip silently, mailto below still gives a way to reach it
+      window.prompt('Скопируйте адрес:', EMAIL)
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 1800)
-
-    // also try opening the visitor's own mail app (if they have one configured,
-    // this just works; if not, the address is already copied as a fallback)
-    window.location.href = MAILTO
   }
 
   return (
@@ -33,7 +28,7 @@ export default function Contact() {
               type="button"
               className="composer"
               onClick={handleClick}
-              aria-label="Написать на zhennyy@gmail.com (адрес также скопируется в буфер)"
+              aria-label="Скопировать адрес zhennyy@gmail.com"
             >
               <span>{copied ? 'Скопировано ✓' : `Написать: ${EMAIL}`}</span>
               <span className="send" aria-hidden="true">{copied ? '✓' : '↗'}</span>
