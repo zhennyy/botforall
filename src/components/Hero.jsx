@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import PhoneMock from './PhoneMock'
 
 const bubbles = [
@@ -7,10 +8,23 @@ const bubbles = [
 ]
 
 export default function Hero() {
+  const heroRef = useRef(null)
+
+  const handleMouseMove = (e) => {
+    const el = heroRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    el.style.setProperty('--mx', `${x}%`)
+    el.style.setProperty('--my', `${y}%`)
+  }
+
   return (
-    <header className="hero" id="top">
+    <header className="hero" id="top" ref={heroRef} onMouseMove={handleMouseMove}>
       <div className="blob blob-1" />
       <div className="blob blob-2" />
+      <div className="hero-glow" />
       <div className="wrap hero-grid">
         <div>
           <div className="eyebrow eyebrow-plain">принимаем новые проекты</div>
