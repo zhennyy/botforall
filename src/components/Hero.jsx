@@ -1,38 +1,23 @@
-import PhoneMock from './PhoneMock'
-
-const bubbles = [
-  { dir: 'in', text: 'Добро пожаловать в магазин RadiatorPro 🔥', time: '18:40' },
-  { dir: 'out', text: 'нужен радиатор для маленькой комнаты, бюджет 10 000 ₽', time: '18:41' },
-  { dir: 'in', text: '🤖 Подбираю варианты... нашла Classic Alu, компактный и алюминиевый, 8 900 ₽', time: '18:41' },
-]
-
 export default function Hero() {
   return (
     <header className="hero" id="top">
-      <div className="blob blob-1" />
-      <div className="blob blob-2" />
-      <div className="wrap hero-grid">
-        <div>
-          <div className="eyebrow eyebrow-plain">принимаем новые проекты</div>
-          <h1>
-            Telegram-боты, которые закрывают задачу, а не просто отвечают на команды
-          </h1>
-          <p className="lede">
-            Делаем ботов на Node.js: от личного ассистента с памятью до интернет-магазина с витриной,
-            оплатой, доставкой и статистикой. Ниже три живых проекта, они настоящие и работают в проде.
-          </p>
-          <div className="hero-actions">
-            <a className="btn btn-primary" href="#projects">Смотреть проекты ↓</a>
-            <a className="btn btn-ghost" href="#contact">Обсудить своего бота</a>
-          </div>
-          <div className="hero-stats">
-            <div className="stat"><b>24/7</b><span>на Railway</span></div>
-            <div className="stat"><b>3</b><span>живых бота</span></div>
-            <div className="stat"><b>Node.js</b><span>под капотом</span></div>
-          </div>
+      <div className="wrap">
+        <p className="eyebrow rise" style={{ '--d': '0ms' }}>Telegram-боты на заказ</p>
+        <h1 className="rise" style={{ '--d': '100ms' }}>
+          Магазин в Telegram, <em>который продаёт сам.</em>
+        </h1>
+        <p className="lede rise" style={{ '--d': '220ms' }}>
+          Витрина, оплата, доставка и админка в одном боте.
+        </p>
+        <div className="hero-actions rise" style={{ '--d': '320ms' }}>
+          <a className="btn btn-solid" href="#contact">Заказать бота</a>
+          <a className="btn btn-line" href="#projects">Смотреть работы</a>
         </div>
-
-        <PhoneMock name="RadiatorBZ_bot" bubbles={bubbles} showTyping floatIn badge="⚡" />
+        <dl className="hero-meta rise" style={{ '--d': '440ms' }}>
+          <div><dt>3</dt><dd>бота в проде</dd></div>
+          <div><dt>24/7</dt><dd>работают без вас</dd></div>
+          <div><dt>ЮKassa</dt><dd>приём оплаты</dd></div>
+        </dl>
       </div>
     </header>
   )
