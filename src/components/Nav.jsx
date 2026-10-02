@@ -2,18 +2,13 @@ export default function Nav() {
   return (
     <nav>
       <div className="wrap">
-        <a className="brand" href="#top">
-          Telegram-боты на заказ
-        </a>
+        <a className="brand" href="#top">BotForAll</a>
         <div className="navlinks">
-          <a href="#projects">Проекты</a>
-          <a href="#benefits">Что получите</a>
-          <a href="#process">Как работаю</a>
-          <a href="#contact">Контакты</a>
+          <a href="#projects">Работы</a>
+          <a href="#benefits">Что внутри</a>
+          <a href="#process">Как работаем</a>
         </div>
-        <a className="btn btn-primary btn-sm" href="#contact">
-          Обсудить проект
-        </a>
+        <a className="nav-cta" href="#contact">Написать ↗</a>
       </div>
     </nav>
   )

@@ -17,24 +17,13 @@ export default function Contact() {
 
   return (
     <section id="contact">
-      <div className="wrap">
-        <div className="contact-box">
-          <div>
-            <h2>Нужен свой бот в Telegram?</h2>
-            <p>Магазин, ассистент, бронирование, заявки: опишите задачу, ответим и прикинем сроки.</p>
-          </div>
-          <div>
-            <button
-              type="button"
-              className="composer"
-              onClick={handleClick}
-              aria-label="Скопировать адрес zhennyy@gmail.com"
-            >
-              <span>{copied ? 'Скопировано ✓' : `Написать: ${EMAIL}`}</span>
-              <span className="send" aria-hidden="true">{copied ? '✓' : '↗'}</span>
-            </button>
-          </div>
-        </div>
+      <div className="wrap contact">
+        <h2>Расскажите <em>о задаче.</em></h2>
+        <p>Отвечу и назову сроки.</p>
+        <button type="button" className="mail" onClick={handleClick} aria-label={`Скопировать адрес ${EMAIL}`}>
+          <span>{copied ? 'Адрес скопирован' : EMAIL}</span>
+          <span aria-hidden="true">{copied ? '✓' : '↗'}</span>
+        </button>
       </div>
     </section>
   )
