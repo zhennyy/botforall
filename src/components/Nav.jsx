@@ -7,6 +7,7 @@ export default function Nav() {
         </a>
         <div className="navlinks">
           <a href="#projects">Проекты</a>
+          <a href="#benefits">Что получите</a>
           <a href="#process">Как работаю</a>
           <a href="#contact">Контакты</a>
         </div>
