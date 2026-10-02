@@ -264,3 +264,6 @@ footer b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: v
 /* заголовок: спокойнее и одним цветом */
 .hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.7rem); line-height: 1.08; max-width: 20ch; }
 .hero h1 em { font-style: normal; color: inherit; }
+
+/* убрали цветные пятна за заголовком */
+.glow { display: none; }
