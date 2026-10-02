@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer>
-      Разработка Telegram-ботов · {new Date().getFullYear()}
+      <b style={{ fontFamily: "'Unbounded', sans-serif" }}>BotForAll</b> · Разработка Telegram-ботов · {new Date().getFullYear()}
     </footer>
   )
 }
