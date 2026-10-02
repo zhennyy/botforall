@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="wrap hero-center">
         <p className="eyebrow rise" style={{ '--d': '0ms' }}>Telegram-боты на заказ</p>
         <h1 className="rise" style={{ '--d': '100ms' }}>
-          Магазин в Telegram, <em>который продаёт сам.</em>
+          Ваш магазин <em>живёт в Telegram.</em>
         </h1>
         <p className="lede rise" style={{ '--d': '220ms' }}>
           Витрина, оплата, доставка и админка в одном боте.
