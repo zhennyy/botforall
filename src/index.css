@@ -675,3 +675,33 @@ footer {
   .brand { font-size: 0.95rem; }
   .phone { max-width: 230px; }
 }
+
+/* ---------- benefits ---------- */
+.benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.benefit {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+  padding: 26px; box-shadow: var(--shadow);
+  transition: transform .3s var(--ease-out), border-color .3s;
+}
+.benefit:hover, .benefit:active { transform: translateY(-4px); border-color: var(--accent); }
+.benefit .b-icon {
+  display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: 14px;
+  background: var(--accent-soft); font-size: 1.4rem; margin-bottom: 14px;
+}
+.benefit h4 { margin: 0 0 8px; font-size: 1.05rem; }
+.benefit p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+
+/* ---------- screens ---------- */
+.screens {
+  display: flex; gap: 20px; overflow-x: auto; padding: 8px 4px 24px;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+}
+.shot { flex: 0 0 220px; margin: 0; scroll-snap-align: start; text-align: center; }
+.shot img {
+  width: 100%; height: auto; border-radius: 26px; border: 6px solid var(--dark);
+  box-shadow: var(--shadow); background: var(--surface);
+}
+.shot figcaption { margin-top: 10px; color: var(--ink-soft); font-size: .9rem; }
+
+@media (max-width: 900px) { .benefits { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .benefits { grid-template-columns: 1fr; } .shot { flex-basis: 180px; } }
