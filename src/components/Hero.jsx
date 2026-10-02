@@ -1,11 +1,3 @@
-const phones = [
-  { src: '/shots/a1-products.png', alt: 'Админка: товары' },
-  { src: '/shots/s2-cart.png', alt: 'Корзина' },
-  { src: '/shots/s1-catalog.png', alt: 'Каталог магазина' },
-  { src: '/shots/s4-ai.png', alt: 'AI-подбор' },
-  { src: '/shots/a3-orders.png', alt: 'Заказы в админке' },
-]
-
 export default function Hero() {
   return (
     <header className="hero" id="top">
@@ -25,11 +17,6 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="fan rise" style={{ '--d': '480ms' }}>
-        {phones.map((p, i) => (
-          <img key={p.src} className={`fan-phone fp-${i}`} src={p.src} alt={p.alt} width="390" height="844" />
-        ))}
-      </div>
     </header>
   )
 }

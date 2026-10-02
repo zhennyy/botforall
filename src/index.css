@@ -255,3 +255,8 @@ footer b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: v
   .fp-0, .fp-4 { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .fan-phone { transition: none; } }
+
+/* веер после «Что внутри» */
+.hero { padding-bottom: clamp(24px, 4vw, 48px); }
+.fan-section { padding-block: 0; }
+.fan-section .fan { margin-top: 0; }
