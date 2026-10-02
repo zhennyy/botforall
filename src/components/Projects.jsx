@@ -43,8 +43,9 @@ export default function Projects() {
             'Админка для флориста: заказы, статистика, чат с клиентом, резервные копии',
           ]}
           stack={['Node.js', 'Telegraf', 'Mini App', 'SQLite', 'ЮKassa API', 'Railway']}
+          botLink="https://t.me/Fleeer_bot"
           codeLink="https://github.com/zhennyy/flowerbot"
-          phoneName="Флёр"
+          phoneName="Fleeer_bot"
           bubbles={flowerBubbles}
         />
 
