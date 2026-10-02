@@ -1,7 +1,6 @@
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import Projects from './components/Projects'
-import Fan from './components/Fan'
 import Benefits from './components/Benefits'
 import Process from './components/Process'
 import Contact from './components/Contact'
@@ -13,7 +12,6 @@ export default function App() {
       <Nav />
       <Hero />
       <Benefits />
-      <Fan />
       <Projects />
       <Process />
       <Contact />
