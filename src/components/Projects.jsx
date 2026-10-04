@@ -17,6 +17,12 @@ const works = [
     stack: ['Claude API', 'Railway'],
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
   },
+  {
+    num: '04', name: 'Zerno', kind: 'Кофе и чай на развес',
+    text: 'Варианты и допы, продажа на вес и объём, наборы, склад с загрузкой из Excel, отчёты, доставка, чеки 54-ФЗ, повторные заказы.',
+    stack: ['Mini App', 'ЮKassa', 'Excel', 'Railway'],
+    demo: '/zerno-demo.html',
+  },
 ]
 
 export default function Projects() {
@@ -36,8 +42,9 @@ export default function Projects() {
               <div className="work-side">
                 <div className="tags">{w.stack.map((s) => <span key={s}>{s}</span>)}</div>
                 <div className="work-links">
+                  {w.demo && <a href={w.demo} target="_blank" rel="noopener noreferrer">Демо ↗</a>}
                   {w.bot && <a href={w.bot} target="_blank" rel="noopener noreferrer">Открыть бота ↗</a>}
-                  <a href={w.code} target="_blank" rel="noopener noreferrer">Код</a>
+                  {w.code && <a href={w.code} target="_blank" rel="noopener noreferrer">Код</a>}
                 </div>
               </div>
             </li>
