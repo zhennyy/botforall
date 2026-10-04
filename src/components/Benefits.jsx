@@ -1,3 +1,4 @@
+import Reveal from './Reveal'
 const items = [
   ['Витрина', 'Каталог, корзина и заказ прямо в Telegram. Ничего скачивать не нужно.'],
   ['Оплата', 'ЮKassa. Каждый платёж проверяется на сервере, чеки по 54-ФЗ.'],
@@ -11,15 +12,15 @@ export default function Benefits() {
   return (
     <section id="benefits">
       <div className="wrap">
-        <ul className="benefits">
+        <Reveal as="ul" className="benefits">
           {items.map(([t, d], i) => (
             <li className="benefit" key={t}>
-              <span className="b-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="num">{String(i + 1).padStart(2, '0')}</span>
               <h4>{t}</h4>
               <p>{d}</p>
             </li>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   )

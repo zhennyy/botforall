@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Reveal from './Reveal'
 
 const steps = [
   ['Задача', 'Напишите в двух словах, чем занимается бизнес и что бот должен взять на себя.'],
@@ -21,7 +22,7 @@ export default function Process() {
     <section id="process">
       <div className="wrap">
         <h2 className="section-title">Как работаем</h2>
-        <ol className="process">
+        <Reveal as="ol" className="process">
           {steps.map(([t, d], i) =>
             i === last ? (
               <li className="step step-click" key={t} data-open={open}>
@@ -32,7 +33,7 @@ export default function Process() {
                   aria-controls="after-launch"
                   onClick={() => setOpen((v) => !v)}
                 >
-                  <span className="ticks">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="num">{String(i + 1).padStart(2, '0')}</span>
                   <h4>{t}</h4>
                   <p>{d}</p>
                   <span className="step-more">
@@ -43,13 +44,13 @@ export default function Process() {
               </li>
             ) : (
               <li className="step" key={t}>
-                <span className="ticks">{String(i + 1).padStart(2, '0')}</span>
+                <span className="num">{String(i + 1).padStart(2, '0')}</span>
                 <h4>{t}</h4>
                 <p>{d}</p>
               </li>
             )
           )}
-        </ol>
+        </Reveal>
 
         <div id="after-launch" className="after-wrap" data-open={open} role="region" aria-label="Варианты после запуска" inert={open ? undefined : ''}>
           <div className="after-clip">

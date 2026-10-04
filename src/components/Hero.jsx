@@ -1,10 +1,8 @@
 export default function Hero() {
   return (
     <header className="hero" id="top">
-      <div className="glow glow-a" />
-      <div className="glow glow-b" />
       <div className="wrap hero-center">
-        <p className="eyebrow rise" style={{ '--d': '0ms' }}>Telegram-боты на заказ</p>
+        <p className="kicker rise" style={{ '--d': '0ms' }}><span>Telegram-боты на заказ</span></p>
         <h1 className="rise" style={{ '--d': '100ms' }}>
           Магазин в Telegram, <em>который продаёт сам.</em>
         </h1>
@@ -16,7 +14,6 @@ export default function Hero() {
           <a className="btn btn-line" href="#projects">Смотреть работы</a>
         </div>
       </div>
-
     </header>
   )
 }

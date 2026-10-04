@@ -1,3 +1,4 @@
+import Reveal from './Reveal'
 const works = [
   {
     num: '01', name: 'Флёр', kind: 'Цветочный магазин',
@@ -31,10 +32,10 @@ export default function Projects() {
     <section id="projects">
       <div className="wrap">
         <h2 className="section-title">Работы</h2>
-        <ul className="works">
+        <Reveal as="ul" className="works">
           {works.map((w) => (
             <li className="work" key={w.num}>
-              <span className="work-num">{w.num}</span>
+              <span className="num">{w.num}</span>
               <div className="work-main">
                 <h3>{w.name}</h3>
                 <p className="work-kind">{w.kind}</p>
@@ -50,7 +51,7 @@ export default function Projects() {
               </div>
             </li>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   )
