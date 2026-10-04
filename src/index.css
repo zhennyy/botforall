@@ -237,3 +237,27 @@ footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; lette
 .work:hover::before, .work:hover + .work::before { opacity: 0; }
 .work:active { box-shadow: var(--neon), inset 0 0 40px -18px var(--glow); }
 @media (max-width: 560px) { .work { padding-inline: 14px; } .work + .work::before { left: 14px; right: 14px; } }
+
+/* фон hero: размытые элементы Telegram-бота */
+.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero-center { position: relative; z-index: 1; }
+.hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; filter: blur(3px); opacity: .55;
+  -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 50%, transparent 30%, #000 85%); mask-image: radial-gradient(ellipse 70% 75% at 50% 50%, transparent 30%, #000 85%); }
+.hero-bg > * { position: absolute; }
+.bub { display: flex; flex-direction: column; gap: 7px; padding: 14px 16px; border-radius: 18px 18px 18px 5px; background: color-mix(in srgb, var(--ink) 7%, transparent); border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); width: 170px; }
+.bub.out { border-radius: 18px 18px 5px 18px; background: color-mix(in srgb, var(--accent) 14%, transparent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); width: 140px; }
+.bub i { display: block; height: 7px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 22%, transparent); }
+.bub.out i { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.bub i:nth-child(2) { width: 70%; } .bub i:nth-child(3) { width: 45%; }
+.b1 { top: 12%; left: 5%; transform: rotate(-4deg); }
+.b2 { top: 30%; left: 15%; transform: rotate(3deg); }
+.b3 { top: 14%; right: 5%; transform: rotate(4deg); }
+.b4 { top: 44%; right: 13%; transform: rotate(-3deg); }
+.kbd { display: flex; gap: 6px; }
+.kbd span { padding: 7px 14px; border-radius: 10px; font-size: .78rem; font-weight: 600; color: var(--soft); background: color-mix(in srgb, var(--ink) 6%, transparent); border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+.k1 { bottom: 14%; left: 7%; } .k2 { bottom: 20%; right: 8%; }
+.ico { color: color-mix(in srgb, var(--accent) 70%, var(--ink)); }
+.plane { width: 54px; top: 62%; left: 24%; transform: rotate(8deg); }
+.bot { width: 64px; top: 8%; left: 38%; opacity: .7; }
+.bag { width: 48px; bottom: 10%; right: 28%; transform: rotate(-6deg); }
+@media (max-width: 860px) { .hero-bg { opacity: .35; } .b2, .b4, .bot, .k2 { display: none; } .bub { width: 120px; } }
