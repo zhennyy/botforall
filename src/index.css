@@ -295,3 +295,7 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
 
 /* названия проектов как ники в Telegram */
 .work h3 { font-size: clamp(1.25rem, 2.1vw, 1.7rem); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+
+/* плавный низ hero (без резкого среза линий) */
+.topo-bg { -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
+@media (max-width: 560px) { .hero { padding-bottom: 8px; } #process { padding-top: 24px; } }
