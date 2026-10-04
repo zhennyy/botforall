@@ -318,23 +318,23 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
 
 /* Mini App: шаги заказа */
 .ma-wrap { margin-top: clamp(34px, 5vw, 52px); display: flex; justify-content: center; }
-.ma { --on: #fff; width: 150px; height: 196px; zoom: 1.35; border-radius: 24px; border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent); background: var(--paper); overflow: hidden; position: relative; box-shadow: 0 24px 50px -28px var(--glow); text-align: left; }
+.ma { --on: #fff; width: 300px; height: 176px; zoom: 1.4; border-radius: 24px; border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent); background: var(--paper); overflow: hidden; position: relative; box-shadow: 0 24px 50px -28px var(--glow); text-align: left; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ma { --on: #06121f; } }
 :root[data-theme="dark"] .ma { --on: #06121f; }
-.ma-top { height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: .58rem; font-weight: 700; border-bottom: 1px solid var(--line); background: var(--tint); }
+.ma-top { height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: .58rem; font-weight: 700; border-bottom: 1px solid var(--line); background: var(--tint); }
 .ma-top em { font-style: normal; color: var(--soft); font-weight: 600; }
-.ma-prog { display: flex; gap: 3px; padding: 6px 8px 0; }
+.ma-prog { display: flex; gap: 3px; padding: 6px 12px 0; }
 .ma-prog i { flex: 1; height: 3px; border-radius: 2px; background: var(--line); animation: ma-prog 8s infinite; }
 .ma-prog i:nth-child(2) { animation-delay: 2s; } .ma-prog i:nth-child(3) { animation-delay: 4s; } .ma-prog i:nth-child(4) { animation-delay: 6s; }
 .ma-win { position: absolute; top: 44px; left: 0; right: 0; bottom: 0; overflow: hidden; }
 .ma-tr { display: flex; width: 400%; height: 100%; animation: ma-slide 8s infinite var(--ease); }
-.ma-sc { width: 25%; padding: 6px 8px; display: flex; flex-direction: column; gap: 5px; }
+.ma-sc { width: 25%; padding: 6px 12px; display: flex; flex-direction: column; gap: 5px; }
 .ma-sc h6 { font-size: .6rem; margin: 0 0 2px; font-weight: 700; }
-.ma-opt { padding: 7px; border-radius: 9px; border: 1px solid var(--line); background: var(--tint); font-size: .52rem; font-weight: 700; }
+.ma-opt { padding: 7px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--tint); font-size: .52rem; font-weight: 700; }
 .ma-opt.on { border-color: var(--accent); box-shadow: 0 0 10px -2px var(--glow); }
 .ma-pay { margin-top: 4px; height: 22px; border-radius: 9px; background: var(--accent); color: var(--on); font-size: .55rem; font-weight: 800; display: grid; place-items: center; }
 .ma-done { margin: auto; width: 46px; height: 46px; border-radius: 50%; background: var(--accent); color: var(--on); display: grid; place-items: center; font-size: 1.3rem; font-weight: 800; box-shadow: 0 0 24px var(--glow); }
 @keyframes ma-slide { 0%, 20% { transform: none; } 28%, 45% { transform: translateX(-25%); } 53%, 70% { transform: translateX(-50%); } 78%, 95% { transform: translateX(-75%); } 100% { transform: none; } }
 @keyframes ma-prog { 0% { background: var(--line); } 1%, 100% { background: var(--accent); } }
-@media (max-width: 700px) { .ma { zoom: 1; } .ma-wrap { margin-top: 28px; } }
+@media (max-width: 700px) { .ma { zoom: 1; width: min(330px, calc(100vw - 40px)); } .ma-wrap { margin-top: 28px; } }
 @media (prefers-reduced-motion: reduce) { .ma-tr, .ma-prog i { animation: none; } }
