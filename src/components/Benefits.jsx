@@ -15,7 +15,6 @@ export default function Benefits() {
         <Reveal as="ul" className="benefits">
           {items.map(([t, d], i) => (
             <li className="benefit" key={t}>
-              <span className="num">{String(i + 1).padStart(2, '0')}</span>
               <h4>{t}</h4>
               <p>{d}</p>
             </li>

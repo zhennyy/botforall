@@ -10,7 +10,7 @@
   --glow: color-mix(in srgb, var(--accent) 55%, transparent);
   --neon: 0 0 0 1px var(--accent), 0 0 22px -2px var(--glow), 0 0 48px -10px var(--glow);
   --ease: cubic-bezier(.23, 1, .32, 1);
-  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --serif: var(--sans);
   --sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
@@ -205,3 +205,19 @@ footer b { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; colo
   .rise { animation: none; opacity: 1; transform: none; }
   .reveal > *, .after li, .after-wrap, .step-plus, .step-plus::after, .benefit, .step, .work { transition: none; opacity: 1; transform: none; }
 }
+
+/* ===== заголовки: современный гротеск ===== */
+h1, h2, h3, .brand { font-weight: 700; letter-spacing: -0.035em; font-feature-settings: normal; }
+.brand { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.04em; }
+.hero h1 { font-size: clamp(2.2rem, 5.2vw, 4rem); line-height: 1.06; max-width: 18ch; }
+.hero h1 em, .contact h2 em { font-style: normal; font-weight: 400; }
+.section-title { font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.1; }
+.num { font-family: var(--sans); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.work .num { font-size: 1.1rem; padding-top: 10px; }
+.benefit h4, .step h4, .step-btn h4 { font-family: var(--sans); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.025em; line-height: 1.2; }
+.after h4 { font-family: var(--sans); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+.after-title { font-size: clamp(1.3rem, 2.2vw, 1.7rem); }
+.after-letter { font-family: var(--sans); font-weight: 700; font-size: .9rem; }
+.work h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.1; }
+.contact h2 { font-size: clamp(1.5rem, 2.8vw, 2.1rem); }
+footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.03em; }
