@@ -265,3 +265,18 @@ footer .foot { flex-wrap: wrap; align-items: center; row-gap: 10px; }
 .foot-links a { color: var(--soft); transition: color .2s, text-shadow .2s; }
 .foot-links a:hover, .foot-links a:focus-visible { color: var(--accent); text-shadow: 0 0 14px var(--glow); outline: 0; }
 @media (max-width: 860px) { footer .foot { flex-direction: column; align-items: flex-start; } }
+
+/* контакты v2: две равные карточки */
+.contact-row { margin-top: 34px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.cbtn { display: flex; align-items: center; gap: 16px; min-width: 280px; padding: 18px 24px; text-align: left; text-decoration: none; font: inherit; color: var(--ink); background: var(--tint); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; transition: border-color .3s, box-shadow .4s var(--ease), transform .3s var(--ease); }
+.cbtn svg { width: 26px; height: 26px; flex: none; color: var(--accent); }
+.cbtn span { display: flex; flex-direction: column; gap: 3px; }
+.cbtn small { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+.cbtn b { font-size: 1.1rem; font-weight: 600; letter-spacing: -.01em; }
+.cbtn:hover, .cbtn:focus-visible { border-color: var(--accent); box-shadow: var(--neon); outline: 0; }
+.cbtn:active { transform: scale(.98); }
+
+/* футер v2: по центру, спокойный */
+footer .foot { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+.foot-links { justify-content: center; gap: 26px; }
+.foot-copy { font-size: .78rem; opacity: .8; }
