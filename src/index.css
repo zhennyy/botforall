@@ -285,3 +285,10 @@ footer .foot { flex-direction: column; align-items: center; text-align: center; 
 .cbtn { flex: 1 1 280px; max-width: 320px; min-width: 0; }
 .foot-links a { border: 0; text-decoration: none; padding: 0; background: none; }
 @media (max-width: 700px) { .cbtn { flex-basis: 100%; max-width: 360px; } .foot-links { flex-direction: column; gap: 10px; } }
+
+/* контакты в одну строку; nav в футере без рамки */
+.contact-row { width: 100%; max-width: 760px; flex-wrap: nowrap; }
+.cbtn { flex: 1 1 0; max-width: none; }
+.cbtn b { white-space: nowrap; }
+footer nav.foot-links { border: 0; position: static; background: none; backdrop-filter: none; padding: 0; height: auto; }
+@media (max-width: 700px) { .contact-row { flex-direction: column; align-items: stretch; max-width: 360px; } .cbtn { flex-basis: auto; } }
