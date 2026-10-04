@@ -12,6 +12,7 @@ export default function Benefits() {
   return (
     <section id="benefits">
       <div className="wrap">
+        <h2 className="section-title">Всё для продаж — <em>в одном боте</em></h2>
         <Reveal as="ul" className="benefits">
           {items.map(([t, d], i) => (
             <li className="benefit" key={t}>

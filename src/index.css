@@ -221,3 +221,6 @@ h1, h2, h3, .brand { font-weight: 700; letter-spacing: -0.035em; font-feature-se
 .work h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.1; }
 .contact h2 { font-size: clamp(1.5rem, 2.8vw, 2.1rem); }
 footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.03em; }
+
+/* заголовок блока возможностей */
+#benefits .section-title em { font-style: normal; font-weight: 400; color: var(--soft); }
