@@ -23,12 +23,6 @@ const works = [
     stack: ['Mini App', 'ЮKassa', 'Excel', 'Railway'],
     demo: '/zerno-demo.html',
   },
-  {
-    num: '05', name: 'MiniCRM', kind: 'CRM для магазина',
-    text: 'Заказы из бота, клиенты, товары и склад, адреса, задачи с напоминаниями команде в Telegram.',
-    stack: ['Node.js', 'SQLite', 'Telegram', 'Railway'],
-    demo: '/crm-demo.html',
-  },
 ]
 
 export default function Projects() {
