@@ -1,3 +1,5 @@
+import ThemeToggle from './ThemeToggle'
+
 export default function Nav() {
   return (
     <nav>
@@ -7,7 +9,10 @@ export default function Nav() {
           <a href="#process">Как работаем</a>
           <a href="#projects">Работы</a>
         </div>
-        <a className="nav-cta" href="#contact">Написать ↗</a>
+        <div className="nav-right">
+          <ThemeToggle />
+          <a className="nav-cta" href="#contact">Написать ↗</a>
+        </div>
       </div>
     </nav>
   )
