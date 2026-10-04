@@ -280,3 +280,8 @@ footer .foot { flex-wrap: wrap; align-items: center; row-gap: 10px; }
 footer .foot { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
 .foot-links { justify-content: center; gap: 26px; }
 .foot-copy { font-size: .78rem; opacity: .8; }
+
+/* правки: ровные карточки и ссылки футера без подчёркивания */
+.cbtn { flex: 1 1 280px; max-width: 320px; min-width: 0; }
+.foot-links a { border: 0; text-decoration: none; padding: 0; background: none; }
+@media (max-width: 700px) { .cbtn { flex-basis: 100%; max-width: 360px; } .foot-links { flex-direction: column; gap: 10px; } }

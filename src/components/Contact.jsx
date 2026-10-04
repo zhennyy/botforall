@@ -29,7 +29,7 @@ export default function Contact() {
           </a>
           <button type="button" className="cbtn" onClick={handleClick} aria-label={`Скопировать адрес ${EMAIL}`}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            <span><small>{copied ? 'Адрес скопирован' : 'Почта · нажмите, чтобы скопировать'}</small><b>{EMAIL}</b></span>
+            <span><small>{copied ? 'Адрес скопирован' : 'Почта · копировать'}</small><b>{EMAIL}</b></span>
           </button>
         </div>
       </div>
