@@ -384,3 +384,10 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .ma { width: 100%; max-width: 360px; margin-inline: auto; height: 190px; }
   .hero { padding-bottom: 36px; }
 }
+
+/* mini-app: content centered inside the frame */
+.ma-sc { justify-content: center; align-items: stretch; padding: 8px 22px 14px; gap: 7px; }
+.ma-sc h6 { text-align: center; font-size: .68rem; margin: 0 0 3px; }
+.ma-opt { text-align: center; font-size: .6rem; padding: 9px 10px; }
+.ma-pay { height: 28px; font-size: .62rem; margin-top: 5px; }
+.ma-sc .ma-done { align-self: center; }
