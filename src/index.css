@@ -225,3 +225,7 @@ footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; lette
 /* заголовок блока возможностей */
 #benefits .section-title { font-weight: 400; letter-spacing: -0.02em; }
 #benefits .section-title em { font-style: normal; font-weight: inherit; color: inherit; }
+
+/* единый вес внутри заголовков */
+.hero h1, .contact h2 { font-weight: 600; }
+.hero h1 em, .contact h2 em { font-style: normal; font-weight: inherit; color: inherit; }
