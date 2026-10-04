@@ -267,3 +267,10 @@ footer b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: v
 
 /* убрали цветные пятна за заголовком */
 .glow { display: none; }
+
+.after-title { margin-top: 56px; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; }
+.after { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 20px; padding: 0; }
+.after li { border-top: 1px solid var(--line); padding-top: 18px; }
+.after h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+.after p { color: var(--soft); max-width: 34ch; }
+@media (max-width: 720px) { .after { grid-template-columns: 1fr; gap: 20px; } }
