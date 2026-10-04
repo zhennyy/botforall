@@ -20,7 +20,7 @@ export default function Contact() {
     <section id="contact">
       <div className="wrap contact">
         <p className="kicker">Контакты</p>
-        <h2>Расскажите <em>о задаче.</em></h2>
+        <h2>Расскажите <em>о задаче</em></h2>
         <p className="contact-sub">Отвечу и назову сроки.</p>
         <div className="contact-row">
           <a className="cbtn" href={`https://t.me/${TG}`} target="_blank" rel="noopener noreferrer">
