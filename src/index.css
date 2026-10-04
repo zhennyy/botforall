@@ -248,3 +248,6 @@ footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; lette
 .topo-wash { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 55% at 50% 50%, var(--paper) 15%, transparent 100%); opacity: .8; }
 @keyframes topo-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .topo-bg g { animation: none; } }
+
+/* заголовки секций по центру */
+.section-title { text-align: center; }
