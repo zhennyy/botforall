@@ -274,3 +274,10 @@ footer b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: v
 .after h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
 .after p { color: var(--soft); max-width: 34ch; }
 @media (max-width: 720px) { .after { grid-template-columns: 1fr; gap: 20px; } }
+.step-click { padding: 0; }
+.step-btn { all: unset; box-sizing: border-box; display: block; width: 100%; height: 100%; padding: 28px; cursor: pointer; border-radius: 22px; }
+.step-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.step-btn h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; margin: 8px 0; }
+.step-btn p { color: var(--soft); max-width: 28ch; }
+.step-more { display: inline-block; margin-top: 14px; font-size: .85rem; color: var(--accent); }
+.step-click:hover { border-color: var(--accent); }
