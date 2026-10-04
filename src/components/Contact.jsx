@@ -19,7 +19,7 @@ export default function Contact() {
     <section id="contact">
       <div className="wrap contact">
         <h2>Расскажите <em>о задаче.</em></h2>
-        <p>Работаю напрямую, без посредников. Отвечу и назову сроки.</p>
+        <p>Отвечу и назову сроки.</p>
         <button type="button" className="mail" onClick={handleClick} aria-label={`Скопировать адрес ${EMAIL}`}>
           <span>{copied ? 'Адрес скопирован' : EMAIL}</span>
           <span aria-hidden="true">{copied ? '✓' : '↗'}</span>
