@@ -338,3 +338,10 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
 @keyframes ma-prog { 0% { background: var(--line); } 1%, 100% { background: var(--accent); } }
 @media (max-width: 700px) { .ma { zoom: 1; width: min(330px, calc(100vw - 40px)); } .ma-wrap { margin-top: 28px; } }
 @media (prefers-reduced-motion: reduce) { .ma-tr, .ma-prog i { animation: none; } }
+
+/* ---------- footer: help + social; mini-app only on mobile ---------- */
+.foot-help { max-width: 40ch; margin: 0; line-height: 1.5; color: var(--soft); }
+.foot-social { display: flex; gap: 12px; justify-content: center; }
+.foot-social a { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; color: var(--ink); border: 1px solid var(--line); transition: box-shadow .25s, color .25s, border-color .25s; }
+.foot-social a:hover, .foot-social a:focus-visible { color: var(--accent); border-color: var(--accent); box-shadow: var(--neon); outline: 0; }
+@media (min-width: 701px) { .ma-wrap { display: none; } }
