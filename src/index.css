@@ -457,3 +457,12 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .after p { font-size: .84rem; line-height: 1.45; }
   .after-tag { font-size: .68rem; padding: 4px 10px; letter-spacing: .02em; white-space: nowrap; }
 }
+
+/* Заголовки проектов по центру */
+.works .work-main { text-align: center; padding-inline: 36px; align-self: stretch; width: 100%; box-sizing: border-box; }
+@media (max-width: 560px) {
+  .works .work-main { padding-inline: 0; margin-top: 42px; }
+  .works .work h3, .works .work-kind { padding-right: 0; }
+  .works .work .num { right: auto; left: 22px; top: 30px; }
+  .neon-ic { top: 14px; right: 14px; }
+}
