@@ -258,3 +258,10 @@ a.mail { text-decoration: none; }
 .mail-alt { margin-top: 10px; font-size: clamp(.85rem, 2vw, .95rem); font-weight: 500; }
 .mail-alt .mail-icon { width: 32px; height: 32px; font-size: .9rem; }
 .mail-alt:hover .mail-icon, .mail-alt:focus-visible .mail-icon { transform: none; }
+
+/* футер: документы */
+footer .foot { flex-wrap: wrap; align-items: center; row-gap: 10px; }
+.foot-links { display: flex; gap: 22px; flex-wrap: wrap; }
+.foot-links a { color: var(--soft); transition: color .2s, text-shadow .2s; }
+.foot-links a:hover, .foot-links a:focus-visible { color: var(--accent); text-shadow: 0 0 14px var(--glow); outline: 0; }
+@media (max-width: 860px) { footer .foot { flex-direction: column; align-items: flex-start; } }
