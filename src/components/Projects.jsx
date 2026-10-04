@@ -37,8 +37,8 @@ export default function Projects() {
             <li className="work" key={w.num}>
               <span className="num">{w.num}</span>
               <div className="work-main">
-                <h3>{w.name}</h3>
-                <p className="work-kind">{w.kind}</p>
+                <h3>{w.bot ? '@' + w.bot.split('/').pop() : w.name}</h3>
+                <p className="work-kind">{w.bot ? `${w.name} · ${w.kind}` : w.kind}</p>
               </div>
               <p className="work-text">{w.text}</p>
               <div className="work-side">
