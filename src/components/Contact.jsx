@@ -24,11 +24,11 @@ export default function Contact() {
         <p className="contact-sub">Отвечу и назову сроки.</p>
         <div className="contact-row">
           <a className="cbtn" href={`https://t.me/${TG}`} target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.5l6 2.3L11.5 20l2.6-4.6 4.9 3.6L21 3Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" /></svg>
+            <i className="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.1a1 1 0 0 0-1-.2L2.7 11a1 1 0 0 0 .1 1.9l4.6 1.5 1.8 5.5a1 1 0 0 0 1.6.4l2.6-2.4 4.5 3.3a1 1 0 0 0 1.6-.6l3.2-15.3a1 1 0 0 0-.4-1.2zM9.8 14.2l-.5 3.1-1.2-3.7 9.5-5.9-7.8 6.5z" /></svg></i>
             <span><small>Telegram</small><b>@{TG}</b></span>
           </a>
           <button type="button" className="cbtn" onClick={handleClick} aria-label={`Скопировать адрес ${EMAIL}`}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            <i className="ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 7.5 8 5.5 8-5.5" /></svg></i>
             <span><small>{copied ? 'Адрес скопирован' : 'Почта · копировать'}</small><b>{EMAIL}</b></span>
           </button>
         </div>

@@ -398,3 +398,12 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .hero { padding-bottom: 0; }
   #process { padding-top: 44px; }
 }
+
+/* header scrolls away (not sticky); bigger, clearer contact icons */
+nav { position: static; backdrop-filter: none; background: var(--paper); }
+.cbtn { gap: 18px; padding: 20px 26px; }
+.cbtn .ico { width: 56px; height: 56px; flex: none; display: grid; place-items: center; border-radius: 16px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent); transition: box-shadow .25s, background .25s; }
+.cbtn .ico svg { width: 30px; height: 30px; }
+.cbtn:hover .ico, .cbtn:focus-visible .ico { background: color-mix(in srgb, var(--accent) 24%, transparent); box-shadow: 0 0 18px -2px var(--glow); }
+.foot-social { gap: 16px; }
+.foot-social a { width: 56px; height: 56px; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: color-mix(in srgb, var(--accent) 38%, transparent); }
