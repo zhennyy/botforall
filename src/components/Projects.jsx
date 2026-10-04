@@ -31,7 +31,7 @@ export default function Projects() {
   return (
     <section id="projects">
       <div className="wrap">
-        <h2 className="section-title">Работы</h2>
+        <h2 className="section-title">Проекты</h2>
         <Reveal as="ul" className="works">
           {works.map((w) => (
             <li className="work" key={w.num}>

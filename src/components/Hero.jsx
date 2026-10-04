@@ -11,7 +11,7 @@ export default function Hero() {
         </p>
         <div className="hero-actions rise" style={{ '--d': '320ms' }}>
           <a className="btn btn-solid" href="#contact">Заказать бота</a>
-          <a className="btn btn-line" href="#projects">Смотреть работы</a>
+          <a className="btn btn-line" href="#projects">Смотреть проекты</a>
         </div>
       </div>
     </header>

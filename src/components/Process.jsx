@@ -21,7 +21,7 @@ export default function Process() {
   return (
     <section id="process">
       <div className="wrap">
-        <h2 className="section-title">Как работаем</h2>
+        <h2 className="section-title">Процесс</h2>
         <Reveal as="ol" className="process">
           {steps.map(([t, d], i) =>
             i === last ? (
