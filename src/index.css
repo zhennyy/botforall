@@ -251,3 +251,10 @@ footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; lette
 
 /* заголовки секций по центру */
 .section-title { text-align: center; }
+
+/* контакты: Telegram + почта */
+a.mail { text-decoration: none; }
+.mail-or { margin-top: 18px; font-size: .75rem; color: var(--soft); letter-spacing: .08em; text-transform: uppercase; }
+.mail-alt { margin-top: 10px; font-size: clamp(.85rem, 2vw, .95rem); font-weight: 500; }
+.mail-alt .mail-icon { width: 32px; height: 32px; font-size: .9rem; }
+.mail-alt:hover .mail-icon, .mail-alt:focus-visible .mail-icon { transform: none; }
