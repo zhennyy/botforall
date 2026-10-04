@@ -429,3 +429,17 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .works .work-kind { padding-right: 56px; }
 }
 @media (prefers-reduced-motion: reduce) { .neon-ic * { animation: none !important; } }
+
+/* Процесс на телефоне — два столбика */
+@media (max-width: 700px) {
+  .process { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .process .step { padding: 18px 16px; }
+  .process .step-click { padding: 0; }
+  .process .step-btn { padding: 18px 16px; }
+  .process .num { font-size: 1.15rem; gap: 10px; }
+  .process .num::after { width: 22px; }
+  .process .step h4, .process .step-btn h4 { font-size: 1.05rem; margin: 14px 0 6px; }
+  .process .step p, .process .step-btn p { font-size: .84rem; line-height: 1.45; max-width: none; }
+  .process .step-more { padding-top: 14px; font-size: .78rem; gap: 8px; }
+  .process .step-plus { width: 22px; height: 22px; }
+}
