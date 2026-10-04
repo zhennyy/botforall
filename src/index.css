@@ -229,3 +229,11 @@ footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; lette
 /* единый вес внутри заголовков */
 .hero h1, .contact h2 { font-weight: 600; }
 .hero h1 em, .contact h2 em { font-style: normal; font-weight: inherit; color: inherit; }
+
+/* проекты: неоновая подсветка строки */
+.work { padding-inline: 24px; border-radius: var(--r); border-bottom-color: transparent; position: relative; transition: box-shadow .35s var(--ease), background .35s var(--ease); }
+.work + .work::before { content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 1px; background: color-mix(in srgb, var(--ink) 16%, transparent); transition: opacity .2s; }
+.work:hover, .work:focus-within { padding-left: 24px; box-shadow: var(--neon); background: color-mix(in srgb, var(--ink) 3%, transparent); }
+.work:hover::before, .work:hover + .work::before { opacity: 0; }
+.work:active { box-shadow: var(--neon), inset 0 0 40px -18px var(--glow); }
+@media (max-width: 560px) { .work { padding-inline: 14px; } .work + .work::before { left: 14px; right: 14px; } }
