@@ -11,9 +11,9 @@ export default function ChatPreview() {
         <div className="msg out" style={{ '--i': 0 }}>/start</div>
         <div className="msg in" style={{ '--i': 1 }}>Здравствуйте! Что хотите заказать?</div>
         <div className="keys" style={{ '--i': 2 }}><span>Каталог</span><span>Корзина</span><span>Мои заказы</span></div>
-        <div className="msg out" style={{ '--i': 3 }}>Каталог</div>
-        <div className="msg in" style={{ '--i': 4 }}>Эфиопия, 250 г. Добавить в корзину?</div>
-        <div className="keys" style={{ '--i': 5 }}><span className="ok">В корзину</span><span>Назад</span></div>
+        <div className="msg out more" style={{ '--i': 3 }}>Каталог</div>
+        <div className="msg in more" style={{ '--i': 4 }}>Эфиопия, 250 г. Добавить в корзину?</div>
+        <div className="keys more" style={{ '--i': 5 }}><span className="ok">В корзину</span><span>Назад</span></div>
         <div className="msg in done" style={{ '--i': 6 }}>Заказ оплачен ✓ Скоро отправим</div>
       </div>
     </div>

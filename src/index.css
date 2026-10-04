@@ -329,3 +329,16 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
 @keyframes msg-in { to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .chat .msg, .chat .keys { animation: none; opacity: 1; transform: none; } }
 @media (max-width: 700px) { .hero { padding-bottom: 48px; } }
+
+/* мини-чат: компактнее на телефоне */
+@media (max-width: 700px) {
+  .chat { width: min(290px, 100%); margin-top: 28px; border-radius: 20px; }
+  .chat-head { padding: 10px 14px; gap: 10px; }
+  .chat-ava { width: 30px; height: 30px; } .chat-ava svg { width: 17px; height: 17px; }
+  .chat-name b { font-size: .82rem; } .chat-name small { font-size: .66rem; }
+  .chat-body { gap: 6px; padding: 12px 14px 14px; }
+  .chat .msg { padding: 7px 11px; font-size: .78rem; border-radius: 14px; }
+  .chat .keys span { padding: 6px 8px; font-size: .72rem; border-radius: 9px; }
+  .chat .more { display: none; }
+  .chat .msg.done { animation-delay: calc(900ms + 3 * 650ms); }
+}
