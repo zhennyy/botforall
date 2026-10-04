@@ -391,3 +391,10 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
 .ma-opt { text-align: center; font-size: .6rem; padding: 9px 10px; }
 .ma-pay { height: 28px; font-size: .62rem; margin-top: 5px; }
 .ma-sc .ma-done { align-self: center; }
+
+/* mini-app: equal space between hero buttons and "Процесс" heading */
+@media (max-width: 700px) {
+  .ma-wrap { margin-top: 44px; }
+  .hero { padding-bottom: 0; }
+  #process { padding-top: 44px; }
+}
