@@ -308,41 +308,6 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .hero-actions { margin-top: 32px; }
 }
 
-/* мини-чат бота в hero */
-.chat { margin-top: clamp(36px, 5vw, 56px); width: min(420px, 100%); text-align: left; background: var(--tint); border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 30px 70px -40px var(--glow), 0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent); overflow: hidden; }
-.chat-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
-.chat-ava { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--accent), var(--violet, #7C5CFF)); }
-.chat-ava svg { width: 20px; height: 20px; }
-.chat-name { display: flex; flex-direction: column; line-height: 1.2; }
-.chat-name b { font-size: .92rem; font-weight: 700; }
-.chat-name small { font-size: .72rem; color: var(--soft); }
-.chat-body { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px 20px; }
-.chat .msg { max-width: 82%; padding: 9px 14px; border-radius: 16px; font-size: .88rem; line-height: 1.4; opacity: 0; transform: translateY(8px); animation: msg-in .5s var(--ease) forwards; animation-delay: calc(900ms + var(--i) * 650ms); }
-.chat .msg.in { align-self: flex-start; background: color-mix(in srgb, var(--ink) 8%, transparent); border-bottom-left-radius: 5px; }
-.chat .msg.out { align-self: flex-end; color: #fff; background: var(--accent); border-bottom-right-radius: 5px; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chat .msg.out { color: #06121f; } }
-:root[data-theme="dark"] .chat .msg.out { color: #06121f; }
-.chat .msg.done { background: color-mix(in srgb, var(--accent) 16%, transparent); }
-.chat .keys { display: flex; gap: 6px; flex-wrap: wrap; opacity: 0; animation: msg-in .5s var(--ease) forwards; animation-delay: calc(900ms + var(--i) * 650ms); }
-.chat .keys span { flex: 1 1 auto; text-align: center; padding: 8px 12px; border-radius: 10px; font-size: .8rem; font-weight: 600; background: color-mix(in srgb, var(--ink) 7%, transparent); border: 1px solid var(--line); }
-.chat .keys .ok { border-color: color-mix(in srgb, var(--accent) 55%, transparent); color: var(--accent); }
-@keyframes msg-in { to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .chat .msg, .chat .keys { animation: none; opacity: 1; transform: none; } }
-@media (max-width: 700px) { .hero { padding-bottom: 48px; } }
-
-/* мини-чат: компактнее на телефоне */
-@media (max-width: 700px) {
-  .chat { width: min(290px, 100%); margin-top: 28px; border-radius: 20px; }
-  .chat-head { padding: 10px 14px; gap: 10px; }
-  .chat-ava { width: 30px; height: 30px; } .chat-ava svg { width: 17px; height: 17px; }
-  .chat-name b { font-size: .82rem; } .chat-name small { font-size: .66rem; }
-  .chat-body { gap: 6px; padding: 12px 14px 14px; }
-  .chat .msg { padding: 7px 11px; font-size: .78rem; border-radius: 14px; }
-  .chat .keys span { padding: 6px 8px; font-size: .72rem; border-radius: 9px; }
-  .chat .more { display: none; }
-  .chat .msg.done { animation-delay: calc(900ms + 3 * 650ms); }
-}
-
 /* «Всё для продаж»: две колонки на телефоне */
 @media (max-width: 560px) {
   .benefits { grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -350,3 +315,26 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .benefit h4 { margin: 0 0 8px; font-size: 1.05rem; }
   .benefit p { font-size: .8rem; line-height: 1.45; }
 }
+
+/* Mini App: шаги заказа */
+.ma-wrap { margin-top: clamp(34px, 5vw, 52px); display: flex; justify-content: center; }
+.ma { --on: #fff; width: 150px; height: 196px; zoom: 1.35; border-radius: 24px; border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent); background: var(--paper); overflow: hidden; position: relative; box-shadow: 0 24px 50px -28px var(--glow); text-align: left; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ma { --on: #06121f; } }
+:root[data-theme="dark"] .ma { --on: #06121f; }
+.ma-top { height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: .58rem; font-weight: 700; border-bottom: 1px solid var(--line); background: var(--tint); }
+.ma-top em { font-style: normal; color: var(--soft); font-weight: 600; }
+.ma-prog { display: flex; gap: 3px; padding: 6px 8px 0; }
+.ma-prog i { flex: 1; height: 3px; border-radius: 2px; background: var(--line); animation: ma-prog 8s infinite; }
+.ma-prog i:nth-child(2) { animation-delay: 2s; } .ma-prog i:nth-child(3) { animation-delay: 4s; } .ma-prog i:nth-child(4) { animation-delay: 6s; }
+.ma-win { position: absolute; top: 44px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+.ma-tr { display: flex; width: 400%; height: 100%; animation: ma-slide 8s infinite var(--ease); }
+.ma-sc { width: 25%; padding: 6px 8px; display: flex; flex-direction: column; gap: 5px; }
+.ma-sc h6 { font-size: .6rem; margin: 0 0 2px; font-weight: 700; }
+.ma-opt { padding: 7px; border-radius: 9px; border: 1px solid var(--line); background: var(--tint); font-size: .52rem; font-weight: 700; }
+.ma-opt.on { border-color: var(--accent); box-shadow: 0 0 10px -2px var(--glow); }
+.ma-pay { margin-top: 4px; height: 22px; border-radius: 9px; background: var(--accent); color: var(--on); font-size: .55rem; font-weight: 800; display: grid; place-items: center; }
+.ma-done { margin: auto; width: 46px; height: 46px; border-radius: 50%; background: var(--accent); color: var(--on); display: grid; place-items: center; font-size: 1.3rem; font-weight: 800; box-shadow: 0 0 24px var(--glow); }
+@keyframes ma-slide { 0%, 20% { transform: none; } 28%, 45% { transform: translateX(-25%); } 53%, 70% { transform: translateX(-50%); } 78%, 95% { transform: translateX(-75%); } 100% { transform: none; } }
+@keyframes ma-prog { 0% { background: var(--line); } 1%, 100% { background: var(--accent); } }
+@media (max-width: 700px) { .ma { zoom: 1; } .ma-wrap { margin-top: 28px; } }
+@media (prefers-reduced-motion: reduce) { .ma-tr, .ma-prog i { animation: none; } }

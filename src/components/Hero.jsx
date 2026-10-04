@@ -1,5 +1,5 @@
 import TopoBg from './TopoBg.jsx'
-import ChatPreview from './ChatPreview.jsx'
+import MiniApp from './MiniApp.jsx'
 
 export default function Hero() {
   return (
@@ -17,7 +17,7 @@ export default function Hero() {
           <a className="btn btn-solid" href="#contact">Заказать бота</a>
           <a className="btn btn-line" href="#projects">Смотреть проекты</a>
         </div>
-        <ChatPreview />
+        <MiniApp />
       </div>
     </header>
   )
