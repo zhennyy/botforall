@@ -26,13 +26,15 @@ const INFO = { cities: [
   { city: 'Москва', city_en: 'Moscow', price: 70000 }, { city: 'Петрозаводск', city_en: 'Petrozavodsk', price: 70000 },
   { city: 'Псков', city_en: 'Pskov', price: 70000 }, { city: 'Санкт-Петербург', city_en: 'Saint Petersburg', price: 40000 }],
   otherPrice: 150000, freeFrom: 3000000, pickup: true, pickupAddress: 'Санкт-Петербург, Выборгское ш., 503 · пн–сб 10:00–19:00', payOnline: true };
-const LABEL = { awaiting_payment: '⏳ Ждёт оплату', paid: '🆕 Оплачен', assembling: '📦 Собираем', shipped: '🚚 Отправлен', delivered: '✅ Доставлен' };
+const LABEL = { awaiting_payment: '⏳ Ждёт оплату', paid: '🆕 Оплачен', assembling: '📦 Собираем', shipped: '🚚 Отправлен', delivered: '✅ Доставлен', cancelled: '❌ Отменён' };
 const FLOW = ['paid', 'assembling', 'shipped', 'delivered'];
 const prod = id => CAT.products.find(p => p.id == id);
 const err = (s, m) => ({ s, d: { error: m } });
 const goods = () => Object.entries(st.cart).reduce((a, [id, q]) => a + prod(id).price * q, 0);
 const cartMap = () => ({ ...st.cart });
-const promoPct = c => String(c || '').trim().toUpperCase().replace(/\s+/g, '') === 'RADIATOR10' ? 10 : 0;
+const PROMOS = [{ id: 1, code: 'RADIATOR10', discount_percent: 10, max_uses: null, used_count: 1, active: 1 }];
+const findPromo = c => { const n = String(c || '').trim().toUpperCase().replace(/\s+/g, ''); return PROMOS.find(p => p.active && p.code === n && (!p.max_uses || p.used_count < p.max_uses)) || null; };
+const promoPct = c => { const p = findPromo(c); return p ? p.discount_percent : 0; };
 function view(o) {
   const pickup = o.pickup;
   return { id: o.id, code: o.code, status: o.status, statusLabel: o.status === 'shipped' && pickup ? '🏠 Готов к выдаче' : LABEL[o.status], step: FLOW.indexOf(o.status), pickup,
@@ -41,32 +43,34 @@ function view(o) {
 }
 function advance(o) {
   const plan = [['assembling', 8000], ['shipped', 18000], ['delivered', 32000]];
-  plan.forEach(([s, ms]) => setTimeout(() => { o.status = s; if (s === 'shipped' && !o.pickup) o.track = 'RP' + (480000 + o.id * 137) + 'RU';
+  plan.forEach(([s, ms]) => setTimeout(() => { if (o.status === 'cancelled' || FLOW.indexOf(s) <= FLOW.indexOf(o.status)) return; o.status = s; if (s === 'shipped' && !o.pickup) o.track = 'RP' + (480000 + o.id * 137) + 'RU';
     try { if (typeof tab !== 'undefined' && tab === 'orders') loadOrders(); } catch (e) {} }, ms));
 }
 function quote(pct, city) {
   const g = goods(), gd = Math.round(g * (100 - pct) / 100);
   if (!city) return { goods: gd, delivery: 0, total: gd };
   const c = INFO.cities.find(x => x.city.toLowerCase() === String(city).toLowerCase());
-  const d = gd >= INFO.freeFrom ? 0 : (c ? c.price : INFO.otherPrice);
+  const d = INFO.freeFrom > 0 && gd >= INFO.freeFrom ? 0 : (c ? c.price : INFO.otherPrice);
   return { goods: gd, delivery: d, total: gd + d };
 }
 const H = {
-  'GET /catalog': () => ({ ...CAT, lang: st.lang, cart: cartMap() }),
+  'GET /catalog': () => ({ ...CAT, unread: CAT.isOwner ? unreadTotal() : 0, lang: st.lang, cart: cartMap() }),
   'POST /cart': b => { const p = prod(b.product_id); if (!p) return err(404, 'Товар не найден'); const q = Math.max(0, parseInt(b.qty, 10) || 0);
     if (q > p.stock) return err(400, 'Больше нет в наличии'); if (q === 0) delete st.cart[p.id]; else st.cart[p.id] = q; return { ok: true, cart: cartMap() }; },
   'POST /lang': b => { st.lang = b.lang === 'en' ? 'en' : 'ru'; return { ok: true, lang: st.lang }; },
   'GET /orders': () => ({ orders: st.orders.slice().reverse().map(view) }),
   'GET /checkout-info': () => INFO,
   'POST /promo': b => { const n = String(b.code || '').trim(); if (!n) return { ok: true, code: null, percent: 0 };
-    return promoPct(n) ? { ok: true, code: 'RADIATOR10', percent: 10 } : err(400, 'Такого промокода нет (в демо — RADIATOR10)'); },
+    const pr = findPromo(n), hint = PROMOS.find(p => p.active && (!p.max_uses || p.used_count < p.max_uses));
+    return pr ? { ok: true, code: pr.code, percent: pr.discount_percent } : err(400, 'Такого промокода нет' + (hint ? ' (в демо — ' + hint.code + ')' : '')); },
   'POST /order': b => {
     if (!Object.keys(st.cart).length) return err(400, 'Корзина пуста');
     const pickup = b.delivery === 'pickup', city = String(b.city || '').trim(), addr = String(b.address || '').trim();
     if (!pickup) { if (!city) return err(400, 'Выберите город'); if (addr.length < 5) return err(400, 'Укажите адрес: улица, дом, квартира'); }
     const ph = String(b.phone || '').replace(/\D/g, ''); if (b.phone && ph.length < 10) return err(400, 'Проверьте номер телефона');
-    const q = quote(promoPct(b.promo), pickup ? null : city);
-    const o = { id: st.nid++, code: String(2400 + st.nid * 3), status: 'awaiting_payment', pickup, total: q.total, dcost: q.delivery, at: Date.now(),
+    const pr = findPromo(b.promo), q = quote(pr ? pr.discount_percent : 0, pickup ? null : city);
+    if (pr) pr.used_count++;
+    const o = { id: st.nid++, code: String(2400 + st.nid * 3), status: 'awaiting_payment', pickup, city: pickup ? null : city, promo: pr ? pr.code : '', discount: pr ? pr.discount_percent : 0, buyer: 'Вы (демо)', chat_id: 1, total: q.total, dcost: q.delivery, at: Date.now(),
       address: pickup ? 'Самовывоз' : city + ', ' + addr + (ph ? ' · тел. ' + b.phone : ''),
       items: Object.entries(st.cart).map(([id, n]) => ({ id: +id, qty: n, price: prod(id).price, name: prod(id).name })) };
     o.items.forEach(i => { prod(i.id).stock -= i.qty; });
@@ -82,6 +86,142 @@ const H = {
     return { advice: 'Для гостиной на 20–25 м² подойдёт вертикальный дизайнерский радиатор или стальной панельный — оба быстро прогревают комнату.', ids: [1, 2, 6] };
   },
 };
+/* ===== ДЕМО-АДМИНКА (режим «Владелец»): данные выдуманы, живут только в памяти страницы и пропадают при перезагрузке ===== */
+const HOUR = 3600e3, DAY = 24 * HOUR;
+const utc = t => new Date(t).toISOString().slice(0, 19).replace('T', ' ');
+const toKop = v => Math.round(parseFloat(String(v ?? '').replace(',', '.').replace(/\s/g, '')) * 100);
+const BUYERS = { 501: 'Алексей', 502: 'Марина', 503: 'Сергей', 504: 'Ольга', 505: 'Игорь', 506: 'Дарья', 507: 'Николай', 508: 'Анна' };
+function seed(id, status, ageH, lines, city, chat, x = {}) {
+  const items = lines.map(([pid, qty]) => ({ id: pid, qty, price: prod(pid).price, name: prod(pid).name }));
+  const disc = x.promo ? 10 : 0, g = Math.round(items.reduce((a, i) => a + i.price * i.qty, 0) * (100 - disc) / 100);
+  const c = city && INFO.cities.find(r => r.city === city);
+  const dcost = !city || (INFO.freeFrom > 0 && g >= INFO.freeFrom) ? 0 : (c ? c.price : INFO.otherPrice);
+  return { id, code: String(2200 + id), status, pickup: !city, city: city || null, total: g + dcost, dcost, at: Date.now() - ageH * HOUR,
+    address: city ? city + ', ул. Образцовая, д. ' + (id % 40 + 1) : 'Самовывоз', items, track: x.track || '', rating: x.rating || 0,
+    was_paid: status !== 'awaiting_payment' && !(status === 'cancelled' && !x.paid), promo: x.promo || '', discount: disc,
+    buyer: BUYERS[chat], chat_id: chat, held: status !== 'cancelled' };
+}
+const SEED = [
+  seed(101, 'paid', 3, [[2, 1], [8, 2]], null, 501),
+  seed(102, 'paid', 5, [[3, 1], [9, 2]], 'Санкт-Петербург', 502),
+  seed(103, 'assembling', 20, [[1, 1]], null, 503),
+  seed(104, 'assembling', 30, [[4, 1], [11, 1]], 'Москва', 504),
+  seed(105, 'shipped', 52, [[2, 2]], 'Псков', 505, { track: 'DEMO-TRACK-0001' }),
+  seed(106, 'shipped', 60, [[5, 10]], null, 506),
+  seed(107, 'awaiting_payment', 2, [[7, 1]], 'Вологда', 507),
+  seed(108, 'delivered', 5 * 24, [[7, 2]], 'Санкт-Петербург', 508, { rating: 5 }),
+  seed(109, 'delivered', 9 * 24, [[10, 1], [9, 2]], null, 505, { rating: 4 }),
+  seed(110, 'delivered', 14 * 24, [[1, 2]], 'Москва', 504, { promo: 'RADIATOR10', rating: 5 }),
+  seed(111, 'cancelled', 3 * 24, [[2, 1]], 'Великий Новгород', 503),
+  seed(112, 'delivered', 20 * 24, [[3, 2], [11, 1]], null, 502, { rating: 5 }),
+  seed(113, 'delivered', 40 * 24, [[4, 1]], 'Петрозаводск', 506),
+];
+const allOrders = () => SEED.concat(st.orders);
+const admOrder = o => ({ id: o.id, code: o.code, status: o.status, total: o.total, delivery_cost: o.dcost || 0, created_at: utc(o.at),
+  address: String(o.address || '').replace(/ · тел\..*$/, ''), phone: '', pickup: Boolean(o.pickup), track: o.track || '', rating: o.rating || 0,
+  was_paid: o.was_paid !== undefined ? o.was_paid : o.status !== 'awaiting_payment', promo: o.promo || '', discount: o.discount || 0,
+  buyer: o.buyer || 'Вы (демо)', chat_id: o.chat_id ?? 1, items: o.items.map(i => ({ name: i.name, qty: i.qty, price: i.price })) });
+function hold(o, want) { // «Отменить» возвращает товар на склад, «вернуть в работу» — снова резервирует
+  const was = o.held !== false; if (want === was) return;
+  o.items.forEach(i => { const p = prod(i.id); if (p) p.stock = want ? Math.max(0, p.stock - i.qty) : p.stock + i.qty; });
+  o.held = want;
+}
+function cleanProd(b) {
+  const t = (k, n) => String(b[k] || '').trim().slice(0, n);
+  const p = { name: t('name', 120), name_en: t('name_en', 120) || null, description: t('description', 1000), description_en: t('description_en', 1000) || null,
+    category: t('category', 60) || null, category_en: t('category_en', 60) || null, price: toKop(b.price), stock: Math.max(0, parseInt(b.stock, 10) || 0) };
+  if (!p.name) throw new Error('Укажите название');
+  if (!(p.price > 0)) throw new Error('Укажите цену');
+  return p;
+}
+/* чаты */
+const CH = new Map(); let mid = 1;
+function chat(id) { if (!CH.has(id)) CH.set(id, { name: BUYERS[id] || 'Покупатель', unread: 0, messages: [] }); return CH.get(id); }
+function say(id, fromOwner, text, ageMin) { const c = chat(id); c.messages.push({ id: mid++, from_owner: fromOwner ? 1 : 0, text, photo: null, created_at: utc(Date.now() - ageMin * 60e3) }); if (!fromOwner) c.unread++; }
+say(501, 0, 'Здравствуйте! Подскажите, когда можно забрать заказ?', 40);
+say(502, 0, 'Добрый день! Есть ли такой же полотенцесушитель в другом цвете?', 300); say(502, 1, 'Здравствуйте! Сейчас уточню и напишу.', 280); CH.get(502).unread = 0;
+say(505, 0, 'Спасибо, всё получил!', 2600); CH.get(505).unread = 0;
+const unreadTotal = () => [...CH.values()].reduce((a, c) => a + c.unread, 0);
+/* доставка: города с id и «активностью» */
+const ACITIES = INFO.cities.map((c, i) => ({ id: i + 1, city: c.city, city_en: c.city_en || null, price: c.price, active: 1 }));
+const syncCities = () => { INFO.cities = ACITIES.filter(c => c.active).sort((a, b) => a.city.localeCompare(b.city, 'ru')).map(({ city, city_en, price }) => ({ city, city_en, price })); };
+const settings = () => ({ delivery: { otherPrice: INFO.otherPrice, freeFrom: INFO.freeFrom, pickup: INFO.pickup, pickupAddress: INFO.pickupAddress },
+  cities: ACITIES.slice().sort((a, b) => b.active - a.active || a.city.localeCompare(b.city, 'ru')), promos: PROMOS.slice().sort((a, b) => b.active - a.active || b.id - a.id) });
+const bad = fn => (...a) => { try { return fn(...a); } catch (e) { return err(400, e.message); } };
+const PAIDS = ['paid', 'assembling', 'shipped', 'delivered'];
+const AR = [
+  ['GET', /^\/admin\/products$/, () => ({ products: CAT.products.slice().sort((a, b) => String(a.category || '').localeCompare(String(b.category || ''), 'ru') || a.id - b.id).map(p => ({ ...p, has_photo: Boolean(p.photo) })) })],
+  ['POST', /^\/admin\/products$/, bad(b => { const p = cleanProd(b); p.id = Math.max(0, ...CAT.products.map(x => x.id)) + 1; p.photo = null; CAT.products.push(p); return { ok: true, id: p.id }; })],
+  ['POST', /^\/admin\/products\/(\d+)$/, bad((b, r) => { const p = prod(r[1]); if (!p) return err(404, 'Товар не найден'); Object.assign(p, cleanProd(b)); return { ok: true }; })],
+  ['POST', /^\/admin\/products\/(\d+)\/delete$/, (b, r) => { CAT.products = CAT.products.filter(p => p.id != r[1]); delete st.cart[r[1]]; return { ok: true }; }],
+  ['POST', /^\/admin\/products\/(\d+)\/photo$/, (b, r, q, raw) => {
+    const p = prod(r[1]); if (!p) return err(404, 'Товар не найден');
+    if (!(raw instanceof Blob) || raw.size < 100) return err(400, 'Файл не получен');
+    if (/^blob:/.test(p.photo || '')) { try { URL.revokeObjectURL(p.photo); } catch (e) {} }
+    p.photo = URL.createObjectURL(raw); /* локальный превью: файл никуда не отправляется */
+    return { ok: true }; }],
+  ['POST', /^\/admin\/products\/(\d+)\/photo-url$/, () => err(400, 'В демо внешние ссылки отключены — загрузите фото кнопкой «📷»')],
+  ['POST', /^\/admin\/backup$/, () => err(400, 'В демо резервная копия не создаётся')],
+  ['GET', /^\/admin\/orders$/, () => ({ orders: allOrders().sort((a, b) => b.at - a.at).map(admOrder) })],
+  ['POST', /^\/admin\/orders\/(\d+)\/status$/, (b, r) => {
+    const o = allOrders().find(x => x.id == r[1]); if (!o) return err(400, 'Заказ не найден');
+    const s = String(b.status || ''); if (!PAIDS.concat('cancelled').includes(s)) return err(400, 'Неизвестный статус');
+    hold(o, s !== 'cancelled'); if (s !== 'cancelled') o.was_paid = true;
+    o.status = s; if (b.track !== undefined) o.track = String(b.track).trim().slice(0, 60);
+    return { ok: true, status: o.status, track: o.track || '' }; }],
+  ['GET', /^\/admin\/stats$/, (b, r, q) => {
+    const days = [7, 30, 90].includes(+q.get('days')) ? +q.get('days') : 30, day = t => new Date(t).toISOString().slice(0, 10);
+    const from = day(Date.now() - (days - 1) * DAY), all = allOrders().filter(o => day(o.at) >= from), paid = all.filter(o => PAIDS.includes(o.status));
+    const sum = (l, f) => l.reduce((a, o) => a + f(o), 0), revenue = sum(paid, o => o.total), delivery = sum(paid, o => o.dcost || 0);
+    const byDay = []; for (let i = days - 1; i >= 0; i--) { const d = day(Date.now() - i * DAY), l = paid.filter(o => day(o.at) === d); byDay.push({ date: d, revenue: sum(l, o => o.total), orders: l.length }); }
+    const top = new Map(), cities = new Map(), perUser = new Map();
+    paid.forEach(o => {
+      o.items.forEach(i => { const t = top.get(i.id) || { id: i.id, name: i.name, qty: 0, revenue: 0 }; t.qty += i.qty; t.revenue += i.qty * i.price; top.set(i.id, t); });
+      const c = o.city || 'Самовывоз', x = cities.get(c) || { city: c, orders: 0, revenue: 0 }; x.orders++; x.revenue += o.total; cities.set(c, x);
+      const u = o.chat_id ?? 1; perUser.set(u, (perUser.get(u) || 0) + 1); });
+    const rated = paid.filter(o => o.rating), byS = s => all.filter(o => o.status === s).length;
+    return { days, revenue, delivery, goods: revenue - delivery, orders: paid.length, avg: paid.length ? Math.round(revenue / paid.length) : 0,
+      customers: perUser.size, repeat: [...perUser.values()].filter(n => n > 1).length, unpaid: byS('awaiting_payment'), cancelled: byS('cancelled'),
+      promoUsed: paid.filter(o => o.promo).length, rating: rated.length ? Math.round(sum(rated, o => o.rating) / rated.length * 10) / 10 : null, rated: rated.length,
+      active: allOrders().filter(o => ['paid', 'assembling', 'shipped'].includes(o.status)).length, byDay,
+      top: [...top.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 6), cities: [...cities.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 6),
+      lowStock: CAT.products.filter(p => p.stock <= 3).sort((a, b) => a.stock - b.stock || a.name.localeCompare(b.name, 'ru')).map(p => ({ id: p.id, name: p.name, stock: p.stock })) }; }],
+  ['GET', /^\/admin\/chats$/, () => ({ unread: unreadTotal(), chats: [...CH.entries()].filter(([, c]) => c.messages.length)
+    .map(([id, c]) => ({ chat_id: id, name: c.name, last: c.messages[c.messages.length - 1], unread: c.unread })).sort((a, b) => (a.last.created_at < b.last.created_at ? 1 : -1)) })],
+  ['GET', /^\/admin\/chats\/(\d+)$/, (b, r) => { const id = +r[1], c = chat(id); c.unread = 0;
+    return { name: c.name === 'Покупатель' && id === 1 ? 'Вы (демо)' : c.name, messages: c.messages.slice(),
+      orders: allOrders().filter(o => (o.chat_id ?? 1) === id).map(o => ({ id: o.id, code: o.code, status: o.status, total: o.total })), unread: unreadTotal() }; }],
+  ['POST', /^\/admin\/chats\/(\d+)$/, (b, r) => { const text = String(b.text || '').trim().slice(0, 4000); if (!text) return err(400, 'Пустое сообщение');
+    say(+r[1], 1, text, 0); return { messages: chat(+r[1]).messages.slice() }; }],
+  ['GET', /^\/admin\/settings$/, () => settings()],
+  ['POST', /^\/admin\/delivery$/, bad(b => {
+    const other = toKop(b.otherPrice), free = b.freeFrom === '' || b.freeFrom == null ? 0 : toKop(b.freeFrom);
+    if (!(other >= 0)) throw new Error('Цена для других городов — числом'); if (!(free >= 0)) throw new Error('«Бесплатно от» — числом (0 — выключено)');
+    Object.assign(INFO, { otherPrice: other, freeFrom: free, pickup: Boolean(b.pickup), pickupAddress: String(b.pickupAddress || '').trim().slice(0, 200) });
+    return settings(); })],
+  ['POST', /^\/admin\/cities$/, bad(b => {
+    const city = String(b.city || '').trim().slice(0, 80), price = toKop(b.price), id = parseInt(b.id, 10);
+    if (city.length < 2) throw new Error('Укажите город'); if (!(price >= 0)) throw new Error('Укажите цену доставки');
+    const same = ACITIES.find(c => c.city.toLowerCase() === city.toLowerCase());
+    if (id) { if (same && same.id !== id) throw new Error('Такой город уже есть'); const c = ACITIES.find(x => x.id === id); if (c) Object.assign(c, { city, price, active: b.active === false ? 0 : 1 }); }
+    else if (same) Object.assign(same, { price, active: 1 });
+    else ACITIES.push({ id: Math.max(0, ...ACITIES.map(c => c.id)) + 1, city, city_en: null, price, active: 1 });
+    syncCities(); return settings(); })],
+  ['POST', /^\/admin\/cities\/(\d+)\/delete$/, (b, r) => { const i = ACITIES.findIndex(c => c.id == r[1]); if (i >= 0) ACITIES.splice(i, 1); syncCities(); return settings(); }],
+  ['POST', /^\/admin\/promos$/, bad(b => {
+    const code = String(b.code || '').trim().toUpperCase().replace(/\s+/g, '').slice(0, 30), pct = parseInt(b.percent, 10);
+    const max = b.max_uses === '' || b.max_uses == null ? null : parseInt(b.max_uses, 10);
+    if (!/^[A-ZА-ЯЁ0-9_-]{2,30}$/.test(code)) throw new Error('Код — буквы и цифры, от 2 символов');
+    if (!(pct >= 1 && pct <= 90)) throw new Error('Скидка — от 1 до 90%');
+    if (max !== null && !(max >= 1)) throw new Error('Лимит — число от 1 (или пусто — без лимита)');
+    if (PROMOS.some(p => p.code === code)) throw new Error('Промокод ' + code + ' уже есть');
+    PROMOS.push({ id: Math.max(0, ...PROMOS.map(p => p.id)) + 1, code, discount_percent: pct, max_uses: max, used_count: 0, active: 1 }); return settings(); })],
+  ['POST', /^\/admin\/promos\/(\d+)$/, (b, r) => { const p = PROMOS.find(x => x.id == r[1]); if (p) p.active = b.active ? 1 : 0; return settings(); }],
+  ['POST', /^\/admin\/promos\/(\d+)\/delete$/, (b, r) => { const i = PROMOS.findIndex(x => x.id == r[1]); if (i >= 0) PROMOS.splice(i, 1); return settings(); }],
+];
+/* переключатель режима: по умолчанию «Покупатель»; ?mode=owner сразу открывает режим владельца */
+CAT.isOwner = /[?&]mode=owner(&|$)/.test(location.search);
+window.__demo = { setOwner: v => { CAT.isOwner = Boolean(v); } };
 const real = window.fetch.bind(window);
 window.fetch = async (url, o = {}) => {
   if (!String(url).startsWith('/shop-api')) return real(url, o);
@@ -89,8 +229,9 @@ window.fetch = async (url, o = {}) => {
   let body = {}; try { body = o.body ? JSON.parse(o.body) : {}; } catch (e) {}
   let h = H[m + ' ' + path], arg;
   if (!h) { const mm = path.match(/^\/orders\/(\d+)(\/\w+)?$/); if (mm) { arg = mm[1]; h = H[`${m} /orders/:id${mm[2] || ''}`]; } }
+  if (!h) for (const [am, re, fn] of AR) { const r = am === m && path.match(re); if (r) { h = b => fn(b, r, new URLSearchParams(String(url).split('?')[1] || ''), o.body); break; } }
   await new Promise(r => setTimeout(r, 120));
-  const res = h ? h(body, arg) : err(404, 'Нет в демо');
+  const res = /^\/admin\//.test(path) && !CAT.isOwner ? err(403, 'Только для владельца — переключитесь в режим «Владелец»') : h ? h(body, arg) : err(404, 'Нет в демо');
   const s = res.s || 200, d = res.d || res;
   return { ok: s < 400, status: s, json: async () => d };
 };
@@ -105,7 +246,7 @@ function showPay(id) {
   box.innerHTML = '<div class="c"><h2>Демо-оплата</h2><p>Здесь открылась бы страница ЮKassa. В демо деньги не списываются, карта не нужна.</p><p><b>Заказ № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Оплатить ' + sum + ' (демо)</button><button class="g" data-no>Закрыть, оплачу позже</button></div>';
   box.onclick = e => {
     if (e.target.matches('[data-ok]')) {
-      if (o.status === 'awaiting_payment') { o.status = 'paid'; advance(o); }
+      if (o.status === 'awaiting_payment') { o.status = 'paid'; o.was_paid = true; advance(o); }
       box.querySelector('.c').innerHTML = '<div class="ok">✓</div><h2>Оплата прошла (демо)</h2><p>Заказ оплачен. Статус будет меняться на вкладке «Заказы».</p><button data-no>Вернуться в магазин</button>';
       try { if (typeof tab !== 'undefined' && tab === 'orders') loadOrders(); } catch (x) {}
     } else if (e.target.matches('[data-no]')) { box.remove(); try { if (typeof tab !== 'undefined' && tab === 'orders') loadOrders(); } catch (x) {} }
@@ -331,6 +472,10 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .steps div.now::before{background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
   .steps div.now{color:var(--text);font-weight:700}
   .pill.assembling{background:var(--accent-soft);color:var(--accent)}
+  .dmode{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 0 4px;font-size:12px;color:var(--muted)}
+  .dmode .sg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+  .dmode button{border:0;background:transparent;color:var(--muted);padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer}
+  .dmode button.on{background:var(--accent);color:#fff}
   .track{margin-top:8px;font-size:14px} .stars{margin-top:6px;color:#f59f00;letter-spacing:2px}
 </style>
 </head>
@@ -340,6 +485,7 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
     <div class="logo">Radiator<span>Pro</span> 🔥</div>
     <div class="lang" id="lang"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div>
   </header>
+  <div class="dmode" id="dmode" role="group" aria-label="Режим демо"><span>Режим демо</span><div class="sg"><button type="button" data-mode="buyer" class="on" aria-pressed="true">Покупатель</button><button type="button" data-mode="owner" aria-pressed="false">Владелец</button></div></div>
 
   <section class="view on" id="v-catalog">
     <label class="search">🔍<input id="q" type="search" autocomplete="off"></label>
@@ -1103,8 +1249,23 @@ async function load() {
     $('grid').innerHTML = `<div class="empty"><b>😕</b>${esc(e.message)}${e.fatal ? '' : `<br><br><button class="btn ghost" data-retry>${L.retry}</button>`}</div>`;
   }
 }
+/* ---------- демо: переключатель «Покупатель | Владелец» ---------- */
+let modeBusy = false;
+function paintMode() { document.querySelectorAll('#dmode [data-mode]').forEach(b => { const on = (b.dataset.mode === 'owner') === isOwner; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); }
+async function setMode(owner) {
+  if (modeBusy || owner === isOwner) return;
+  modeBusy = true;
+  try {
+    window.__demo.setOwner(owner);
+    closeSheet(); stopChatPoll();
+    admMode = 'orders'; ordFilter = 'active'; chatOpen = null; editId = null;
+    await load();
+    if (owner && isOwner) go('admin'); else if (tab === 'admin') go('catalog');
+  } finally { modeBusy = false; paintMode(); }
+}
+$('dmode').onclick = e => { const b = e.target.closest('[data-mode]'); if (b) setMode(b.dataset.mode === 'owner'); };
 applyLang();
-load();
+load().then(() => { if (isOwner && tab === 'catalog' && !new URLSearchParams(location.search).get('tab')) go('admin'); paintMode(); });
 </script>
 </body>
 </html>

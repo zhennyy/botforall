@@ -58,6 +58,7 @@ function quote(address, zone, total) {
   return { s:200, d:{ ok:true, fee: free ? 0 : fee, fullFee:fee, free, freeFrom:TARIFF.freeFrom, km:k, zone: region ? 'Ленобласть' : 'Санкт-Петербург', found:(region ? 'Ленинградская область, ' : 'Санкт-Петербург, ') + a } };
 }
 function statusOf(o) {
+  if (o.forced) return o.forced; // статус, выставленный в режиме «Владелец»
   if (o.payment_status === 'pending') return 'new';
   const t = (Date.now() - o.paidAt) / 1000;
   return t < 8 ? 'new' : t < 20 ? 'confirmed' : t < 40 ? 'assembling' : t < 70 ? 'delivering' : 'done';
@@ -66,7 +67,7 @@ const view = o => { const s = statusOf(o); return { id:o.id, status:s, status_la
   when:`${niceDay(o.delivery_date)}, ${o.delivery_time.replace(/:00/g,'')}`, address:o.address, card_text:o.card_text, recipient:o.recipient, rating:0, payment_status:o.payment_status, pay_url:o.payment_status === 'pending' ? 'demo-pay:' + o.id : null, photo_status:null }; };
 
 const H = {
-  'GET /api/products': () => PRODUCTS.map(p => ({ unit:null, min_qty:1, stock:null, addon:0, emoji:null, sizes:null, in_stock:1, ...p })),
+  'GET /api/products': () => PRODUCTS.filter(p => p.in_stock !== 0).map(p => ({ unit:null, min_qty:1, stock:null, addon:0, emoji:null, sizes:null, in_stock:1, ...p })),
   'GET /api/delivery-info': () => ({ shop:'Флёр', city:TARIFF.city, region:TARIFF.region, freeFrom:TARIFF.freeFrom, payOnline:true }),
   'GET /api/slots': (b, q) => { const date = q.get('date') || ''; if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return err(400,'Неверная дата');
     const day = new Date(date).getDay(); return { closed:false, slots: SLOTS.map((time,i) => { const left = (day + i) % 4 === 3 ? 0 : (i === 1 ? 2 : null); return { time, available:left !== 0, left }; }) }; },
@@ -90,6 +91,57 @@ const H = {
     return { ok:true, id:o.id, pay_url:'demo-pay:' + o.id, total:o.total };
   },
 };
+
+/* ─── Режим «Владелец»: мок админки. Всё в памяти страницы, выдуманные данные ─── */
+const ASTAT = { new:'🆕 Новый', confirmed:'✅ Подтверждён', assembling:'💐 Собираем букет', delivering:'🚚 В пути', done:'🌷 Доставлен', cancelled:'❌ Отменён' };
+const mskDay = plus => new Date(Date.now() + 3*3600e3 + plus*864e5).toISOString().slice(0,10);
+const seedOrder = (id, forced, pay, day, time, raw, f) => { const items = priceItems(raw), sum = items.reduce((s,i) => s + i.price*i.qty, 0), fee = f.fee ?? 0;
+  return { id, forced, payment_status:pay, delivery_date:mskDay(day), delivery_time:time, items, delivery_fee:fee, total:sum + fee, km:f.km ?? null,
+    customer_name:f.name, phone:f.phone, address:f.address, recipient:f.recipient || null, card_text:f.card || null, comment:f.comment || null, rating:f.rating || 0, review_text:f.review || null }; };
+const A = 'Санкт-Петербург, ул. Демонстрационная, ';
+st.seeded = [
+  seedOrder(1240, 'new', 'paid', 1, SLOTS[1], [{id:1,qty:1,size:'M'}], { name:'Анна Демо', phone:'+7 000 000-00-01', address:A+'7, кв. 21', fee:390, km:5.2 }),
+  seedOrder(1239, 'new', 'pending', 0, SLOTS[3], [{id:10,qty:1}], { name:'Борис Пример', phone:'+7 000 000-00-02', address:A+'12, кв. 4', fee:290, km:2.8 }),
+  seedOrder(1238, 'confirmed', 'paid', 0, SLOTS[2], [{id:2,qty:1}], { name:'Виктор Тестов', phone:'+7 000 000-00-03', address:A+'3, кв. 15', recipient:'Маме', card:'С днём рождения!', fee:0, km:6.4 }),
+  seedOrder(1237, 'assembling', 'paid', 0, SLOTS[1], [{id:3,qty:1},{id:11,qty:1}], { name:'Дарья Образцова', phone:'+7 000 000-00-04', address:A+'21, кв. 9', comment:'Позвонить за 15 минут до приезда', fee:290, km:3.1 }),
+  seedOrder(1236, 'delivering', 'paid', 0, SLOTS[0], [{id:9,qty:11}], { name:'Егор Условный', phone:'+7 000 000-00-05', address:A+'5, кв. 33', fee:390, km:4.9 }),
+  seedOrder(1235, 'done', 'paid', -1, SLOTS[2], [{id:8,qty:1}], { name:'Жанна Вымышленная', phone:'+7 000 000-00-06', address:A+'9, кв. 2', fee:290, km:3.4, rating:5, review:'Красиво и вовремя!' }),
+  seedOrder(1234, 'cancelled', 'paid', -1, SLOTS[0], [{id:5,qty:1}], { name:'Захар Макетов', phone:'+7 000 000-00-07', address:A+'14, кв. 8', fee:290, km:2.2 }),
+];
+const adminProduct = p => ({ unit:null, min_qty:1, stock:null, addon:0, emoji:null, sizes:null, in_stock:1, badge:'', ...p });
+const aView = o => ({ id:o.id, status:statusOf(o), payment_status:o.payment_status, delivery_date:o.delivery_date, delivery_time:o.delivery_time,
+  items:o.items.map(({name,qty,unit}) => ({name,qty,unit})), total:o.total, delivery_fee:o.delivery_fee, delivery_km:o.km ?? null, customer_name:o.customer_name, username:null,
+  phone:o.phone, address:o.address, recipient:o.recipient || null, card_text:o.card_text || null, comment:o.comment || null, rating:o.rating || 0, review_text:o.review_text || null,
+  bouquet_photo:o.bouquet_photo || null, photo_status:o.photo_status || null });
+const allOrders = () => st.seeded.concat(st.orders).sort((a,b) => b.id - a.id);
+function cleanProduct(b = {}) {
+  const p = { category:String(b.category ?? '').trim().slice(0,40), name:String(b.name ?? '').trim().slice(0,80), description:String(b.description ?? '').trim().slice(0,200),
+    price:Math.round(Number(b.price)), photo_url:String(b.photo_url ?? '').trim().slice(0,500) || null, badge:String(b.badge ?? '').trim().slice(0,20) || '',
+    bg:/^#[0-9a-f]{6}$/i.test(b.bg) ? b.bg : '#f6e3ea', in_stock:b.in_stock === false || b.in_stock === 0 ? 0 : 1, unit:b.unit ? 'шт' : null,
+    min_qty:Math.min(101, Math.max(1, Math.floor(Number(b.min_qty)) || 1)), stock:b.stock === '' || b.stock == null ? null : Math.max(0, Math.floor(Number(b.stock)) || 0),
+    addon:b.addon ? 1 : 0, emoji:String(b.emoji ?? '').trim().slice(0,8) || null, sizes:null };
+  const sizes = (Array.isArray(b.sizes) ? b.sizes : []).map(x => ({ name:String(x.name ?? '').trim().slice(0,12), price:Math.round(Number(x.price)), note:String(x.note ?? '').trim().slice(0,40) }))
+    .filter(x => x.name && x.price > 0).slice(0,5);
+  if (sizes.length) { p.sizes = sizes; p.price = Math.min(...sizes.map(x => x.price)); }
+  if (!p.category || !p.name) throw 'Заполните название и категорию';
+  if (!(p.price > 0)) throw 'Цена должна быть больше нуля';
+  if (p.photo_url && !/^(blob:|\/demo\/)/.test(p.photo_url)) throw 'В демо фото можно только загрузить с устройства';
+  return p;
+}
+function adminRoute(m, path, body) {
+  let x;
+  if (m === 'GET' && path === '/orders') return { orders:allOrders().map(aView), statuses:ASTAT };
+  if (m === 'POST' && (x = path.match(/^\/orders\/(\d+)\/status$/))) { const o = allOrders().find(z => z.id == x[1]);
+    if (!o) return err(404,'Заказ не найден'); if (!ASTAT[body.status]) return err(400,'Неизвестный статус'); o.forced = body.status; return aView(o); }
+  if (m === 'POST' && (x = path.match(/^\/orders\/(\d+)\/photo$/))) { const o = allOrders().find(z => z.id == x[1]);
+    if (!o) return err(404,'Заказ не найден'); if (!/^blob:/.test(String(body.url))) return err(400,'Нет фото'); o.bouquet_photo = body.url; o.photo_status = 'pending'; return aView(o); }
+  if (m === 'GET' && path === '/products') return PRODUCTS.map(adminProduct);
+  if (m === 'POST' && path === '/products') { try { const p = cleanProduct(body); p.id = Math.max(0, ...PRODUCTS.map(z => z.id)) + 1; PRODUCTS.push(p); return { id:p.id }; } catch (e) { return err(400, String(e)); } }
+  if ((x = path.match(/^\/products\/(\d+)$/))) { const i = PRODUCTS.findIndex(z => z.id == x[1]); if (i < 0) return err(404,'Букет не найден');
+    if (m === 'DELETE') { PRODUCTS.splice(i,1); return { ok:true }; }
+    if (m === 'PUT') { try { PRODUCTS[i] = { ...cleanProduct(body), id:PRODUCTS[i].id }; return { ok:true }; } catch (e) { return err(400, String(e)); } } }
+  return err(404, 'Нет в демо');
+}
 const real = window.fetch.bind(window);
 window.fetch = async (url, o = {}) => {
   const u = new URL(String(url), location.href);
@@ -98,7 +150,8 @@ window.fetch = async (url, o = {}) => {
   await new Promise(r => setTimeout(r, 120));
   let res;
   const one = u.pathname.match(/^\/api\/my-orders\/(\d+)$/);
-  if (one) { const x = st.orders.find(z => z.id == one[1]); res = x ? { id:x.id, items:x.items.map(({id,qty,size}) => ({id,qty,size})), address:x.address, zone:/област/i.test(x.address) ? 'region' : 'city', recipient:x.recipient } : err(404,'Заказ не найден'); }
+  if (u.pathname.startsWith('/api/admin/')) res = adminRoute(m, u.pathname.slice(10), body);
+  else if (one) { const x = st.orders.find(z => z.id == one[1]); res = x ? { id:x.id, items:x.items.map(({id,qty,size}) => ({id,qty,size})), address:x.address, zone:/област/i.test(x.address) ? 'region' : 'city', recipient:x.recipient } : err(404,'Заказ не найден'); }
   else { const h = H[m + ' ' + u.pathname]; res = h ? h(body, u.searchParams) : err(404, 'Нет в демо'); }
   const s = res.s || 200, d = res.s ? res.d : res;
   return { ok:s < 400, status:s, json: async () => d };
@@ -1055,6 +1108,38 @@ function renderMyOrders(){
 }
 
 load().then(() => repeatOrder()); loadDeliveryInfo(); loadMyOrders(false);
+</script>
+<!-- Демо: переключатель «Покупатель | Владелец». В режиме «Владелец» поверх магазина открывается админка (isOwner = true) -->
+<style>
+  .roleSw{position:fixed;top:3px;right:8px;z-index:100000;display:flex;gap:1px;padding:1px;border-radius:999px;background:var(--card);border:1px solid var(--line);box-shadow:0 2px 8px rgba(120,60,80,.12);font:500 10.5px/1 Inter,sans-serif}
+  .roleSw button{border:0;background:transparent;color:var(--muted);border-radius:999px;padding:4px 8px;font:inherit;cursor:pointer}
+  .roleSw button[aria-pressed="true"]{background:var(--accent);color:#fff}
+  #ownerFrame{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:9000;background:var(--bg)}
+  #ownerFrame[hidden]{display:none}
+</style>
+<div class="roleSw" role="group" aria-label="Режим демо"><button type="button" id="roleBuyer" aria-pressed="true">Покупатель</button><button type="button" id="roleOwner" aria-pressed="false">Владелец</button></div>
+<script>
+(() => {
+  window.isOwner = false;
+  let frame = null;
+  const setRole = owner => {
+    window.isOwner = owner;
+    document.getElementById('roleBuyer').setAttribute('aria-pressed', String(!owner));
+    document.getElementById('roleOwner').setAttribute('aria-pressed', String(owner));
+    if (owner) {
+      if (!frame) { frame = document.createElement('iframe'); frame.id = 'ownerFrame'; frame.title = 'Админка (демо)'; frame.src = '/demo/fleur-admin.html'; document.body.appendChild(frame); }
+      else { frame.hidden = false; try { frame.contentWindow.loadOrders?.(); if (!frame.contentWindow.document.getElementById('productsView').hidden) frame.contentWindow.loadProducts?.(); } catch {} }
+      document.body.style.overflow = 'hidden';
+    } else {
+      if (frame) frame.hidden = true;
+      document.body.style.overflow = '';
+      try { load(); loadMyOrders(false); } catch {}   // витрина подхватывает правки каталога и статусы заказов
+    }
+  };
+  document.getElementById('roleBuyer').onclick = () => setRole(false);
+  document.getElementById('roleOwner').onclick = () => setRole(true);
+  if (new URLSearchParams(location.search).get('role') === 'owner') setRole(true);
+})();
 </script>
 </body>
 </html>
