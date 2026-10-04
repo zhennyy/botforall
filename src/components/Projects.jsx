@@ -1,25 +1,25 @@
 import Reveal from './Reveal'
 const works = [
   {
-    num: '01', name: 'Флёр', kind: 'Цветочный магазин',
+    num: '1', name: 'Флёр', kind: 'Цветочный магазин',
     text: 'Витрина с букетами, оплата онлайн, фото готового букета на согласование.',
     stack: ['Mini App', 'ЮKassa', 'Railway'],
     bot: 'https://t.me/Fleeer_bot', code: 'https://github.com/zhennyy/flowerbot',
   },
   {
-    num: '02', name: 'RadiatorPro', kind: 'Отопительное оборудование',
+    num: '2', name: 'RadiatorPro', kind: 'Отопительное оборудование',
     text: 'Корзина, доставка по городам, трекинг заказа, статистика и чаты в админке.',
     stack: ['Mini App', 'ЮKassa', 'Railway'],
     bot: 'https://t.me/RadiatorBZ_bot', code: 'https://github.com/zhennyy/radiatorbot',
   },
   {
-    num: '03', name: 'Ассистент', kind: 'Личный помощник',
+    num: '3', name: 'Ассистент', kind: 'Личный помощник',
     text: 'Помнит переписку, ставит напоминания, отвечает на вопросы с помощью ИИ.',
     stack: ['ИИ', 'Railway'],
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
   },
   {
-    num: '04', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
+    num: '4', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
     text: 'Варианты и допы, продажа на вес и объём, наборы, склад с загрузкой каталога из Excel прямо в приложении, отчёты, доставка, чеки 54-ФЗ, повторные заказы. В проект входит CRM: заказы, клиенты, склад, задачи с напоминаниями команде.',
     stack: ['Mini App', 'ЮKassa', 'Excel', 'Railway'],
     demo: '/coffeejd-demo.html',

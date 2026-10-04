@@ -33,7 +33,7 @@ export default function Process() {
                   aria-controls="after-launch"
                   onClick={() => setOpen((v) => !v)}
                 >
-                  <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="num">{i + 1}</span>
                   <h4>{t}</h4>
                   <p>{d}</p>
                   <span className="step-more">
@@ -44,7 +44,7 @@ export default function Process() {
               </li>
             ) : (
               <li className="step" key={t}>
-                <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="num">{i + 1}</span>
                 <h4>{t}</h4>
                 <p>{d}</p>
               </li>
