@@ -9,13 +9,13 @@ const works = [
   {
     num: '02', name: 'RadiatorPro', kind: 'Отопительное оборудование',
     text: 'Корзина, доставка по городам, трекинг заказа, статистика и чаты в админке.',
-    stack: ['Mini App', 'ЮKassa', 'Claude API'],
+    stack: ['Mini App', 'ЮKassa', 'Railway'],
     bot: 'https://t.me/RadiatorBZ_bot', code: 'https://github.com/zhennyy/radiatorbot',
   },
   {
     num: '03', name: 'Ассистент', kind: 'Личный помощник',
-    text: 'Помнит переписку, ставит напоминания, отвечает на Claude API.',
-    stack: ['Claude API', 'Railway'],
+    text: 'Помнит переписку, ставит напоминания, отвечает на вопросы с помощью ИИ.',
+    stack: ['ИИ', 'Railway'],
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
   },
   {
