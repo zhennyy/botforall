@@ -244,7 +244,7 @@ footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; lette
 .topo-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .topo-bg svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .topo-bg g { transform-origin: 50% 50%; animation: topo-spin 120s linear infinite; }
-.topo-bg path { fill: none; stroke: color-mix(in srgb, var(--ink) 22%, transparent); stroke-width: 1; }
+.topo-bg path { fill: none; stroke: color-mix(in srgb, var(--ink) 11%, transparent); stroke-width: 1; }
 .topo-wash { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 55% at 50% 50%, var(--paper) 15%, transparent 100%); opacity: .8; }
 @keyframes topo-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .topo-bg g { animation: none; } }
