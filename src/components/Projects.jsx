@@ -11,12 +11,14 @@ const works = [
     num: '2', name: 'Флёр', kind: 'Цветочный магазин',
     text: 'Витрина с букетами, оплата онлайн, фото готового букета на согласование.',
     stack: ['Mini App', 'ЮKassa', 'Railway'],
+    demo: '/fleur-demo.html',
     bot: 'https://t.me/Fleeer_bot', code: 'https://github.com/zhennyy/flowerbot',
   },
   {
     num: '3', name: 'RadiatorPro', kind: 'Отопительное оборудование',
     text: 'Корзина, доставка по городам, трекинг заказа, статистика и чаты в админке.',
     stack: ['Mini App', 'ЮKassa', 'Railway'],
+    demo: '/radiator-demo.html',
     bot: 'https://t.me/RadiatorBZ_bot', code: 'https://github.com/zhennyy/radiatorbot',
   },
   {
