@@ -140,7 +140,7 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
 .benefit p { color: var(--soft); font-size: .95rem; max-width: 30ch; }
 
 /* ---------- process ---------- */
-.process { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; border-top: 1px solid var(--ink); padding-top: 28px; }
+.process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; border-top: 1px solid var(--ink); padding-top: 28px; }
 .ticks { font-size: .75rem; color: var(--accent); }
 .step h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; margin: 8px 0; }
 .step p { color: var(--soft); max-width: 28ch; }
