@@ -342,3 +342,11 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .chat .more { display: none; }
   .chat .msg.done { animation-delay: calc(900ms + 3 * 650ms); }
 }
+
+/* «Всё для продаж»: две колонки на телефоне */
+@media (max-width: 560px) {
+  .benefits { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .benefit { padding: 16px 14px; border-radius: 16px; }
+  .benefit h4 { margin: 0 0 8px; font-size: 1.05rem; }
+  .benefit p { font-size: .8rem; line-height: 1.45; }
+}
