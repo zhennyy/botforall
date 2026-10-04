@@ -223,4 +223,5 @@ h1, h2, h3, .brand { font-weight: 700; letter-spacing: -0.035em; font-feature-se
 footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.03em; }
 
 /* заголовок блока возможностей */
-#benefits .section-title em { font-style: normal; font-weight: 400; color: var(--soft); }
+#benefits .section-title { font-weight: 400; letter-spacing: -0.02em; }
+#benefits .section-title em { font-style: normal; font-weight: inherit; color: inherit; }
