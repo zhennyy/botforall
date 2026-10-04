@@ -64,7 +64,8 @@ function statusOf(o) {
   return t < 8 ? 'new' : t < 20 ? 'confirmed' : t < 40 ? 'assembling' : t < 70 ? 'delivering' : 'done';
 }
 const view = o => { const s = statusOf(o); return { id:o.id, status:s, status_label:LABELS[s], items:o.items.map(({id,name,qty,unit,price}) => ({id,name,qty,unit,price})), total:o.total, delivery_fee:o.delivery_fee,
-  when:`${niceDay(o.delivery_date)}, ${o.delivery_time.replace(/:00/g,'')}`, address:o.address, card_text:o.card_text, recipient:o.recipient, rating:0, payment_status:o.payment_status, pay_url:o.payment_status === 'pending' ? 'demo-pay:' + o.id : null, photo_status:null }; };
+  when:`${niceDay(o.delivery_date)}, ${o.delivery_time.replace(/:00/g,'')}`, address:o.address, card_text:o.card_text, recipient:o.recipient, rating:0, payment_status:o.payment_status, bouquet_photo:o.bouquet_photo || null,
+  replies:((st.chats && st.chats[uidOf(o)] || { msgs:[] }).msgs).filter(m => m.direction === 'out' && (!m.order_id || m.order_id === o.id)).map(m => ({ text:m.text, photo:m.photo, at:m.created_at })), pay_url:o.payment_status === 'pending' ? 'demo-pay:' + o.id : null, photo_status:o.photo_status || null }; };
 
 const slotTaken = (date, time) => allOrders().filter(o => o.delivery_date === date && o.delivery_time === time && statusOf(o) !== 'cancelled').length;
 const H = {
@@ -175,7 +176,7 @@ const say = (o, dir, text, min, x = {}) => { const uid = uidOf(o); (st.chats[uid
   say(S(1239), 'in', 'Не получается оплатить, ссылка не открывается', 25, { order:1239 });
   say(S(1240), 'in', 'Здравствуйте! Можно побольше зелени в букет?', 14, { order:1240 });
   say(S(1240), 'in', 'И без открытки, пожалуйста', 12, { order:1240 }); }
-const chatList = () => Object.entries(st.chats).map(([uid, c]) => { const l = c.msgs.at(-1);
+const chatList = () => Object.entries(st.chats).filter(([, c]) => c.msgs.length).map(([uid, c]) => { const l = c.msgs.at(-1);
   return { user_id:+uid, name:c.name, username:c.username, text:l.text, photo:l.photo, direction:l.direction, created_at:l.created_at, unread:c.msgs.filter(m => m.direction === 'in' && !m.is_read).length, _id:l.id }; })
   .sort((a, b) => b._id - a._id).map(({ _id, ...r }) => r);
 
@@ -204,7 +205,9 @@ function adminRoute2(m, path, body, q) {
   let x;
   if (m === 'GET' && path === '/stats') return statsFor(q.get('days'));
   if (m === 'GET' && path === '/chats') { const l = chatList(); return { chats:l, unread:l.reduce((a, c) => a + c.unread, 0) }; }
-  if ((x = path.match(/^\/chats\/(\d+)$/))) { const c = st.chats[x[1]]; if (!c) return err(404, 'Диалог не найден');
+  if ((x = path.match(/^\/chats\/(\d+)$/))) { let c = st.chats[x[1]];
+    if (!c) { const oo = allOrders().find(z => String(uidOf(z)) === x[1]); if (oo) c = st.chats[x[1]] = { name:oo.customer_name, username:null, msgs:[] }; }
+    if (!c) return err(404, 'Диалог не найден');
     if (m === 'GET') { c.msgs.forEach(z => { if (z.direction === 'in') z.is_read = 1; });
       return { messages:c.msgs, orders:allOrders().filter(o => uidOf(o) == x[1]).slice(0, 10).map(o => ({ id:o.id, status:ASTAT[statusOf(o)], total:o.total, date:o.delivery_date })) }; }
     if (m === 'POST') { const text = String(body.text ?? '').trim().slice(0, 3000); if (!text) return err(400, 'Пустое сообщение');
@@ -268,7 +271,8 @@ function demoPay(url) {
   const id = +String(url).replace('demo-pay:', ''), o = st.orders.find(x => x.id === id);
   const box = document.createElement('div');
   box.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(30,20,28,.55);display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif';
-  const done = (title, text) => { box.innerHTML = `<div style="background:#fff;color:#2b2227;border-radius:20px;padding:26px 22px;max-width:340px;text-align:center"><div style="font-size:44px">${title[0]}</div><h2 style="margin:8px 0">${title.slice(2)}</h2><p style="color:#7b6f76;margin:0 0 16px">${text}</p><button id="dpClose" style="width:100%;padding:13px;border:0;border-radius:14px;background:#c2587a;color:#fff;font-size:16px;font-weight:600">Закрыть</button></div>`; box.querySelector('#dpClose').onclick = () => box.remove(); };
+  const done = (title, text) => { box.innerHTML = `<div style="background:#fff;color:#2b2227;border-radius:20px;padding:26px 22px;max-width:340px;text-align:center"><div style="font-size:44px">${title[0]}</div><h2 style="margin:8px 0">${title.slice(2)}</h2><p style="color:#7b6f76;margin:0 0 16px">${text}</p><button id="dpClose" style="width:100%;padding:13px;border:0;border-radius:14px;background:#c2587a;color:#fff;font-size:16px;font-weight:600">Закрыть</button></div>`; box.querySelector('#dpClose').onclick = () => box.remove();
+    const $d = i => document.getElementById(i); if ($d('doneTitle') && o) { $d('doneTitle').textContent = 'Заказ №' + o.id + ' оплачен!'; $d('doneText').innerHTML = 'Спасибо! Флорист уже берётся за букет.<br>Следить за статусом можно в «Моих заказах».'; $d('payBtn').classList.add('hidden'); $d('backBtn').classList.remove('ghost'); } };
   box.innerHTML = `<div style="background:#fff;color:#2b2227;border-radius:20px;padding:26px 22px;max-width:340px;text-align:center"><div style="font-size:44px">💳</div><h2 style="margin:8px 0">Демо-оплата</h2>
     <p style="color:#7b6f76;margin:0 0 6px">Здесь открылась бы страница ЮKassa.</p><p style="color:#7b6f76;margin:0 0 6px">${o ? 'Заказ №' + o.id + ' · ' + o.total.toLocaleString('ru-RU') + ' ₽' : ''}</p>
     <p style="color:#7b6f76;margin:0 0 16px;font-size:13px">Это демонстрация: реальных списаний нет.</p>
@@ -290,8 +294,8 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#fbf7f4; --card:#ffffff; --text:#2b2227; --muted:#8a7d83;
-    --accent:#c2587a; --accent-soft:#f6e3ea; --line:#efe6e9; --danger:#c0392b;
+    --bg:#fbf7f4; --card:#ffffff; --text:#2b2227; --muted:#6e6168;
+    --accent:#b84a70; --accent-soft:#f6e3ea; --line:#efe6e9; --danger:#c0392b;
     --shadow:0 6px 20px rgba(120,60,80,.08);
   }
   @media (prefers-color-scheme: dark){
@@ -310,21 +314,28 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
   .hbtns{display:flex;gap:8px;flex:none}
   /* Мои заказы */
   .myord{background:var(--card);border-radius:18px;padding:14px;margin:10px 16px;box-shadow:var(--shadow);border-left:4px solid var(--stc)}
-  .st-new{--stc:#d9668b;--stbg:rgba(217,102,139,.14)} .st-confirmed{--stc:#5b8def;--stbg:rgba(91,141,239,.14)}
-  .st-assembling{--stc:#a173d6;--stbg:rgba(161,115,214,.15)} .st-delivering{--stc:#e0a030;--stbg:rgba(224,160,48,.16)}
-  .st-done{--stc:#4caf7d;--stbg:rgba(76,175,125,.15)} .st-cancelled{--stc:#8a7d83;--stbg:rgba(138,125,131,.15)}
+  .st-new{--stc:#b83e69;--stbg:rgba(217,102,139,.14)} .st-confirmed{--stc:#2f60c7;--stbg:rgba(91,141,239,.14)}
+  .st-assembling{--stc:#7447b0;--stbg:rgba(161,115,214,.15)} .st-delivering{--stc:#96600a;--stbg:rgba(224,160,48,.16)}
+  .st-done{--stc:#25774c;--stbg:rgba(76,175,125,.15)} .st-cancelled{--stc:#6e6168;--stbg:rgba(138,125,131,.15)}
+  @media (prefers-color-scheme: dark){
+    .st-new{--stc:#e8799f} .st-confirmed{--stc:#7ba3f5} .st-assembling{--stc:#b794e6} .st-delivering{--stc:#e8b04a} .st-done{--stc:#5cc58f} .st-cancelled{--stc:#a8989f}
+  }
   .mo-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .mo-head b{font-size:16px} .mo-when{color:var(--muted);font-size:13px;margin-top:2px}
   .mo-pill{background:var(--stbg);color:var(--stc);font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap}
   .mo-track{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:12px 0 4px}
   .mo-track span{height:5px;border-radius:3px;background:var(--line)} .mo-track span.on{background:var(--stc)}
-  .mo-steps{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+  .mo-steps{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
   .mo-items{list-style:none;padding:0;margin:10px 0 0;font-size:14px}
   .mo-items li{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
   .mo-items li span:last-child{color:var(--muted);white-space:nowrap}
   .mo-total{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-weight:600}
   .mo-total small{color:var(--muted);font-weight:400}
   .mo-note{margin-top:8px;font-size:13px;color:var(--stc)}
+  .mo-chat{margin-top:10px;padding:10px 12px;border-radius:14px;background:var(--accent-soft)}
+  .mo-chat-h{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:6px}
+  .mo-msg{background:var(--card);border-radius:12px 12px 12px 4px;padding:8px 12px;font-size:14px;line-height:1.4;margin-top:6px;overflow-wrap:anywhere}
+  .mo-msg img{display:block;width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-bottom:6px}
   .mo-act{display:flex;gap:8px;margin-top:12px}
   .mo-act button{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px;font-weight:600;cursor:pointer;font-size:14px}
   .mo-act .pay{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -362,7 +373,7 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
   .pic{aspect-ratio:1/1;display:grid;place-items:center;font-size:64px;position:relative;overflow:hidden}
   .pic img{width:100%;height:100%;object-fit:cover;display:block}
   .badge{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.9);color:#2b2227;
-    font-size:11px;font-weight:600;padding:4px 8px;border-radius:999px}
+    font-size:12px;font-weight:600;padding:4px 8px;border-radius:999px}
   .info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
   .name{font-weight:600;font-size:15px;line-height:1.25}
   .desc{color:var(--muted);font-size:12.5px;line-height:1.35;flex:1}
@@ -420,7 +431,7 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
   .big:disabled{opacity:.6}
 
   /* Экраны корзины и оформления */
-  .page{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;transform:translateX(100%);transition:.3s;padding-bottom:110px}
+  .page{position:fixed;inset:60px 0 0 0;background:var(--bg);z-index:20;overflow:auto;transform:translateX(100%);transition:.3s;padding-bottom:110px}
   .page.show{transform:none}
   .page-head{display:flex;align-items:center;gap:10px;padding:18px 16px 8px}
   .back{border:0;background:var(--card);width:38px;height:38px;border-radius:12px;font-size:18px;cursor:pointer;box-shadow:var(--shadow)}
@@ -457,9 +468,9 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
   .pm-ok{margin-left:auto;color:var(--accent);font-weight:700;font-size:18px}
   .pm-steps{color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:10px}
   /* Размеры S/M/L */
-  .sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin:4px 0 8px}
+  .sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:8px;margin:4px 0 8px}
   .size{border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 8px;cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center}
-  .size b{font-size:18px} .size span{font-size:11.5px;color:var(--muted);text-align:center} .size em{font-style:normal;font-weight:600;font-size:14px}
+  .size b{font-size:18px} .size span{font-size:12px;color:var(--muted);text-align:center} .size em{font-style:normal;font-weight:600;font-size:14px}
   .size.active{border-color:var(--accent);background:var(--accent-soft)} .size.active b,.size.active em{color:var(--accent)}
   .badge.left{left:auto;right:8px;background:rgba(194,88,122,.92);color:#fff}
   /* Допы к заказу */
@@ -475,7 +486,7 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
   .arow b{white-space:nowrap}
   .add.sm{width:30px;height:30px;font-size:18px}
   .qty.sm button{width:22px;height:30px;font-size:16px}
-  .slot small{display:block;font-size:11px;opacity:.8}
+  .slot small{display:block;font-size:12px;opacity:.85}
   .closed{color:var(--danger);font-size:14px;margin-top:8px}
   .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .quote{margin-top:10px;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45;background:var(--accent-soft)}
@@ -483,7 +494,7 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
   .quote small{color:var(--muted);display:block}
   .sumrow{display:flex;justify-content:space-between;padding:4px 20px;color:var(--muted);font-size:14px}
 
-  .done{text-align:center;padding:70px 24px}
+  .done{text-align:center;padding:36px 24px}
   .done .flower{font-size:80px;animation:pop .6s ease}
   @keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
   .done h1{margin:14px 0 8px}
@@ -602,7 +613,7 @@ const _open = window.open; window.open = (u, ...r) => String(u).startsWith('demo
         <div class="counter"><span id="cardCount">0</span>/300</div>
       </div>
       <label for="f_comment">Комментарий к заказу</label>
-      <input type="text" id="f_comment" maxlength="300" placeholder="Например: позвонить за 30 минут">
+      <input type="text" id="f_comment" maxlength="300" placeholder="Например: позвонить заранее">
     </fieldset>
     <div class="error" id="formError"></div>
   </form>
@@ -628,7 +639,7 @@ const TIME_SLOTS = ["09:00–12:00", "12:00–15:00", "15:00–18:00", "18:00–
 
 // ─── Помощники ───────────────────────────────────────────
 const $ = id => document.getElementById(id);
-const rub = n => n.toLocaleString("ru-RU") + " ₽";
+const rub = n => n.toLocaleString("ru-RU") + "\u00a0₽";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 // Фото: в карточке — облегчённая версия (_min), в подробностях — полная. Нет фото — эмодзи
 const fullUrl = u => u.replace(/_min\.webp$/, ".png").replace(/_min\.jpg$/, ".jpg");
@@ -1080,7 +1091,10 @@ function renderSlots(){
     const sub = full && !dayInfo.closed ? "<small>нет мест</small>" : info?.left != null && info.left <= 3 && !off ? `<small>осталось ${info.left}</small>` : "";
     return `<button type="button" class="slot ${slot === s ? "active" : ""}" ${off ? "disabled" : ""} onclick="slot='${s}';haptic();renderSlots()">${s}${sub}</button>`;
   }).join("");
+  // На сегодня интервалов не осталось — сразу предлагаем завтра
+  if (isToday && dayInfo && !dayInfo.closed && !$("slots").querySelector(".slot:not([disabled])") && !autoNext) { autoNext = true; pickDate(iso(new Date(Date.now() + 864e5))); }
 }
+let autoNext = false;
 $("t_recipient").onchange = e => $("recipientBox").classList.toggle("hidden", !e.target.checked);
 $("t_card").onchange = e => $("cardBox").classList.toggle("hidden", !e.target.checked);
 $("f_card").oninput = e => $("cardCount").textContent = e.target.value.length;
@@ -1190,13 +1204,13 @@ function renderMyOrders(){
   }
   $("myOrders").innerHTML = myOrders.map(o => {
     const step = STEP_KEYS.indexOf(o.status);
-    const unpaid = o.payment_status === "pending";
+    const unpaid = o.payment_status === "pending" && o.status !== "cancelled";
     const label = unpaid ? "Ждёт оплаты" : o.status_label;
     const note = unpaid ? "💳 Осталось оплатить — после оплаты флорист возьмётся за букет"
       : o.photo_status === "pending" ? "📸 Флорист прислал фото букета — ответьте в чате с ботом"
       : o.status === "delivering" ? "🚚 Курьер уже в пути, держите телефон рядом"
       : "";
-    return `<article class="myord st-${o.status}">
+    return `<article class="myord st-${unpaid ? "new" : o.status}">
       <div class="mo-head"><div><b>Заказ №${o.id}</b><div class="mo-when">${esc(o.when)} · ${esc(o.address)}</div></div>
         <span class="mo-pill">${esc(label)}</span></div>
       ${o.status !== "cancelled" ? `<div class="mo-track">${STEPS.map((_, i) => `<span class="${i <= step && !unpaid ? "on" : ""}"></span>`).join("")}</div>
@@ -1205,6 +1219,8 @@ function renderMyOrders(){
       <div class="mo-total"><span>Итого</span><span>${rub(o.total)} ${o.delivery_fee ? `<small>с доставкой</small>` : ""}</span></div>
       ${o.card_text ? `<div class="mo-when" style="margin-top:6px">💌 «${esc(o.card_text)}»</div>` : ""}
       ${note ? `<div class="mo-note">${note}</div>` : ""}
+      ${o.bouquet_photo ? `<div class="mo-chat"><div class="mo-chat-h">📸 Фото вашего букета</div><div class="mo-msg"><img src="${esc(o.bouquet_photo)}" alt="Фото букета">Флорист прислал букет перед отправкой — всё нравится?</div></div>` : ""}
+      ${(o.replies || []).length ? `<div class="mo-chat"><div class="mo-chat-h">💬 Сообщения от флориста</div>${o.replies.slice(-3).map(r => `<div class="mo-msg">${r.photo ? `<img src="${esc(r.photo)}" alt="Фото букета">` : ""}${esc(r.text)}</div>`).join("")}</div>` : ""}
       <div class="mo-act">
         ${unpaid && o.pay_url ? `<button class="pay" onclick="tg?.openLink ? tg.openLink('${esc(o.pay_url)}') : open('${esc(o.pay_url)}')">💳 Оплатить</button>` : ""}
         <button onclick="repeatOrder(${o.id})">🔁 Повторить</button>
@@ -1219,10 +1235,11 @@ load().then(() => repeatOrder()); loadDeliveryInfo(); loadMyOrders(false);
 <style>
   body{padding-top:60px}
   .chips{top:60px!important}
-  .roleDock{position:fixed;top:0;left:0;right:0;height:60px;z-index:100000;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--bg);border-bottom:1px solid var(--line);font:600 12px Inter,sans-serif;color:var(--muted)}
+  .roleDock{position:fixed;top:0;left:0;right:0;height:60px;z-index:100000;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--bg);border-bottom:1px solid var(--line);font:600 13px Inter,sans-serif;color:var(--muted)}
   .roleSw{display:flex;border:2px solid var(--accent);border-radius:14px;overflow:hidden;background:var(--card);box-shadow:0 0 0 3px rgba(200,90,130,.22),0 4px 16px rgba(200,90,130,.3);font:700 15px/1 Inter,sans-serif}
   .roleSw button{border:0;background:transparent;color:var(--text,inherit);padding:11px 18px;font:inherit;cursor:pointer;opacity:.75}
   .roleSw button[aria-pressed="true"]{background:var(--accent);color:#fff;opacity:1}
+  @media (max-width:359px){ .big{font-size:15px;padding:14px 8px} .roleDock span{display:none} .roleSw button{padding:11px 14px} .line .pic{width:52px;height:52px} .line{gap:8px;padding:8px} .qty button{width:24px} .qty{gap:4px} .sheet-foot{grid-template-columns:auto minmax(0,1fr)} .ghost-btn,.tocart{padding:13px 8px;font-size:13px;letter-spacing:-.01em} .sheet-foot{gap:6px} }
   #ownerFrame{position:fixed;top:60px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 60px);border:0;z-index:9000;background:var(--bg)}
   #ownerFrame[hidden]{display:none}
 </style>
@@ -1242,7 +1259,7 @@ load().then(() => repeatOrder()); loadDeliveryInfo(); loadMyOrders(false);
     } else {
       if (frame) frame.hidden = true;
       document.body.style.overflow = '';
-      try { load(); loadMyOrders(false); } catch {}   // витрина подхватывает правки каталога и статусы заказов
+      try { load(); loadDeliveryInfo(); loadMyOrders(document.getElementById('ordersPage').classList.contains('show')); } catch {}   // витрина подхватывает правки каталога и статусы заказов
     }
   };
   document.getElementById('roleBuyer').onclick = () => setRole(false);

@@ -5,12 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>CoFFeeJD</title>
 <script>(() => {
-const CAT = {"lang":"ru","products":[{"id":1,"name":"Эфиопия Иргачефф · 250 г","name_en":"Ethiopia Yirgacheffe · 250 g","description":"Светлая обжарка: жасмин, бергамот, чёрный чай","description_en":"Light roast: jasmine, bergamot, black tea","category":"Кофе","category_en":"Coffee","price":120000,"stock":40,"group_key":"Эфиопия Иргачефф","option_label":"250 г","option_label_en":"250 g","option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":2,"name":"Эфиопия Иргачефф · 1 кг","name_en":"Ethiopia Yirgacheffe · 1 kg","description":"Светлая обжарка: жасмин, бергамот, чёрный чай","description_en":"Light roast: jasmine, bergamot, black tea","category":"Кофе","category_en":"Coffee","price":420000,"stock":15,"group_key":"Эфиопия Иргачефф","option_label":"1 кг","option_label_en":"1 kg","option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":3,"name":"Колумбия Супремо · 250 г","name_en":"Colombia Supremo · 250 g","description":"Средняя обжарка: шоколад, орех, карамель","description_en":"Medium roast: chocolate, nuts, caramel","category":"Кофе","category_en":"Coffee","price":95000,"stock":40,"group_key":"Колумбия Супремо","option_label":"250 г","option_label_en":"250 g","option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":4,"name":"Колумбия Супремо · 1 кг","name_en":"Colombia Supremo · 1 kg","description":"Средняя обжарка: шоколад, орех, карамель","description_en":"Medium roast: chocolate, nuts, caramel","category":"Кофе","category_en":"Coffee","price":340000,"stock":15,"group_key":"Колумбия Супремо","option_label":"1 кг","option_label_en":"1 kg","option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":5,"name":"Бразилия Сантос · 250 г","name_en":"Brazil Santos · 250 g","description":"Тёмная обжарка для эспрессо: какао, пряности","description_en":"Dark espresso roast: cocoa, spices","category":"Кофе","category_en":"Coffee","price":80000,"stock":40,"group_key":"Бразилия Сантос","option_label":"250 г","option_label_en":"250 g","option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":6,"name":"Бразилия Сантос · 1 кг","name_en":"Brazil Santos · 1 kg","description":"Тёмная обжарка для эспрессо: какао, пряности","description_en":"Dark espresso roast: cocoa, spices","category":"Кофе","category_en":"Coffee","price":290000,"stock":15,"group_key":"Бразилия Сантос","option_label":"1 кг","option_label_en":"1 kg","option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":7,"name":"Набор «Дегустация»","name_en":"Tasting set","description":"Три сорта по 100 г: светлая, средняя и тёмная обжарка","description_en":"Three roasts, 100 g each: light, medium, dark","category":"Наборы","category_en":"Sets","price":190000,"stock":25,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":26,"name":"Набор «Чайное путешествие»","name_en":null,"description":"Четыре чая для знакомства: чёрный, зелёный жемчуг, травяной и матча. Красивая коробка.","description_en":null,"category":"Наборы","category_en":null,"price":190000,"stock":18,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[{"name":"Дарджилинг Первый сбор · 50 г","name_en":null,"qty":1,"unit":null,"price":45000},{"name":"Жасминовый жемчуг · 50 г · Пакет","name_en":null,"qty":1,"unit":null,"price":42000},{"name":"Иван-чай ферментированный · 50 г","name_en":null,"qty":1,"unit":null,"price":30000},{"name":"Матча церемониальная · 30 г","name_en":null,"qty":1,"unit":null,"price":120000}],"photo":null},{"id":27,"name":"Набор «Утёсный вечер»","name_en":null,"description":"Улун для неспешного вечера: Да Хун Пао, Те Гуань Инь (100 г) и жасминовый жемчуг в банке.","description_en":null,"category":"Наборы","category_en":null,"price":150000,"stock":25,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[{"name":"Да Хун Пао · 50 г","name_en":null,"qty":1,"unit":null,"price":56000},{"name":"Жасминовый жемчуг · 50 г · Банка","name_en":null,"qty":1,"unit":null,"price":65000},{"name":"Те Гуань Инь","name_en":null,"qty":100,"unit":"g","price":520}],"photo":null},{"id":8,"name":"Улун Те Гуан Инь","name_en":"Tie Guan Yin oolong","description":"Классический улун с цветочным ароматом. 100 г","description_en":"Classic floral oolong. 100 g","category":"Чай","category_en":"Tea","price":70000,"stock":30,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":9,"name":"Дарджилинг Первый сбор · 50 г","name_en":null,"description":"Чёрный чай с мускатным вкусом и цветочным ароматом. Лёгкий, «шампанское среди чаёв».","description_en":null,"category":"Чай","category_en":null,"price":45000,"stock":30,"group_key":"Дарджилинг Первый сбор","option_label":"50 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":10,"name":"Дарджилинг Первый сбор · 100 г","name_en":null,"description":"Чёрный чай с мускатным вкусом и цветочным ароматом.","description_en":null,"category":"Чай","category_en":null,"price":82000,"stock":20,"group_key":"Дарджилинг Первый сбор","option_label":"100 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":11,"name":"Эрл Грей с бергамотом","name_en":null,"description":"Классический чёрный чай с маслом бергамота. Цена за 100 г, берите сколько нужно.","description_en":null,"category":"Чай","category_en":null,"price":320,"stock":6000,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":"g","step":50,"min_qty":50,"bundle":[],"photo":null},{"id":12,"name":"Те Гуань Инь","name_en":null,"description":"Светлый улун: орхидея, сливочные ноты, долгое сладкое послевкусие. Цена за 100 г.","description_en":null,"category":"Чай","category_en":null,"price":520,"stock":5000,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":"g","step":50,"min_qty":50,"bundle":[],"photo":null},{"id":13,"name":"Да Хун Пао · 50 г","name_en":null,"description":"Утёсный улун: минеральный, с нотами печёного хлеба и сухофруктов.","description_en":null,"category":"Чай","category_en":null,"price":56000,"stock":25,"group_key":"Да Хун Пао","option_label":"50 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":14,"name":"Да Хун Пао · 100 г","name_en":null,"description":"Утёсный улун: минеральный, с нотами печёного хлеба и сухофруктов.","description_en":null,"category":"Чай","category_en":null,"price":105000,"stock":15,"group_key":"Да Хун Пао","option_label":"100 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":15,"name":"Сенча","name_en":null,"description":"Японский зелёный чай: свежая трава, морские ноты, бодрит. Цена за 100 г.","description_en":null,"category":"Чай","category_en":null,"price":380,"stock":4000,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":"g","step":50,"min_qty":50,"bundle":[],"photo":null},{"id":16,"name":"Жасминовый жемчуг · 50 г · Пакет","name_en":null,"description":"Зелёный чай, скрученный в жемчужины с жасмином. Раскрывается в чашке.","description_en":null,"category":"Чай","category_en":null,"price":42000,"stock":40,"group_key":"Жасминовый жемчуг","option_label":"50 г","option_label_en":null,"option2_label":"Пакет","option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":17,"name":"Жасминовый жемчуг · 50 г · Банка","name_en":null,"description":"Зелёный чай, скрученный в жемчужины с жасмином. Подарочная банка.","description_en":null,"category":"Чай","category_en":null,"price":65000,"stock":25,"group_key":"Жасминовый жемчуг","option_label":"50 г","option_label_en":null,"option2_label":"Банка","option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":18,"name":"Жасминовый жемчуг · 100 г · Пакет","name_en":null,"description":"Зелёный чай, скрученный в жемчужины с жасмином.","description_en":null,"category":"Чай","category_en":null,"price":78000,"stock":30,"group_key":"Жасминовый жемчуг","option_label":"100 г","option_label_en":null,"option2_label":"Пакет","option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":19,"name":"Жасминовый жемчуг · 100 г · Банка","name_en":null,"description":"Зелёный чай, скрученный в жемчужины с жасмином. Подарочная банка.","description_en":null,"category":"Чай","category_en":null,"price":101000,"stock":12,"group_key":"Жасминовый жемчуг","option_label":"100 г","option_label_en":null,"option2_label":"Банка","option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":20,"name":"Матча церемониальная · 30 г","name_en":null,"description":"Порошок зелёного чая высшего сорта для традиционного взбивания. Яркий цвет, умами.","description_en":null,"category":"Чай","category_en":null,"price":120000,"stock":18,"group_key":"Матча церемониальная","option_label":"30 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":21,"name":"Матча церемониальная · 100 г","name_en":null,"description":"Порошок зелёного чая высшего сорта для традиционного взбивания.","description_en":null,"category":"Чай","category_en":null,"price":350000,"stock":8,"group_key":"Матча церемониальная","option_label":"100 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":22,"name":"Шу Пуэр 2018","name_en":null,"description":"Выдержанный тёмный чай: земляной, шоколадный, мягкий. Цена за 100 г.","description_en":null,"category":"Чай","category_en":null,"price":450,"stock":3000,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":"g","step":50,"min_qty":100,"bundle":[],"photo":null},{"id":23,"name":"Иван-чай ферментированный · 50 г","name_en":null,"description":"Травяной чай без кофеина: медовые ноты, цветочно-ягодный аромат.","description_en":null,"category":"Чай","category_en":null,"price":30000,"stock":35,"group_key":"Иван-чай ферментированный","option_label":"50 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":24,"name":"Иван-чай ферментированный · 100 г","name_en":null,"description":"Травяной чай без кофеина: медовые ноты, цветочно-ягодный аромат.","description_en":null,"category":"Чай","category_en":null,"price":52000,"stock":30,"group_key":"Иван-чай ферментированный","option_label":"100 г","option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":null,"step":1,"min_qty":1,"bundle":[],"photo":null},{"id":25,"name":"Холодный чай: каркаде-малина (концентрат)","name_en":null,"description":"Концентрат для холодного чая и лимонадов: разводите 1:5 водой. Цена за 100 мл.","description_en":null,"category":"Чай","category_en":null,"price":180,"stock":8000,"group_key":null,"option_label":null,"option_label_en":null,"option2_label":null,"option2_label_en":null,"is_addon":0,"addon_for":null,"unit":"ml","step":50,"min_qty":100,"bundle":[],"photo":null}],"cart":{},"isOwner":false,"unread":0};
+const CAT = {"lang": "ru", "products": [{"id": 1, "name": "Эфиопия Иргачефф · 250 г", "name_en": "Ethiopia Yirgacheffe · 250 g", "description": "Светлая обжарка: жасмин, бергамот, чёрный чай", "description_en": "Light roast: jasmine, bergamot, black tea", "category": "Кофе", "category_en": "Coffee", "price": 120000, "stock": 40, "group_key": "Эфиопия Иргачефф", "option_label": "250 г", "option_label_en": "250 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 2, "name": "Эфиопия Иргачефф · 1 кг", "name_en": "Ethiopia Yirgacheffe · 1 kg", "description": "Светлая обжарка: жасмин, бергамот, чёрный чай", "description_en": "Light roast: jasmine, bergamot, black tea", "category": "Кофе", "category_en": "Coffee", "price": 420000, "stock": 15, "group_key": "Эфиопия Иргачефф", "option_label": "1 кг", "option_label_en": "1 kg", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 3, "name": "Колумбия Супремо · 250 г", "name_en": "Colombia Supremo · 250 g", "description": "Средняя обжарка: шоколад, орех, карамель", "description_en": "Medium roast: chocolate, nuts, caramel", "category": "Кофе", "category_en": "Coffee", "price": 95000, "stock": 40, "group_key": "Колумбия Супремо", "option_label": "250 г", "option_label_en": "250 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 4, "name": "Колумбия Супремо · 1 кг", "name_en": "Colombia Supremo · 1 kg", "description": "Средняя обжарка: шоколад, орех, карамель", "description_en": "Medium roast: chocolate, nuts, caramel", "category": "Кофе", "category_en": "Coffee", "price": 340000, "stock": 15, "group_key": "Колумбия Супремо", "option_label": "1 кг", "option_label_en": "1 kg", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 5, "name": "Бразилия Сантос · 250 г", "name_en": "Brazil Santos · 250 g", "description": "Тёмная обжарка для эспрессо: какао, пряности", "description_en": "Dark espresso roast: cocoa, spices", "category": "Кофе", "category_en": "Coffee", "price": 80000, "stock": 40, "group_key": "Бразилия Сантос", "option_label": "250 г", "option_label_en": "250 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 6, "name": "Бразилия Сантос · 1 кг", "name_en": "Brazil Santos · 1 kg", "description": "Тёмная обжарка для эспрессо: какао, пряности", "description_en": "Dark espresso roast: cocoa, spices", "category": "Кофе", "category_en": "Coffee", "price": 290000, "stock": 15, "group_key": "Бразилия Сантос", "option_label": "1 кг", "option_label_en": "1 kg", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 7, "name": "Набор «Дегустация»", "name_en": "Tasting set", "description": "Три сорта по 100 г: светлая, средняя и тёмная обжарка", "description_en": "Three roasts, 100 g each: light, medium, dark", "category": "Наборы", "category_en": "Sets", "price": 190000, "stock": 25, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 26, "name": "Набор «Чайное путешествие»", "name_en": "Tea journey set", "description": "Четыре чая для знакомства: чёрный, зелёный жемчуг, травяной и матча. Красивая коробка.", "description_en": "Four teas to get acquainted: black, green pearls, herbal and matcha. Beautiful gift box.", "category": "Наборы", "category_en": "Sets", "price": 190000, "stock": 18, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [{"name": "Дарджилинг Первый сбор · 50 г", "name_en": "Darjeeling First Flush · 50 g", "qty": 1, "unit": null, "price": 45000}, {"name": "Жасминовый жемчуг · 50 г · Пакет", "name_en": "Jasmine Pearls · 50 g · Pouch", "qty": 1, "unit": null, "price": 42000}, {"name": "Иван-чай ферментированный · 50 г", "name_en": "Fermented fireweed tea · 50 g", "qty": 1, "unit": null, "price": 30000}, {"name": "Матча церемониальная · 30 г", "name_en": "Ceremonial matcha · 30 g", "qty": 1, "unit": null, "price": 120000}], "photo": null}, {"id": 27, "name": "Набор «Утёсный вечер»", "name_en": "Rock oolong evening set", "description": "Улун для неспешного вечера: Да Хун Пао, Те Гуань Инь (100 г) и жасминовый жемчуг в банке.", "description_en": "Oolong for a slow evening: Da Hong Pao, Tie Guan Yin (100 g) and jasmine pearls in a jar.", "category": "Наборы", "category_en": "Sets", "price": 150000, "stock": 25, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [{"name": "Да Хун Пао · 50 г", "name_en": "Da Hong Pao · 50 g", "qty": 1, "unit": null, "price": 56000}, {"name": "Жасминовый жемчуг · 50 г · Банка", "name_en": "Jasmine Pearls · 50 g · Jar", "qty": 1, "unit": null, "price": 65000}, {"name": "Те Гуань Инь", "name_en": "Tie Guan Yin", "qty": 100, "unit": "g", "price": 520}], "photo": null}, {"id": 8, "name": "Улун Те Гуан Инь", "name_en": "Tie Guan Yin oolong", "description": "Классический улун с цветочным ароматом. 100 г", "description_en": "Classic floral oolong. 100 g", "category": "Чай", "category_en": "Tea", "price": 70000, "stock": 30, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 9, "name": "Дарджилинг Первый сбор · 50 г", "name_en": "Darjeeling First Flush · 50 g", "description": "Чёрный чай с мускатным вкусом и цветочным ароматом. Лёгкий, «шампанское среди чаёв».", "description_en": "Black tea with a muscatel taste and floral aroma. Light, the \"champagne of teas\".", "category": "Чай", "category_en": "Tea", "price": 45000, "stock": 30, "group_key": "Дарджилинг Первый сбор", "option_label": "50 г", "option_label_en": "50 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 10, "name": "Дарджилинг Первый сбор · 100 г", "name_en": "Darjeeling First Flush · 100 g", "description": "Чёрный чай с мускатным вкусом и цветочным ароматом.", "description_en": "Black tea with a muscatel taste and floral aroma.", "category": "Чай", "category_en": "Tea", "price": 82000, "stock": 20, "group_key": "Дарджилинг Первый сбор", "option_label": "100 г", "option_label_en": "100 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 11, "name": "Эрл Грей с бергамотом", "name_en": "Earl Grey with bergamot", "description": "Классический чёрный чай с маслом бергамота. Цена за 100 г, берите сколько нужно.", "description_en": "Classic black tea with bergamot oil. Price per 100 g, take as much as you need.", "category": "Чай", "category_en": "Tea", "price": 320, "stock": 6000, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": "g", "step": 50, "min_qty": 50, "bundle": [], "photo": null}, {"id": 12, "name": "Те Гуань Инь", "name_en": "Tie Guan Yin", "description": "Светлый улун: орхидея, сливочные ноты, долгое сладкое послевкусие. Цена за 100 г.", "description_en": "Light oolong: orchid, creamy notes, long sweet aftertaste. Price per 100 g.", "category": "Чай", "category_en": "Tea", "price": 520, "stock": 5000, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": "g", "step": 50, "min_qty": 50, "bundle": [], "photo": null}, {"id": 13, "name": "Да Хун Пао · 50 г", "name_en": "Da Hong Pao · 50 g", "description": "Утёсный улун: минеральный, с нотами печёного хлеба и сухофруктов.", "description_en": "Rock oolong: mineral, with notes of baked bread and dried fruit.", "category": "Чай", "category_en": "Tea", "price": 56000, "stock": 25, "group_key": "Да Хун Пао", "option_label": "50 г", "option_label_en": "50 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 14, "name": "Да Хун Пао · 100 г", "name_en": "Da Hong Pao · 100 g", "description": "Утёсный улун: минеральный, с нотами печёного хлеба и сухофруктов.", "description_en": "Rock oolong: mineral, with notes of baked bread and dried fruit.", "category": "Чай", "category_en": "Tea", "price": 105000, "stock": 15, "group_key": "Да Хун Пао", "option_label": "100 г", "option_label_en": "100 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 15, "name": "Сенча", "name_en": "Sencha", "description": "Японский зелёный чай: свежая трава, морские ноты, бодрит. Цена за 100 г.", "description_en": "Japanese green tea: fresh grass, marine notes, invigorating. Price per 100 g.", "category": "Чай", "category_en": "Tea", "price": 380, "stock": 4000, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": "g", "step": 50, "min_qty": 50, "bundle": [], "photo": null}, {"id": 16, "name": "Жасминовый жемчуг · 50 г · Пакет", "name_en": "Jasmine Pearls · 50 g · Pouch", "description": "Зелёный чай, скрученный в жемчужины с жасмином. Раскрывается в чашке.", "description_en": "Green tea rolled into pearls with jasmine. Unfolds in the cup.", "category": "Чай", "category_en": "Tea", "price": 42000, "stock": 40, "group_key": "Жасминовый жемчуг", "option_label": "50 г", "option_label_en": "50 g", "option2_label": "Пакет", "option2_label_en": "Pouch", "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 17, "name": "Жасминовый жемчуг · 50 г · Банка", "name_en": "Jasmine Pearls · 50 g · Jar", "description": "Зелёный чай, скрученный в жемчужины с жасмином. Подарочная банка.", "description_en": "Green tea rolled into pearls with jasmine. Gift jar.", "category": "Чай", "category_en": "Tea", "price": 65000, "stock": 25, "group_key": "Жасминовый жемчуг", "option_label": "50 г", "option_label_en": "50 g", "option2_label": "Банка", "option2_label_en": "Jar", "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 18, "name": "Жасминовый жемчуг · 100 г · Пакет", "name_en": "Jasmine Pearls · 100 g · Pouch", "description": "Зелёный чай, скрученный в жемчужины с жасмином.", "description_en": "Green tea rolled into pearls with jasmine.", "category": "Чай", "category_en": "Tea", "price": 78000, "stock": 30, "group_key": "Жасминовый жемчуг", "option_label": "100 г", "option_label_en": "100 g", "option2_label": "Пакет", "option2_label_en": "Pouch", "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 19, "name": "Жасминовый жемчуг · 100 г · Банка", "name_en": "Jasmine Pearls · 100 g · Jar", "description": "Зелёный чай, скрученный в жемчужины с жасмином. Подарочная банка.", "description_en": "Green tea rolled into pearls with jasmine. Gift jar.", "category": "Чай", "category_en": "Tea", "price": 101000, "stock": 12, "group_key": "Жасминовый жемчуг", "option_label": "100 г", "option_label_en": "100 g", "option2_label": "Банка", "option2_label_en": "Jar", "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 20, "name": "Матча церемониальная · 30 г", "name_en": "Ceremonial matcha · 30 g", "description": "Порошок зелёного чая высшего сорта для традиционного взбивания. Яркий цвет, умами.", "description_en": "Top-grade green tea powder for traditional whisking. Bright colour, umami.", "category": "Чай", "category_en": "Tea", "price": 120000, "stock": 18, "group_key": "Матча церемониальная", "option_label": "30 г", "option_label_en": "30 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 21, "name": "Матча церемониальная · 100 г", "name_en": "Ceremonial matcha · 100 g", "description": "Порошок зелёного чая высшего сорта для традиционного взбивания.", "description_en": "Top-grade green tea powder for traditional whisking.", "category": "Чай", "category_en": "Tea", "price": 350000, "stock": 8, "group_key": "Матча церемониальная", "option_label": "100 г", "option_label_en": "100 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 22, "name": "Шу Пуэр 2018", "name_en": "Shu Puer 2018", "description": "Выдержанный тёмный чай: земляной, шоколадный, мягкий. Цена за 100 г.", "description_en": "Aged dark tea: earthy, chocolatey, smooth. Price per 100 g.", "category": "Чай", "category_en": "Tea", "price": 450, "stock": 3000, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": "g", "step": 50, "min_qty": 100, "bundle": [], "photo": null}, {"id": 23, "name": "Иван-чай ферментированный · 50 г", "name_en": "Fermented fireweed tea · 50 g", "description": "Травяной чай без кофеина: медовые ноты, цветочно-ягодный аромат.", "description_en": "Caffeine-free herbal tea: honey notes, floral-berry aroma.", "category": "Чай", "category_en": "Tea", "price": 30000, "stock": 35, "group_key": "Иван-чай ферментированный", "option_label": "50 г", "option_label_en": "50 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 24, "name": "Иван-чай ферментированный · 100 г", "name_en": "Fermented fireweed tea · 100 g", "description": "Травяной чай без кофеина: медовые ноты, цветочно-ягодный аромат.", "description_en": "Caffeine-free herbal tea: honey notes, floral-berry aroma.", "category": "Чай", "category_en": "Tea", "price": 52000, "stock": 30, "group_key": "Иван-чай ферментированный", "option_label": "100 г", "option_label_en": "100 g", "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": null, "step": 1, "min_qty": 1, "bundle": [], "photo": null}, {"id": 25, "name": "Холодный чай: каркаде-малина (концентрат)", "name_en": "Cold tea: hibiscus-raspberry (concentrate)", "description": "Концентрат для холодного чая и лимонадов: разводите 1:5 водой. Цена за 100 мл.", "description_en": "Concentrate for iced tea and lemonades: dilute 1:5 with water. Price per 100 ml.", "category": "Чай", "category_en": "Tea", "price": 180, "stock": 8000, "group_key": null, "option_label": null, "option_label_en": null, "option2_label": null, "option2_label_en": null, "is_addon": 0, "addon_for": null, "unit": "ml", "step": 50, "min_qty": 100, "bundle": [], "photo": null}], "cart": {}, "isOwner": false, "unread": 0};
+(function demoPhotos() {
+  const pal = { coffee: ['#d9b48a', '#8f5d3b', '☕'], tea: ['#b9cf9c', '#5f8050', '🍵'], set: ['#e8b98a', '#b8573c', '🎁'] };
+  CAT.products.forEach(p => {
+    const k = (p.bundle && p.bundle.length) || /набор/i.test(p.name) ? 'set' : p.category === 'Кофе' ? 'coffee' : 'tea', c = pal[k];
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset="1" stop-color="${c[1]}"/></linearGradient></defs><rect width="400" height="400" fill="url(#g)"/><text x="200" y="250" font-size="125" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${c[2]}</text></svg>`;
+    p.photo = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  });
+})();
 const st = { lang: 'ru', cart: {}, orders: [], subs: [], nid: 1, sid: 1 };
 const INFO = { cities: [{ city: 'Санкт-Петербург', city_en: 'Saint Petersburg', price: 40000 }, { city: 'Москва', city_en: 'Moscow', price: 70000 }, { city: 'Псков', city_en: 'Pskov', price: 70000 }],
   otherPrice: 150000, freeFrom: 600000, pickup: true, pickupAddress: 'Санкт-Петербург, Невский пр., 1 · ежедневно 10:00–20:00', payOnline: true,
   post: { carriers: [{ id: 'cdek', name: 'СДЭК', price: 35000 }, { id: 'russianpost', name: 'Почта России', price: 30000 }] },
   distance: { maxKm: 30, tiers: [{ km: 5, price: 20000 }, { km: 15, price: 35000 }, { km: 30, price: 60000 }] }, receipts: true, contact: '' };
+const tr = (ru, en) => (st.lang === 'en' ? en : ru);
+const LABEL_EN = { awaiting_payment: 'Awaiting payment', paid: 'Paid', assembling: 'Packing', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled' };
 const LABEL = { awaiting_payment: 'Ждёт оплаты', paid: 'Оплачен', assembling: 'Собираем', shipped: 'Отправлен', delivered: 'Доставлен', cancelled: 'Отменён' };
 const prod = id => CAT.products.find(p => p.id == id);
 const cartMap = () => ({ ...st.cart });
@@ -19,51 +29,65 @@ const code = () => String(1000 + st.nid * 7).slice(-4);
 const err = (s, m) => ({ s, d: { error: m } });
 function distKm(addr) { const a = addr.toLowerCase(); return /ближн|невск|центр/.test(a) ? 2.4 : /средн/.test(a) ? 9.8 : /дальн|област/.test(a) ? 80 : 7.3; }
 const tier = km => (INFO.distance.tiers.find(t => km <= t.km) || {}).price;
+const nn = v => String(v || '').trim().toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ');
 function delivery(b) {
-  const g = goods(); const free = INFO.freeFrom > 0 && g >= INFO.freeFrom;
+  const pr0 = findPromo(b.promo), g = Math.round(goods() * (100 - (pr0 ? pr0.discount_percent : 0)) / 100); const free = INFO.freeFrom > 0 && g >= INFO.freeFrom;
   if (b.delivery === 'pickup') return { price: 0 };
   if (!String(b.city || '').trim()) throw 'Выберите город';
   if (String(b.address || '').trim().length < 5) throw 'Укажите адрес: улица, дом, квартира';
   if (b.delivery === 'post') { if (!INFO.post) throw 'СДЭК и Почта сейчас отключены'; const c = INFO.post.carriers.find(x => x.id === b.carrier); if (!c) throw 'Выберите перевозчика'; return { price: free ? 0 : c.price }; }
   if (b.delivery === 'distance') { if (!INFO.distance) throw 'Доставка по расстоянию сейчас отключена'; const km = distKm(b.address); const p = tier(km); if (p == null) throw 'Далеко: по расстоянию возим до 30 км. Выберите СДЭК или Почту'; return { price: free ? 0 : p, km }; }
-  const c = INFO.cities.find(x => x.city.toLowerCase() === String(b.city).toLowerCase()); return { price: free ? 0 : c ? c.price : INFO.otherPrice };
+  const c = INFO.cities.find(x => nn(x.city) === nn(b.city) || (x.city_en && nn(x.city_en) === nn(b.city))); return { price: free ? 0 : c ? c.price : INFO.otherPrice };
 }
+const MSG_EN = { 'Выберите город': 'Choose a city', 'Укажите адрес: улица, дом, квартира': 'Enter an address: street, house, flat', 'СДЭК и Почта сейчас отключены': 'CDEK and Russian Post are currently off', 'Выберите перевозчика': 'Choose a carrier',
+  'Доставка по расстоянию сейчас отключена': 'Delivery by distance is currently off', 'Далеко: по расстоянию возим до 30 км. Выберите СДЭК или Почту': 'Too far: distance delivery covers up to 30 km. Choose CDEK or Russian Post' };
 const items = o => o.items;
 function view(o) {
-  return { id: o.id, code: o.code, status: o.status, statusLabel: LABEL[o.status], step: ['paid', 'assembling', 'shipped', 'delivered'].indexOf(o.status), pickup: o.method === 'pickup', track: o.track || '', rating: 0,
-    can_pay: o.status === 'awaiting_payment', can_subscribe: ['paid', 'assembling', 'shipped', 'delivered'].includes(o.status), total: o.total, delivery_cost: o.dcost, address: o.address, created_at: new Date(o.at).toISOString().slice(0, 19).replace('T', ' '), items: o.items };
+  return { id: o.id, code: o.code, status: o.status, statusLabel: (st.lang === 'en' ? LABEL_EN : LABEL)[o.status], step: ['paid', 'assembling', 'shipped', 'delivered'].indexOf(o.status), pickup: o.method === 'pickup', track: o.track || '', rating: 0,
+    can_pay: o.status === 'awaiting_payment', can_subscribe: ['paid', 'assembling', 'shipped', 'delivered'].includes(o.status), total: o.total, delivery_cost: o.dcost, address: o.address, address_en: o.address_en || o.address, created_at: new Date(o.at).toISOString().slice(0, 19).replace('T', ' '), items: o.items };
 }
-const PAY = 'data:text/html;charset=utf-8,' + encodeURIComponent('<meta name=viewport content="width=device-width"><body style="font-family:sans-serif;text-align:center;padding:40px"><h2>Демо-оплата</h2><p>Здесь открывалась бы страница ЮKassa.<br>В демо заказ отметится оплаченным сам через несколько секунд.</p>');
+const payUrl = o => 'demo-pay:' + o.id;
 const H = {
-  'GET /catalog': () => ({ ...CAT, lang: st.lang, cart: cartMap(), isOwner: st.owner, unread: st.owner ? unreadTotal() : 0 }),
-  'POST /cart': b => { const p = prod(b.product_id); const q = Math.max(0, +b.qty || 0); if (q > p.stock) return err(400, 'Больше нет в наличии'); if (p.unit && q && (q < p.min_qty || q % p.step)) return err(400, 'Количество: от ' + p.min_qty + ' с шагом ' + p.step); q ? st.cart[p.id] = q : delete st.cart[p.id]; return { ok: true, cart: cartMap() }; },
+  'GET /catalog': () => { Object.keys(st.cart).forEach(id => { const p = prod(id); if (!p || p.stock <= 0) delete st.cart[id]; else if (st.cart[id] > p.stock) st.cart[id] = p.stock; }); return { ...CAT, lang: st.lang, cart: cartMap(), isOwner: st.owner, unread: st.owner ? unreadTotal() : 0 }; },
+  'POST /cart': b => { const p = prod(b.product_id); if (!p) return err(404, tr('Товар не найден', 'Product not found')); const q = Math.max(0, +b.qty || 0); if (q > p.stock) return err(400, tr('Больше нет в наличии', 'No more in stock')); if (p.unit && q && (q < p.min_qty || q % p.step)) return err(400, tr('Количество: от ', 'Quantity: from ') + p.min_qty + tr(' с шагом ', ' in steps of ') + p.step); q ? st.cart[p.id] = q : delete st.cart[p.id]; return { ok: true, cart: cartMap() }; },
   'POST /lang': b => { st.lang = b.lang === 'en' ? 'en' : 'ru'; return { ok: true }; },
   'GET /orders': () => ({ orders: st.orders.slice().reverse().map(view) }),
   'GET /checkout-info': () => INFO,
-  'POST /promo': b => { const p = findPromo(b.code); return p ? { ok: true, code: p.code, percent: p.discount_percent } : err(400, 'Такого промокода нет (в демо — KOFE10)'); },
-  'POST /delivery-quote': b => { try { const d = delivery(b); return { ok: true, delivery: d.price, km: d.km || null }; } catch (m) { return err(400, m); } },
+  'POST /promo': b => { const p = findPromo(b.code); return p ? { ok: true, code: p.code, percent: p.discount_percent } : (() => { const h = SET.promos.find(x => x.active && !(x.max_uses && x.used_count >= x.max_uses)); return err(400, tr('Такого промокода нет', 'No such promo code') + (h ? tr(' (в демо — ', ' (in the demo: ') + h.code + ')' : '')); })(); },
+  'POST /delivery-quote': b => { try { const d = delivery(b); return { ok: true, delivery: d.price, km: d.km || null }; } catch (m) { return err(400, tr(m, MSG_EN[m] || m)); } },
   'POST /order': b => {
-    if (!Object.keys(st.cart).length) return err(400, 'Корзина пуста');
-    const ph = String(b.phone || '').replace(/\D/g, ''); if (b.phone && ph.length < 10) return err(400, 'Проверьте номер телефона');
-    if (!ph.length && !b.email) return err(400, 'Для чека укажите телефон или e-mail');
-    let d; try { d = delivery(b); } catch (m) { return err(400, m); }
+    if (!Object.keys(st.cart).length) return err(400, tr('Корзина пуста', 'Your cart is empty'));
+    const short = Object.entries(st.cart).find(([id, n]) => !prod(id) || n > prod(id).stock); if (short) return err(400, tr('Больше нет в наличии: ', 'Not enough in stock: ') + (prod(short[0]) ? prod(short[0]).name : '#' + short[0]));
+    const ph = String(b.phone || '').replace(/\D/g, ''); if (b.phone && ph.length < 10) return err(400, tr('Проверьте номер телефона', 'Check the phone number'));
+    if (!ph.length && !b.email) return err(400, tr('Для чека укажите телефон или e-mail', 'Enter a phone or e-mail for the receipt'));
+    let d; try { d = delivery(b); } catch (m) { return err(400, tr(m, MSG_EN[m] || m)); }
     const pr = findPromo(b.promo), pct = pr ? pr.discount_percent : 0; if (pr) pr.used_count++; const g = goods(); const gd = Math.round(g * (100 - pct) / 100);
     const o = { id: st.nid++, code: code(), status: 'awaiting_payment', method: b.delivery, carrier: b.carrier || null, total: gd + d.price, dcost: d.price, at: Date.now(),
       address: b.delivery === 'pickup' ? 'Самовывоз' : (b.delivery === 'post' ? (INFO.post.carriers.find(c => c.id === b.carrier) || {}).name + ' · ' : '') + b.city + ', ' + b.address,
+      address_en: b.delivery === 'pickup' ? 'Pickup' : (b.delivery === 'post' ? (INFO.post.carriers.find(c => c.id === b.carrier) || {}).name + ' · ' : '') + (((INFO.cities.find(x => nn(x.city) === nn(b.city)) || {}).city_en) || b.city) + ', ' + b.address,
+      promo: pr ? pr.code : '', discount: pct, held: false, was_paid: false,
       items: Object.entries(st.cart).map(([id, q]) => ({ id: +id, qty: q, price: prod(id).price, name: prod(id).name, unit: prod(id).unit })) };
+    holdStock(o, true);
     st.orders.push(o); st.cart = {};
-    setTimeout(() => { if (o.status === 'awaiting_payment') o.status = 'paid'; }, 7000);
-    return { ok: true, id: o.id, code: o.code, total: o.total, pay_url: PAY };
+    return { ok: true, id: o.id, code: o.code, total: o.total, pay_url: payUrl(o) };
   },
-  'POST /orders/:id/pay': (b, id) => { const o = st.orders.find(x => x.id == id); return o && o.status === 'awaiting_payment' ? { pay_url: PAY } : err(404, 'Этот заказ уже не ждёт оплату'); },
-  'POST /orders/:id/repeat': (b, id) => { const o = st.orders.find(x => x.id == id); if (!o) return err(404, 'Заказ не найден'); o.items.forEach(i => { st.cart[i.id] = Math.min(i.qty, prod(i.id).stock); }); return { ok: true, added: o.items.length, missing: 0, cart: cartMap() }; },
+  'POST /orders/:id/pay': (b, id) => { const o = st.orders.find(x => x.id == id); return o && o.status === 'awaiting_payment' ? { pay_url: payUrl(o) } : err(404, tr('Этот заказ уже не ждёт оплату', 'This order is no longer awaiting payment')); },
+  'POST /orders/:id/repeat': (b, id) => { const o = st.orders.find(x => x.id == id); if (!o) return err(404, 'Заказ не найден'); let added = 0, missing = 0; o.items.forEach(i => { const p = prod(i.id), q = p ? Math.min(i.qty, p.stock) : 0; if (!p || q < (p.unit ? p.min_qty : 1)) { missing++; return; } st.cart[i.id] = q; added++; if (q < i.qty) missing++; }); return { ok: true, added, missing, cart: cartMap() }; },
   'GET /subscriptions': () => ({ intervals: [7, 14, 21, 30, 60], subscriptions: st.subs.map(s => ({ ...s })) }),
   'POST /subscriptions': b => { const o = st.orders.find(x => x.id == b.order_id); if (!o || o.status === 'awaiting_payment') return err(400, 'Подписку можно оформить на оплаченный заказ');
-    const nd = new Date(Date.now() + b.days * 864e5).toISOString().slice(0, 10); st.subs.push({ id: st.sid++, interval_days: b.days, next_date: nd, active: true, method: o.method, items: o.items.map(i => ({ name: i.name, qty: i.qty, price: i.price, unit: i.unit })) }); return { ok: true, id: st.sid - 1 }; },
+    const nd = new Date(Date.now() + b.days * 864e5).toISOString().slice(0, 10); st.subs.push({ id: st.sid++, interval_days: b.days, next_date: nd, active: true, method: o.method, items: o.items.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price, unit: i.unit })) }); return { ok: true, id: st.sid - 1 }; },
   'POST /subscriptions/:id': (b, id) => { const s = st.subs.find(x => x.id == id); if (!s) return err(400, 'Подписка не найдена');
     if (b.action === 'pause') s.active = false; else if (b.action === 'resume') s.active = true; else if (b.action === 'skip') s.next_date = new Date(new Date(s.next_date).getTime() + s.interval_days * 864e5).toISOString().slice(0, 10); else if (b.action === 'delete') st.subs = st.subs.filter(x => x !== s); return { ok: true }; },
   'POST /checkout': () => ({ ok: true }),
-  'POST /ai': b => ({ advice: 'Для мягкого вкуса без кислоты возьмите Бразилию; для фруктового — Эфиопию.', ids: CAT.products.slice(0, 2).map(p => p.id) }),
+  'POST /ai': b => {
+    const q = String(b.query || '').toLowerCase(); if (!q.trim()) return err(400, tr('Опишите, что вы любите', 'Tell us what you like'));
+    const pick = ids => ids.filter(prod);
+    if (/подар|набор|gift|set|present/.test(q)) return { advice: tr('Для подарка хорошо подойдут готовые наборы — красиво упакованы и дешевле, чем по отдельности.', 'Ready-made sets make a good gift: nicely packed and cheaper than buying separately.'), ids: pick([7, 26, 27]) };
+    if (/чай|матч|пуэр|улун|tea|matcha|oolong|puer/.test(q)) return { advice: tr('Из чая начните с улуна или матчи — они раскрываются мягко и без горечи.', 'For tea, start with oolong or matcha: both are smooth and not bitter.'), ids: pick([8, 20, 9]) };
+    if (/мягк|шоколад|орех|турк|эспрессо|без кисл|soft|smooth|chocolate|nut|turk|espresso|low acid|without acid|no acid/.test(q)) return { advice: tr('Для мягкого вкуса без кислоты возьмите Бразилию — шоколад и орех в чашке.', 'For a soft cup without acidity, pick Brazil — chocolate and nuts in the cup.'), ids: pick([5, 6, 3]) };
+    if (/кисл|фрукт|ягод|ярк|воронк|acid|fruit|berr|bright|pour/.test(q)) return { advice: tr('Для фруктового вкуса с яркой кислинкой возьмите Эфиопию — особенно хорошо в воронке.', 'For a fruity cup with bright acidity, pick Ethiopia — it shines in a pour-over.'), ids: pick([1, 2, 3]) };
+    return { advice: tr('Если не уверены, начните с Колумбии — сбалансированный вкус, подходит для любого способа заваривания.', 'If unsure, start with Colombia: a balanced cup that works with any brewing method.'), ids: pick([3, 5, 1]) };
+  },
 };
 /* ===== Режим владельца: моки админских эндпоинтов. Данные выдуманные, всё хранится только в памяти страницы ===== */
 st.owner = /[?&]role=owner\b/.test(location.search);
@@ -81,7 +105,7 @@ const AO = [];
     const goods = items.reduce((a, i) => a + i.price * i.qty, 0), pct = o.discount || 0, dcost = o.dcost || 0;
     AO.push({ id, code, status, total: Math.round(goods * (100 - pct) / 100) + dcost, delivery_cost: dcost, created_at: isoTs(NOW0 - hAgo * HOUR),
       address: o.pickup ? 'Самовывоз' : o.address, phone: o.phone || '', pickup: !!o.pickup, track: o.track || '', rating: o.rating || 0,
-      was_paid: !['awaiting_payment', 'cancelled'].includes(status), promo: o.promo || '', discount: pct, buyer, chat_id: chat, items });
+      was_paid: !['awaiting_payment', 'cancelled'].includes(status), held: status !== 'cancelled', promo: o.promo || '', discount: pct, buyer, chat_id: chat, items });
   };
   mk(101, '4012', 'paid', 2, 'Анна', 9001, [[1, 2], [11, 150]], { ...SPB, phone: '+7 000 000-00-01' });
   mk(102, '4011', 'assembling', 20, 'Михаил', 9002, [[7, 1], [8, 1]], { ...MSK, phone: '+7 000 000-00-02' });
@@ -101,7 +125,7 @@ const AO = [];
 })();
 const BUYER_CHAT = 9000;
 const adminView = o => ({ id: o.id, code: o.code, status: o.status, total: o.total, delivery_cost: o.dcost, created_at: isoTs(o.at), address: o.address, phone: '',
-  pickup: o.method === 'pickup', track: o.track || '', rating: 0, was_paid: o.status !== 'awaiting_payment', promo: '', discount: 0, buyer: 'Вы (демо)', chat_id: BUYER_CHAT,
+  pickup: o.method === 'pickup', track: o.track || '', rating: 0, was_paid: o.was_paid !== undefined ? o.was_paid : o.status !== 'awaiting_payment', promo: o.promo || '', discount: o.discount || 0, buyer: 'Вы (демо)', chat_id: BUYER_CHAT,
   items: o.items.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price, unit: i.unit })) });
 const allOrders = () => AO.concat(st.orders.map(adminView)).sort((a, b) => (a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : b.id - a.id));
 const rawOrder = id => AO.find(o => o.id == id) || st.orders.find(o => o.id == id);
@@ -148,6 +172,14 @@ function syncBundles() {
     p.bundle.forEach(b => { const c = prod(b.product_id); if (c) { b.name = c.name; b.name_en = c.name_en; b.unit = c.unit; b.price = c.price; } });
     p.stock = Math.min(...p.bundle.map(b => Math.floor((prod(b.product_id)?.stock || 0) / b.qty)));
   });
+}
+syncBundles();
+function holdStock(o, want) { // заказ резервирует остаток; отмена возвращает товар на склад
+  const was = o.held !== false; if (want === was) return; o.held = want;
+  (o.items || []).forEach(i => { const p = prod(i.id); if (!p) return; const sign = want ? -1 : 1;
+    if (p.bundle.length) p.bundle.forEach(b => { const c = prod(b.product_id); if (c) c.stock = Math.max(0, c.stock + sign * b.qty * i.qty); });
+    else p.stock = Math.max(0, p.stock + sign * i.qty); });
+  syncBundles();
 }
 const adminProduct = p => ({ ...p, has_photo: Boolean(p.photo), is_bundle: p.bundle.length > 0, bundle: p.bundle.map(b => ({ product_id: b.product_id, qty: b.qty })) });
 function cleanProduct(b) {
@@ -197,7 +229,7 @@ function stats(days) {
   const byDay = []; for (let i = days - 1; i >= 0; i--) { const d = new Date(now - i * DAY).toISOString().slice(0, 10), l = paid.filter(o => o.created_at.slice(0, 10) === d); byDay.push({ date: d, revenue: l.reduce((a, o) => a + o.total, 0), orders: l.length }); }
   const top = new Map(), cities = new Map(), per = new Map();
   for (const o of paid) {
-    for (const i of o.items) { const t = top.get(i.id) || { id: i.id, name: i.name, qty: 0, revenue: 0 }; t.qty += i.qty; t.revenue += i.qty * i.price; top.set(i.id, t); }
+    for (const i of o.items) { const t = top.get(i.id) || { id: i.id, name: i.name, unit: i.unit || null, qty: 0, revenue: 0 }; t.qty += i.qty; t.revenue += i.qty * i.price; top.set(i.id, t); }
     const c = o.pickup ? 'Самовывоз' : String(o.address).replace(/^СДЭК · |^Почта России · /, '').split(',')[0]; const x = cities.get(c) || { city: c, orders: 0, revenue: 0 }; x.orders++; x.revenue += o.total; cities.set(c, x);
     per.set(o.chat_id, (per.get(o.chat_id) || 0) + 1);
   }
@@ -207,7 +239,7 @@ function stats(days) {
     rating: rated.length ? Math.round(rated.reduce((a, o) => a + o.rating, 0) / rated.length * 10) / 10 : null, rated: rated.length,
     active: allOrders().filter(o => ['paid', 'assembling', 'shipped'].includes(o.status)).length, byDay,
     top: [...top.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 6), cities: [...cities.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 6),
-    lowStock: CAT.products.filter(p => p.stock <= 3).sort((a, b) => a.stock - b.stock).map(({ id, name, stock }) => ({ id, name, stock })) };
+    lowStock: CAT.products.filter(p => (p.unit ? p.stock <= 1000 : p.stock <= 3)).sort((a, b) => a.stock - b.stock).map(({ id, name, stock, unit }) => ({ id, name, stock, unit: unit || null })) };
 }
 
 const A = fn => (b, arg, q) => { if (!st.owner) return err(403, 'Только для владельца'); try { return fn(b, arg, q); } catch (m) { return err(400, typeof m === 'string' ? m : (m && m.message) || 'Ошибка'); } };
@@ -242,7 +274,7 @@ Object.assign(H, {
   'POST /admin/orders/:id/status': A((b, id) => {
     const o = rawOrder(id); if (!o) return err(400, 'Заказ не найден');
     const s = String(b.status || ''); if (!PAIDSET.includes(s) && s !== 'cancelled') return err(400, 'Неизвестный статус');
-    o.status = s; if (b.track !== undefined) o.track = String(b.track).slice(0, 60); return { ok: true, status: o.status, track: o.track || '' };
+    holdStock(o, s !== 'cancelled'); if (s !== 'cancelled') o.was_paid = true; o.status = s; if (b.track !== undefined) o.track = String(b.track).slice(0, 60); return { ok: true, status: o.status, track: o.track || '' };
   }),
   'GET /admin/stats': A((b, a, q) => stats(+q.get('days'))),
   'GET /admin/chats': A(() => ({ unread: unreadTotal(), chats: Object.entries(CH).filter(([, c]) => c.messages.length).map(([id, c]) => ({ chat_id: +id, name: c.name, unread: c.unread, last: c.messages[c.messages.length - 1] }))
@@ -288,6 +320,29 @@ Object.assign(H, {
 });
 window.__coffeeDemo = { setOwner(v) { st.owner = Boolean(v); }, isOwner: () => st.owner };
 
+/* имитация оплаты: вместо страницы ЮKassa — окно «Демо-оплата» */
+const payCss = document.createElement('style');
+payCss.textContent = '#demoPay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}#demoPay .c{background:#fff;color:#1f2328;border-radius:20px;max-width:360px;width:100%;padding:24px;text-align:center;font:15px/1.4 -apple-system,Segoe UI,Roboto,sans-serif}#demoPay h2{margin:0 0 8px}#demoPay button{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:700 16px/1.2 -apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;margin-top:10px;background:#7a4a2b;color:#fff}#demoPay button.g{background:#f1f3f5;color:#1f2328}#demoPay .ok{color:#2f9e44;font-size:42px}';
+document.addEventListener('DOMContentLoaded', () => document.head.appendChild(payCss));
+function showPay(id) {
+  const o = st.orders.find(x => x.id == id); if (!o) return;
+  const en = st.lang === 'en', box = document.createElement('div'); box.id = 'demoPay';
+  const sum = Math.round(o.total / 100).toLocaleString('ru-RU') + ' ₽';
+  box.innerHTML = en ? '<div class="c"><h2>Demo payment</h2><p>The YooKassa payment page would open here. In this demo no money is charged and no card is needed.</p><p><b>Order № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Pay ' + sum + ' (demo)</button><button class="g" data-no>Close, I will pay later</button></div>'
+    : '<div class="c"><h2>Демо-оплата</h2><p>Здесь открылась бы страница ЮKassa. В демо деньги не списываются, карта не нужна.</p><p><b>Заказ № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Оплатить ' + sum + ' (демо)</button><button class="g" data-no>Закрыть, оплачу позже</button></div>';
+  const reload = () => { try { if (typeof tab !== 'undefined' && tab === 'orders') loadOrders(); } catch (x) {} };
+  box.onclick = e => {
+    if (e.target.matches('[data-ok]')) {
+      if (o.status === 'awaiting_payment') { o.status = 'paid'; o.was_paid = true; }
+      box.querySelector('.c').innerHTML = en ? '<div class="ok">✓</div><h2>Payment successful (demo)</h2><p>The order is paid. Its status will change on the Orders tab.</p><button data-no>Back to the shop</button>'
+        : '<div class="ok">✓</div><h2>Оплата прошла (демо)</h2><p>Заказ оплачен. Статус будет меняться на вкладке «Заказы».</p><button data-no>Вернуться в магазин</button>';
+      reload();
+    } else if (e.target.matches('[data-no]')) { box.remove(); reload(); }
+  };
+  document.body.appendChild(box);
+}
+window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(url).slice(9)); return null; };
+
 const real = window.fetch.bind(window);
 window.fetch = async (url, o = {}) => {
   if (!String(url).startsWith('/shop-api')) return real(url, o);
@@ -295,9 +350,9 @@ window.fetch = async (url, o = {}) => {
   let h = H[m + ' ' + path], arg;
   if (!h) { const mm = path.match(/^\/(orders|subscriptions)\/(\d+)(\/\w+)?$/); if (mm) { arg = mm[2]; h = H[`${m} /${mm[1]}/:id${mm[3] || ''}`]; } else { const am = path.match(/^\/admin\/(products|orders|chats|promos|cities)\/(\d+)(\/[\w-]+)?$/); if (am) { arg = am[2]; h = H[`${m} /admin/${am[1]}/:id${am[3] || ''}`]; } } }
   await new Promise(r => setTimeout(r, 120));
-  const res = h ? h(body, arg, q) : err(404, 'Нет в демо');
+  const res = h ? h(body, arg, q) : err(404, tr('Нет в демо', 'Not available in the demo'));
   const s = res.s || 200, d = res.d || res;
-  return { ok: s < 400, status: s, json: async () => d };
+  return { ok: s < 400, status: s, json: async () => JSON.parse(JSON.stringify(d)) };
 };
 })();
 </script>
@@ -415,8 +470,11 @@ window.fetch = async (url, o = {}) => {
   .sheet .act .step{height:48px;border-radius:14px}
   .sheet .act .step button{width:44px;height:48px;font-size:24px}
   .x{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;font-size:16px;cursor:pointer}
-  .toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-80px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;transition:.25s;z-index:20;max-width:90vw;text-align:center}
-  .toast.on{transform:translate(-50%,0)}
+  .toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom));top:auto;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;transition:.25s;z-index:20;max-width:90vw;text-align:center}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  body:has(.cartbar button) .toast{bottom:calc(var(--tabh) + 84px + env(safe-area-inset-bottom))}
+  body.open .toast,body.open:has(.cartbar button) .toast{bottom:auto;top:16px;transform:translate(-50%,-10px)}
+  body.open .toast.on{transform:translate(-50%,0)}
   .skel{background:linear-gradient(90deg,var(--card),var(--line),var(--card));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r);aspect-ratio:3/4}
   @keyframes sk{to{background-position:-200% 0}}
 
@@ -508,9 +566,11 @@ window.fetch = async (url, o = {}) => {
   .form .line2{display:flex;justify-content:space-between;align-items:center;color:var(--text);font-size:15px;margin:16px 0 8px}
   .two3{display:grid;grid-template-columns:1.6fr .8fr 1fr;gap:8px;margin-top:6px}
   .form .two3 input,.form .crow input{width:100%}
-  .form .crow .cn,.form .crow #ncity{flex:1 1 0;width:auto;min-width:0}
-  .form .crow .cp,.form .crow #nprice{flex:none;width:84px}
+  .form .crow .cn{flex:1 1 0;width:auto;min-width:0;font-size:14px;padding-left:9px;padding-right:4px}
+  .form .crow #ncity{flex:1 1 0;width:auto;min-width:0}
+  .form .crow .cp,.form .crow #nprice{flex:none;width:76px}
   .form .crow .sw input{width:0;height:0}
+  .form .crow select{min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;padding:9px 10px;font:inherit}
   /* трекер заказа у покупателя */
   .steps{display:flex;align-items:flex-start;margin:4px 0 12px}
   .steps div{flex:1;text-align:center;font-size:11.5px;color:var(--muted);position:relative}
@@ -627,9 +687,75 @@ window.fetch = async (url, o = {}) => {
   .role button.on{background:var(--accent);color:#fff}
   .sheet .x{z-index:4}  /* крестик не должен прятаться под загруженным фото */
   @media(min-width:440px){.role{order:0;flex:0 0 auto}.role button{flex:none}}
+  .role{border:2px solid var(--accent);border-radius:14px;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent),0 4px 16px color-mix(in srgb,var(--accent) 30%,transparent)}
+  .role button{padding:10px 16px;font-size:15px;color:var(--text,inherit);opacity:.75}
+  .role button.on{opacity:1;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+  @media(min-width:440px){.role button{padding:9px 18px}}
+</style>
+<style id="qa-fixes">
+  /* ===== визуальный QA: правки ===== */
+  .tools{flex-wrap:wrap}
+  .tools select{flex:1 1 150px;min-width:0;padding:9px 26px 9px 12px;font-size:13px;text-overflow:ellipsis}
+  .tools .chip{flex:none;font-size:13px;padding:9px 11px}
+  .name{-webkit-line-clamp:3;overflow-wrap:anywhere;hyphens:auto;min-height:0}
+  .card .info .name{min-height:2.5em;font-size:14px}
+  .inside{-webkit-line-clamp:3}
+  .price small.per{font-size:12px;font-weight:600;color:var(--muted)}
+  .flbl small{font-size:12px}
+  .tabs button i{opacity:.9}
+  @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--muted:#626870}}
+  @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .tabs button:not(.on) i{filter:grayscale(1) brightness(.7);opacity:.85}}
+  :root[data-theme="light"]{--muted:#626870}
+  .tabs{background:color-mix(in srgb,var(--card) 96%,transparent)}
+  /* тост под шапкой: не закрывает переключатели; появляется плавно */
+  .toast{opacity:0;pointer-events:none;transform:translate(-50%,0);width:max-content;transition:opacity .2s}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  /* чаты/фильтры в админке переносятся, а не прячутся за краем */
+  .chips.adm,.chips.small{flex-wrap:wrap;overflow:visible}
+  .chips.adm .chip,.chips.small .chip{flex:0 0 auto}
+  .chips.adm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .chips.adm .chip{text-align:center;white-space:nowrap;padding:9px 6px;font-size:13.5px}
+  @media (min-width:560px){.chips.adm{display:flex}.chips.adm .chip{padding:9px 16px}}
+  .aline .t{white-space:normal;overflow-wrap:anywhere}
+  @media (max-width:559px){.chips.adm .chip{width:100%}}
+  #admBody .btn[data-edit="new"]{white-space:nowrap;padding-inline:8px}
+  /* поле ответа не прячется за плавающим меню */
+  .composer{bottom:calc(var(--tabh) + 22px + env(safe-area-inset-bottom));border-top:0;background:transparent;padding:6px 16px}
+  .composer textarea{background:var(--card);box-shadow:0 4px 18px rgba(0,0,0,.18)}
+  .msgs{padding-bottom:130px}
+  /* настройки доставки */
+  .form .fl{display:block;font-size:13px;font-weight:600;color:var(--text);margin:16px 0 6px}
+  .form .cl,.cap2{font-size:12px;color:var(--muted)}
+  .cap2{display:flex;gap:8px;margin:12px 0 6px} .cap2 span:first-child{flex:1} .cap2 span:last-child{width:84px;flex:none}
+  .form .crow.city{flex-wrap:wrap;gap:8px 10px;padding:10px 0 12px;margin:0;border-top:1px solid var(--line)}
+  .form .crow.city:first-of-type{border-top:0}
+  .form .crow.city .cn{flex:1 1 100%;width:100%;font-weight:600}
+  .crow.city .cmeta{flex:1 1 100%;display:flex;align-items:center;gap:10px}
+  .crow.city .cpw{display:flex;align-items:center;gap:6px}
+  .form .crow.city .cpw .cl{display:inline;margin:0}
+  .form .crow.city .cp{width:84px}
+  .form .swl{margin:0 0 0 auto;display:flex;align-items:center;gap:8px;color:var(--text);font-size:13px}
+  .crow.city.off .swt{color:var(--muted)}
+  .crow.city.off .cn,.crow.city.off .cp{opacity:.5}
+  .form .two3>div .cl{display:block;margin:0 0 4px}
+  .form .two3{align-items:end}
+  .form .crow.new{margin-top:0}
+  .form textarea#dPickupAddr{min-height:64px}
+  .form .crow .mini,.crow.city .mini{flex:none}
+  #bundleBox .crow select{flex:1 1 0;min-width:0;width:0;padding:10px 8px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+  #bundleBox .crow input{width:64px;flex:none}
+  /* широкие экраны: меню и карточка товара не растягиваются на всю ширину */
+  @media (min-width:700px){
+    .tabs{left:50%;right:auto;width:min(736px,calc(100% - 24px));transform:translateX(-50%)}
+    .sheet{left:50%;right:auto;width:min(620px,100%);transform:translate(-50%,100%)}
+    .open .sheet{transform:translate(-50%,0)}
+    .sheet .big{aspect-ratio:auto;height:280px;width:100%}
+    .sheet .big img{height:280px;width:100%}
+    .toast{max-width:480px}
+  }
 </style>
 </head>
-<body><div style="background:#7a4a2b;color:#fff;text-align:center;font:12px sans-serif;padding:5px">Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.</div>
+<body><div id="demoBar" style="background:#7a4a2b;color:#fff;text-align:center;font:12px/1.35 sans-serif;padding:5px 12px">Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.</div>
 <div class="wrap">
   <header>
     <div class="logo">CoFFee<span>JD</span> ☕</div>
@@ -689,8 +815,8 @@ const T = {
         cartTitle: 'Корзина', cartEmpty: 'Корзина пока пуста', toCatalog: 'Перейти в каталог',
         checkoutNote: 'Оплата картой или СБП через ЮKassa — безопасно.',
         ordersTitle: 'Мои заказы', ordersEmpty: 'Заказов пока нет', delivery: 'Доставка',
-        aiTitle: 'Подберём кофе', aiPh: 'Опишите комнату: площадь, где стоит, стиль, бюджет…', aiGo: 'Подобрать', aiWait: 'Подбираю',
-        aiHints: ['Ванная 5 м², хром, до 10 000 ₽', 'Гостиная 25 м², белый, вертикальный', 'Лофт, чёрный, большой'], aiNone: 'Под запрос ничего не нашлось — попробуйте описать иначе' },
+        aiTitle: 'Подберём кофе', aiPh: 'Опишите вкус: кислинка или мягкость, как завариваете, для себя или в подарок…', aiGo: 'Подобрать', aiWait: 'Подбираю',
+        aiHints: ['Мягкий кофе без кислоты для турки', 'Подарок любителю чая до 2 000 ₽', 'Что-то фруктовое для воронки'], aiNone: 'Под запрос ничего не нашлось — попробуйте описать иначе' },
   en: { tCatalog: 'Catalog', tCart: 'Cart', tOrders: 'Orders', tAi: 'AI pick', tAdmin: 'Admin', all: 'All', search: 'Search coffee and tea',
         inStock: n => `In stock: ${n}`, low: n => `Only ${n} left`, out: 'Out of stock', empty: 'Nothing found',
         checkout: s => `Checkout · ${s}`, noMore: 'No more in stock', addBtn: 'Add to cart', from: 'from', variants: 'options', total: 'Total',
@@ -699,14 +825,16 @@ const T = {
         cartTitle: 'Cart', cartEmpty: 'Your cart is empty', toCatalog: 'Go to catalog',
         checkoutNote: 'Pay by card or SBP via ЮKassa — secure.',
         ordersTitle: 'My orders', ordersEmpty: 'No orders yet', delivery: 'Delivery',
-        aiTitle: 'Find your coffee', aiPh: 'Describe the room: size, placement, style, budget…', aiGo: 'Find', aiWait: 'Thinking',
-        aiHints: ['Bathroom 5 m², chrome, under 10 000 ₽', 'Living room 25 m², white, vertical', 'Loft, black, large'], aiNone: 'Nothing matched — try describing it differently' },
+        aiTitle: 'Find your coffee', aiPh: 'Describe the taste: bright or smooth, how you brew, for yourself or as a gift…', aiGo: 'Find', aiWait: 'Thinking',
+        aiHints: ['Smooth low-acid coffee for a cezve', 'A gift for a tea lover under 2 000 ₽', 'Something fruity for a pour-over'], aiNone: 'Nothing matched — try describing it differently' },
 };
 let lang = 'ru', L = T.ru;
+const tt = (ru, en) => (lang === 'en' ? en : ru);
 let products = [], cart = {}, cat = null, query = '', tab = 'catalog', orders = null;
 let shopInfo = null, sortBy = '', onlyStock = false, coReady = false;
 
 const $ = id => document.getElementById(id);
+const tr = (ru, en) => (lang === 'en' ? en : ru);
 const rub = k => Math.round(k / 100).toLocaleString('ru-RU') + ' ₽';
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const nm = p => (lang === 'en' && p.name_en) || p.name;
@@ -722,6 +850,7 @@ const UNIT = { g: { ru: 'г', en: 'g', bigRu: 'кг', bigEn: 'kg' }, ml: { ru: '
 const gram = (n, u = 'g') => { const x = UNIT[u] || UNIT.g; return n >= 1000 ? (n / 1000).toLocaleString(lang === 'en' ? 'en-GB' : 'ru-RU') + ' ' + (lang === 'en' ? x.bigEn : x.bigRu) : n + ' ' + (lang === 'en' ? x.en : x.ru); };
 const unitShort = u => (UNIT[u] || UNIT.g)[lang === 'en' ? 'en' : 'ru'];
 const qtyText = (p, q) => isW(p) ? gram(q, p.unit) : String(q);
+const priceHtml = p => isW(p) ? `${rub(p.price * 100)}<small class="per"> / 100 ${unitShort(p.unit)}</small>` : rub(p.price);
 const priceText = p => isW(p) ? `${rub(p.price * 100)} / 100 ${unitShort(p.unit)}` : rub(p.price);
 const opt2Of = p => (lang === 'en' && p.option2_label_en) || p.option2_label || '';
 const bundleSum = p => (p.bundle || []).reduce((a, b) => a + (b.price || 0) * b.qty, 0);
@@ -750,7 +879,8 @@ async function api(path, body, tries = 3) {
     }
   }
 }
-function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 1800); }
+const ERR_EN = { 'Такого промокода нет (в демо — KOFE10)': 'No such promo code (in the demo — KOFE10)', 'Корзина пуста': 'Your cart is empty', 'Проверьте номер телефона': 'Please check the phone number', 'Для чека укажите телефон или e-mail': 'Please enter a phone or e-mail for the receipt', 'Выберите город': 'Choose a city', 'Укажите адрес: улица, дом, квартира': 'Enter the address: street, house, flat', 'Выберите перевозчика': 'Choose a carrier', 'Далеко: по расстоянию возим до 30 км. Выберите СДЭК или Почту': 'Too far: distance delivery covers up to 30 km. Choose CDEK or Russian Post', 'Этот заказ уже не ждёт оплату': 'This order is no longer awaiting payment', 'Заказ не найден': 'Order not found' };
+function toast(t) { if (lang === 'en' && ERR_EN[t]) t = ERR_EN[t]; const el = $('toast'); const ref = document.body.classList.contains('open') ? null : (document.querySelector('.composer') || document.querySelector('.tabs')); if (ref) { el.style.top = 'auto'; el.style.bottom = Math.round(innerHeight - ref.getBoundingClientRect().top + 10) + 'px'; } else { el.style.bottom = 'auto'; el.style.top = '16px'; } el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 1800); }
 function haptic(kind) { try { tg?.HapticFeedback?.impactOccurred(kind || 'light'); } catch {} }
 
 const NOIMG = `<div class="noimg">♨️</div>`;
@@ -764,6 +894,9 @@ function applyLang() {
   document.querySelectorAll('[data-t]').forEach(el => el.textContent = L[el.dataset.t]);
   document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
   $('q').placeholder = L.search;
+  $('demoBar').textContent = tr('Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.', 'Demo: sample data only. Promo code KOFE10 gives 10% off.');
+  document.querySelectorAll('#roleSw button').forEach(b => { b.textContent = b.dataset.role === 'owner' ? tr('Владелец', 'Owner') : tr('Покупатель', 'Buyer'); });
+  const rs = $('roleSw'); if (rs) rs.setAttribute('aria-label', tr('Режим демо', 'Demo mode'));
   $('aiTitle').textContent = L.aiTitle; $('aiQ').placeholder = L.aiPh; $('aiGo').textContent = L.aiGo;
   $('aiHints').innerHTML = L.aiHints.map(h => `<button class="chip" data-hint="${esc(h)}">${esc(h)}</button>`).join('');
 }
@@ -797,7 +930,7 @@ const cardHtml = p => `
       <div class="name">${esc(baseOf(p))}</div>
       ${p.group_key && siblings(p).length > 1 ? variantsCard(p)
       : `${p.bundle && p.bundle.length ? `<div class="inside">${lang === 'en' ? 'Inside' : 'Внутри'}: ${p.bundle.slice(0, 3).map(b => esc(bName(b).split(' · ')[0])).join(', ')}${p.bundle.length > 3 ? ' …' : ''}</div>` : ''}
-        <div class="row"><div class="price">${priceText(p)}${bundleSave(p) ? `<div class="was">${rub(bundleSum(p))}</div>` : ''}</div><div data-ctrl="${p.id}">${ctrl(p)}</div></div>`}
+        <div class="row"><div class="price">${priceHtml(p)}${bundleSave(p) ? `<div class="was">${rub(bundleSum(p))}</div>` : ''}</div><div data-ctrl="${p.id}">${ctrl(p)}</div></div>`}
     </div>
   </article>`;
 function renderTools() {
@@ -872,7 +1005,7 @@ function mainButton() {
   const { n, sum } = cartTotals();
   // в корзине — «Оформить», на других вкладках при непустой корзине — «Корзина · сумма»
   if (n > 0 && tab !== 'orders' && tab !== 'admin') {
-    const text = tab === 'checkout' ? (typeof coCost === 'function' && coCost() == null ? 'Рассчитать и оформить' : `Оплатить · ${rub(coTotal())}`) : tab === 'cart' ? L.checkout(rub(sum)) : `🛒 ${L.tCart} · ${rub(sum)}`;
+    const text = tab === 'checkout' ? (typeof coCost === 'function' && coCost() == null ? tt('Рассчитать и оформить', 'Calculate and place order') : tt('Оплатить · ', 'Pay · ') + rub(coTotal())) : tab === 'cart' ? L.checkout(rub(sum)) : `🛒 ${L.tCart} · ${rub(sum)}`;
     tg.MainButton.setParams({ text, color: '#e8590c', text_color: '#ffffff' });
     tg.MainButton.show();
   } else tg.MainButton.hide();
@@ -915,10 +1048,11 @@ async function checkout() {
 }
 
 /* ---------- заказы ---------- */
+const ordDisc = o => Math.max(0, o.items.reduce((a, i) => a + i.price * i.qty, 0) + (o.delivery_cost || 0) - o.total);
 function statusHelp(o) {
   const ru = lang !== 'en', pick = o.pickup;
   const m = {
-    awaiting_payment: ru ? 'Ждём оплату. Нажмите «Оплатить» ниже — ссылка действует недолго.' : 'Waiting for payment. Tap Pay below.',
+    awaiting_payment: ru ? 'Ждём оплату. Нажмите «Оплатить» ниже — ссылка действует недолго.' : 'Waiting for payment. Tap Pay below — the link is valid for a short time.',
     paid: ru ? 'Оплата получена. Скоро начнём собирать заказ.' : 'Payment received. We will start packing soon.',
     assembling: ru ? 'Собираем ваш заказ.' : 'We are packing your order.',
     shipped: pick ? (ru ? 'Заказ готов к выдаче — приходите, мы ждём.' : 'Ready for pickup.') : (ru ? 'Заказ отправлен. Трек-номер появится ниже, если он есть.' : 'Your order is on its way.'),
@@ -932,32 +1066,34 @@ async function loadOrders() {
   let subsData = { subscriptions: [], intervals: [] };
   try { orders = (await api('/orders')).orders; } catch (e) { $('v-orders').innerHTML = `<h1>${L.ordersTitle}</h1><div class="empty">${esc(e.message)}</div>`; return; }
   try { subsData = await api('/subscriptions'); } catch { /* подписки не обязательны для показа заказов */ }
-  const dayName = n => n === 7 ? 'раз в неделю' : n === 14 ? 'раз в 2 недели' : n === 21 ? 'раз в 3 недели' : n === 30 ? 'раз в месяц' : n === 60 ? 'раз в 2 месяца' : `раз в ${n} дн.`;
-  const subsHtml = subsData.subscriptions.length ? `<div class="box"><h3>Регулярные заказы</h3>${subsData.subscriptions.map(x => `
+  const dayName = n => lang === 'en' ? (n === 7 ? 'every week' : n === 14 ? 'every 2 weeks' : n === 21 ? 'every 3 weeks' : n === 30 ? 'every month' : n === 60 ? 'every 2 months' : `every ${n} days`) : (n === 7 ? 'раз в неделю' : n === 14 ? 'раз в 2 недели' : n === 21 ? 'раз в 3 недели' : n === 30 ? 'раз в месяц' : n === 60 ? 'раз в 2 месяца' : `раз в ${n} дн.`);
+  const STL = { awaiting_payment: 'Awaiting payment', paid: 'Paid', assembling: 'Packing', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled' };
+  const subsHtml = subsData.subscriptions.length ? `<div class="box"><h3>${tt('Регулярные заказы', 'Recurring orders')}</h3>${subsData.subscriptions.map(x => `
       <div class="sub" style="padding:8px 0;border-top:1px solid var(--line,#eee)">
-        <div><b>${dayName(x.interval_days)}</b>${x.active ? ` · следующий ${esc(x.next_date.split('-').reverse().join('.'))}` : ' · на паузе'}</div>
+        <div><b>${dayName(x.interval_days)}</b>${x.active ? ` · ${tt('следующий', 'next')} ${esc(x.next_date.split('-').reverse().join('.'))}` : tt(' · на паузе', ' · paused')}</div>
         <div class="note" style="text-align:left">${x.items.map(i => esc(i.name) + (i.unit ? ', ' + gram(i.qty, i.unit) : ' × ' + i.qty)).join(', ')}</div>
         <div class="seg" style="margin-top:6px;flex-wrap:wrap">
-          ${x.active ? `<button data-subact="skip" data-sub="${x.id}">Пропустить раз</button><button data-subact="pause" data-sub="${x.id}">Пауза</button>` : `<button data-subact="resume" data-sub="${x.id}">Возобновить</button>`}
-          <button data-subact="delete" data-sub="${x.id}">Отменить</button>
+          ${x.active ? `<button data-subact="skip" data-sub="${x.id}">${tt('Пропустить раз', 'Skip once')}</button><button data-subact="pause" data-sub="${x.id}">${tt('Пауза', 'Pause')}</button>` : `<button data-subact="resume" data-sub="${x.id}">${tt('Возобновить', 'Resume')}</button>`}
+          <button data-subact="delete" data-sub="${x.id}">${tt('Отменить', 'Cancel')}</button>
         </div>
       </div>`).join('')}
-      <div class="note" style="text-align:left">Деньги не списываются сами: в нужный день пришлём ссылку на оплату.</div></div>` : '';
+      <div class="note" style="text-align:left">${tt('Деньги не списываются сами: в нужный день пришлём ссылку на оплату.', 'Nothing is charged automatically: on the due day we will send you a payment link.')}</div></div>` : '';
   window.__subIntervals = subsData.intervals;
   $('v-orders').innerHTML = `<h1>${L.ordersTitle}</h1>` + subsHtml + (orders.length ? orders.map(o => `
     <div class="order">
-      <div class="top"><span class="code">№ ${esc(o.code)}</span><span class="pill ${esc(o.status)}">${esc(o.statusLabel)}</span></div>
+      <div class="top"><span class="code">№ ${esc(o.code)}</span><span class="pill ${esc(o.status)}">${esc(lang === 'en' ? (o.pickup && o.status === 'shipped' ? 'Ready for pickup' : STL[o.status] || o.statusLabel) : o.statusLabel)}</span></div>
       <div class="stnote">${esc(statusHelp(o))}</div>
       ${o.step >= 0 ? `<div class="steps">${(lang === 'en' ? ['Paid', 'Packing', o.pickup ? 'Ready' : 'Shipped', o.pickup ? 'Picked up' : 'Delivered'] : ['Оплачен', 'Собираем', o.pickup ? 'Готов' : 'Отправлен', o.pickup ? 'Получен' : 'Доставлен'])
         .map((n, i) => `<div class="${i < o.step || o.step === 3 ? 'done' : i === o.step ? 'now' : ''}">${n}</div>`).join('')}</div>` : ''}
-      <ul>${o.items.map(i => `<li><span>${esc(i.name)}${i.unit ? ', ' + gram(i.qty, i.unit) : ' × ' + i.qty}</span><span>${rub(i.price * i.qty)}</span></li>`).join('')}
-        ${o.delivery_cost ? `<li><span>${L.delivery}</span><span>${rub(o.delivery_cost)}</span></li>` : ''}</ul>
+      <ul>${o.items.map(i => `<li><span>${esc(byId(i.id) ? nm(byId(i.id)) : i.name)}${i.unit ? ', ' + gram(i.qty, i.unit) : ' × ' + i.qty}</span><span>${rub(i.price * i.qty)}</span></li>`).join('')}
+        ${o.delivery_cost ? `<li><span>${L.delivery}</span><span>${rub(o.delivery_cost)}</span></li>` : ''}
+        ${ordDisc(o) ? `<li><span>${tt('Скидка', 'Discount')}</span><span>−${rub(ordDisc(o))}</span></li>` : ''}</ul>
       <div class="sum"><span>${L.total}</span><span>${rub(o.total)}</span></div>
-      <div class="meta">${esc(when(o.created_at))}${o.address ? ' · ' + esc(o.address) : ''}</div>
+      <div class="meta">${esc(when(o.created_at))}${o.address ? ' · ' + esc((lang === 'en' && o.address_en) || o.address) : ''}</div>
       ${o.track ? `<div class="track">🚚 ${lang === 'en' ? 'Tracking' : 'Трек-номер'}: <b>${esc(o.track)}</b></div>` : ''}
       ${o.rating ? `<div class="stars">${'★'.repeat(o.rating)}${'☆'.repeat(5 - o.rating)}</div>` : ''}
-      ${o.can_pay ? `<button class="btn pay" data-payorder="${o.id}">💳 Оплатить ${rub(o.total)}</button>` : ''}
-      ${o.status !== 'awaiting_payment' && o.status !== 'cancelled' ? `<div class="seg" style="margin-top:8px;flex-wrap:wrap"><button data-repeat="${o.id}">Повторить заказ</button>${o.can_subscribe ? `<button data-subnew="${o.id}">Повторять регулярно</button>` : ''}</div>` : ''}
+      ${o.can_pay ? `<button class="btn pay" data-payorder="${o.id}">💳 ${tt('Оплатить', 'Pay')} ${rub(o.total)}</button>` : ''}
+      ${o.status !== 'awaiting_payment' && o.status !== 'cancelled' ? `<div class="seg" style="margin-top:8px;flex-wrap:wrap"><button data-repeat="${o.id}">${tt('Повторить заказ', 'Order again')}</button>${o.can_subscribe ? `<button data-subnew="${o.id}">${tt('Повторять регулярно', 'Repeat regularly')}</button>` : ''}</div>` : ''}
     </div>`).join('') : `<div class="empty"><b>📦</b>${L.ordersEmpty}</div>`);
 }
 
@@ -969,7 +1105,7 @@ async function aiAsk() {
   try {
     const d = await api('/ai', { query }, 1);
     $('aiAdvice').textContent = d.advice || '';
-    const list = (d.ids || []).map(byId).filter(Boolean);
+    const seenG = new Set(), list = (d.ids || []).map(byId).filter(Boolean).filter(p => { if (!p.group_key) return true; if (seenG.has(p.group_key)) return false; seenG.add(p.group_key); return true; });
     $('aiGrid').innerHTML = list.length ? list.map(cardHtml).join('') : `<div class="empty">${L.aiNone}</div>`;
   } catch (e) { toast(e.message); }
   finally { $('aiGo').disabled = false; $('aiGo').textContent = L.aiGo; }
@@ -1058,8 +1194,9 @@ document.addEventListener('click', e => {
   else if (d.retry !== undefined) load();
   else if (d.lang && d.lang !== lang) {
     lang = d.lang; applyLang(); renderChips(); renderTools(); renderInfo(); renderGrid(); renderCart();
-    if (tab === 'orders') loadOrders();
-    api('/lang', { lang }).catch(() => {});
+    if (tab === 'checkout' && coInfo) renderCheckout();
+    if (openId) renderSheet();
+    api('/lang', { lang }).catch(() => {}).then(() => { if (tab === 'orders') loadOrders(); });
   }
 });
 $('veil').onclick = closeSheet;
@@ -1224,7 +1361,8 @@ function orderCard(o) {
     <div class="order" id="ord-${o.id}">
       <div class="top"><span class="code">№ ${esc(o.code)}${o.buyer ? ' · ' + esc(o.buyer) : ''}</span><span class="pill ${esc(o.status)}">${esc(stLabel(o))}</span></div>
       <ul>${o.items.map(i => `<li><span>${esc(i.name)}${i.unit ? ', ' + gram(i.qty, i.unit) : ' × ' + i.qty}</span><span>${rub(i.price * i.qty)}</span></li>`).join('')}
-        ${o.pickup ? '' : `<li><span>Доставка</span><span>${o.delivery_cost ? rub(o.delivery_cost) : 'бесплатно'}</span></li>`}</ul>
+        ${o.pickup ? '' : `<li><span>Доставка</span><span>${o.delivery_cost ? rub(o.delivery_cost) : 'бесплатно'}</span></li>`}
+        ${ordDisc(o) ? `<li><span>Скидка${o.discount ? ' ' + o.discount + '%' : ''}</span><span>−${rub(ordDisc(o))}</span></li>` : ''}</ul>
       <div class="sum"><span>Итого</span><span>${rub(o.total)}</span></div>
       <div class="meta">${esc(when(o.created_at))} · ${o.pickup ? '🏠 Самовывоз' : '📍 ' + esc(o.address)}</div>
       ${extra ? `<div class="meta">${extra}</div>` : ''}
@@ -1288,10 +1426,10 @@ async function loadStats() {
       <div class="axis"><span>${dd(s.byDay[0].date)}</span><span>сегодня</span></div>
     </div>
     <div class="box"><h3>Топ товаров</h3>${s.top.length ? s.top.map(t => `
-      <div class="hbar"><div class="hl"><span>${esc(t.name)}</span><b>${rub(t.revenue)}</b></div><div class="ht"><i style="width:${t.revenue / topMax * 100}%"></i></div><small>${t.qty} шт.</small></div>`).join('') : '<div class="note" style="text-align:left">Продаж за период пока нет</div>'}</div>
+      <div class="hbar"><div class="hl"><span>${esc(t.name)}</span><b>${rub(t.revenue)}</b></div><div class="ht"><i style="width:${t.revenue / topMax * 100}%"></i></div><small>${t.unit ? gram(t.qty, t.unit) : t.qty + ' шт.'}</small></div>`).join('') : '<div class="note" style="text-align:left">Продаж за период пока нет</div>'}</div>
     ${s.cities.length ? `<div class="box"><h3>Города</h3>${s.cities.map(c => `
       <div class="hbar"><div class="hl"><span>${esc(c.city)}</span><b>${rub(c.revenue)}</b></div><div class="ht"><i style="width:${c.revenue / cityMax * 100}%"></i></div><small>заказов: ${c.orders}</small></div>`).join('')}</div>` : ''}
-    ${s.lowStock.length ? `<div class="box"><h3>⚠️ Заканчивается</h3>${s.lowStock.map(p => `<div class="aline" data-gotoprod="${p.id}" style="margin:0 0 6px;background:var(--bg)"><div class="mid"><div class="t">${esc(p.name)}</div><div class="s"><span class="warn">${p.stock > 0 ? 'осталось ' + p.stock + ' шт.' : 'нет в наличии'}</span></div></div><span style="color:var(--muted)">›</span></div>`).join('')}</div>` : ''}`;
+    ${s.lowStock.length ? `<div class="box"><h3>⚠️ Заканчивается</h3>${s.lowStock.map(p => `<div class="aline" data-gotoprod="${p.id}" style="margin:0 0 6px;background:var(--bg)"><div class="mid"><div class="t">${esc(p.name)}</div><div class="s"><span class="warn">${p.stock > 0 ? 'осталось ' + (p.unit ? gram(p.stock, p.unit) : p.stock + ' шт.') : 'нет в наличии'}</span></div></div><span style="color:var(--muted)">›</span></div>`).join('')}</div>` : ''}`;
 }
 
 /* — чаты — */
@@ -1366,26 +1504,32 @@ function renderSettings() {
   $('admBody').innerHTML = `
     <div class="box form"><h3>🚚 Доставка по городам</h3>
       ${s.cities.map(c => `
-        <div class="crow ${c.active ? '' : 'off'}" data-cid="${c.id}">
-          <input class="cn" value="${esc(c.city)}"><input class="cp" type="number" inputmode="numeric" value="${k2r(c.price)}"><span class="rub">₽</span>
-          <label class="sw"><input type="checkbox" class="ca" ${c.active ? 'checked' : ''}><i></i></label>
-          <button class="mini" data-cdel="${c.id}" aria-label="Удалить">🗑</button>
+        <div class="crow city ${c.active ? '' : 'off'}" data-cid="${c.id}">
+          <input class="cn" value="${esc(c.city)}" aria-label="Город">
+          <div class="cmeta"><span class="cpw"><span class="cl">Цена</span><input class="cp" type="number" inputmode="numeric" value="${k2r(c.price)}" aria-label="Цена доставки, ₽"><span class="rub">₽</span></span>
+            <label class="swl"><span class="swt">Доставляем</span><span class="sw"><input type="checkbox" class="ca" ${c.active ? 'checked' : ''}><i></i></span></label>
+            <button class="mini" data-cdel="${c.id}" aria-label="Удалить">🗑</button></div>
         </div>`).join('')}
-      <div class="crow new"><input id="ncity" placeholder="Новый город"><input id="nprice" type="number" inputmode="numeric" placeholder="Цена"><span class="rub">₽</span><button class="btn small" data-cadd>＋</button></div>
+      <label class="fl">Добавить город</label>
+      <div class="crow new"><input id="ncity" placeholder="Название города" aria-label="Название нового города"><input id="nprice" type="number" inputmode="numeric" placeholder="Цена" aria-label="Цена доставки, ₽"><span class="rub">₽</span><button class="btn small" data-cadd aria-label="Добавить город">＋</button></div>
       <div class="two">
         <div><label>Другие города, ₽</label><input id="dOther" type="number" inputmode="numeric" value="${k2r(d.otherPrice)}"></div>
         <div><label>Бесплатно от суммы, ₽</label><input id="dFree" type="number" inputmode="numeric" value="${d.freeFrom ? k2r(d.freeFrom) : ''}" placeholder="выкл."></div>
       </div>
       <label class="line2"><span>🏠 Самовывоз</span><span class="sw"><input type="checkbox" id="dPickup" ${d.pickup ? 'checked' : ''}><i></i></span></label>
-      <input id="dPickupAddr" placeholder="Адрес и часы самовывоза — покупатель увидит после оплаты" value="${esc(d.pickupAddress || '')}">
+      <label class="fl" for="dPickupAddr">Адрес и часы самовывоза</label>
+      <textarea id="dPickupAddr" rows="2" placeholder="Покупатель увидит адрес после оплаты">${esc(d.pickupAddress || '')}</textarea>
       <div class="actions"><button class="btn" data-dsave>Сохранить доставку</button></div>
     </div>
     <div class="box form"><h3>📦 СДЭК / Почта и доставка по расстоянию</h3>
       <label class="line2"><span>СДЭК / Почта России</span><span class="sw"><input type="checkbox" id="d2Post" ${s.delivery2.post.enabled ? 'checked' : ''}><i></i></span></label>
       <div class="note" style="text-align:left">Цена — фиксированная, вы задаёте её сами (точный тариф перевозчика бот не считает).</div>
-      ${s.delivery2.post.carriers.map((c, i) => `<div class="crow" data-car="${esc(c.id)}"><input class="cn" value="${esc(c.name)}"><input class="cp" type="number" inputmode="numeric" value="${k2r(c.price)}"><span class="rub">₽</span></div>`).join('')}
+      <div class="cap2"><span>Перевозчик</span><span>Цена</span></div>
+      ${s.delivery2.post.carriers.map((c, i) => `<div class="crow" data-car="${esc(c.id)}"><input class="cn" value="${esc(c.name)}" aria-label="Перевозчик"><input class="cp" type="number" inputmode="numeric" value="${k2r(c.price)}" aria-label="Цена, ₽"><span class="rub">₽</span></div>`).join('')}
       <label class="line2"><span>По расстоянию</span><span class="sw"><input type="checkbox" id="d2Dist" ${s.delivery2.distance.enabled ? 'checked' : ''}><i></i></span></label>
-      <input id="d2Origin" placeholder="Откуда отправляете: город, улица, дом" value="${esc(s.delivery2.distance.originAddress || '')}">
+      <label class="fl" for="d2Origin">Откуда отправляете</label>
+      <input id="d2Origin" placeholder="Город, улица, дом" value="${esc(s.delivery2.distance.originAddress || '')}">
+      <label class="fl" for="d2Tiers">Ступени цены по расстоянию</label>
       <textarea id="d2Tiers" placeholder="5 : 200">${esc(s.delivery2.distance.tiers)}</textarea>
       <div class="note" style="text-align:left">Каждая строка: «до скольки км : цена в ₽». Расстояние считается по прямой. Дальше последней ступени бот не возит.</div>
       <div class="actions"><button class="btn" data-d2save>Сохранить</button></div>
@@ -1401,7 +1545,8 @@ function renderSettings() {
           <label class="sw"><input type="checkbox" data-ptoggle="${p.id}" ${p.active ? 'checked' : ''}><i></i></label>
           <button class="mini" data-pdel="${p.id}" aria-label="Удалить">🗑</button>
         </div>`).join('') : '<div class="note" style="text-align:left">Промокодов пока нет</div>'}
-      <div class="two3"><input id="pcode" placeholder="КОД" autocapitalize="characters"><input id="ppct" type="number" inputmode="numeric" placeholder="%"><input id="pmax" type="number" inputmode="numeric" placeholder="лимит"></div>
+      <label class="fl">Новый промокод</label>
+      <div class="two3"><div><span class="cl">Код</span><input id="pcode" placeholder="SPRING" autocapitalize="characters"></div><div><span class="cl">Скидка, %</span><input id="ppct" type="number" inputmode="numeric" placeholder="10"></div><div><span class="cl">Лимит, раз</span><input id="pmax" type="number" inputmode="numeric" placeholder="нет"></div></div>
       <div class="actions"><button class="btn" data-padd>Создать промокод</button></div>
     </div>
     <div class="box"><h3>📦 Резервная копия</h3>
@@ -1473,7 +1618,7 @@ document.addEventListener('click', async e => {
 
 
 /* ---------- оформление и оплата ---------- */
-let co = { delivery: 'city', city: '', other: '', address: '', phone: '', email: '', carrier: '', quote: null, promo: '', promoPct: 0, promoOk: '' }, coInfo = null;
+let co = { delivery: 'city', city: '', other: '', address: '', phone: '', email: '', carrier: '', quote: null, promo: '', promoPct: 0, promoOk: false }, coInfo = null;
 const coGoods = () => { const { sum } = cartTotals(); return sum - (co.promoPct ? Math.round(sum * co.promoPct / 100) : 0); };
 const coFree = () => Boolean(coInfo && coInfo.freeFrom > 0 && co.delivery !== 'pickup' && coGoods() >= coInfo.freeFrom);
 const coKey = () => [co.city, co.other, co.address].join('|').trim().toLowerCase();
@@ -1492,21 +1637,22 @@ const coCost = () => {
 async function openCheckout() {
   if (!cartTotals().n) { toast(L.cartEmpty); return; }
   go('checkout');
+  if (!coInfo) $('v-checkout').innerHTML = `<h1>${tt('Оформление', 'Checkout')}</h1><div class="skel" style="aspect-ratio:3/1"></div>`;
+  /* условия доставки владелец может менять — берём свежие при каждом открытии */
+  try { shopInfo = await api('/checkout-info'); } catch (e) { $('v-checkout').innerHTML = `<h1>${tt('Оформление', 'Checkout')}</h1><div class="empty">${esc(e.message)}<br><br><button class="btn ghost" data-checkout>${tt('Повторить', 'Retry')}</button></div>`; return; }
+  coInfo = shopInfo;
+  if (co.city !== '__other' && !coInfo.cities.some(c => c.city === co.city)) co.city = coInfo.cities.length ? (coInfo.cities.find(c => /петербург/i.test(c.city)) || coInfo.cities[0]).city : '__other';
+  if (!coInfo.pickup && co.delivery === 'pickup') co.delivery = 'city';
+  if (co.delivery === 'post' && !coInfo.post) co.delivery = 'city';
+  if (co.delivery === 'distance' && !coInfo.distance) co.delivery = 'city';
+  if (!coInfo.post) co.carrier = ''; else if (!coInfo.post.carriers.some(c => c.id === co.carrier)) co.carrier = coInfo.post.carriers[0]?.id || '';
   if (!coReady) {
-    if (!shopInfo) {
-      $('v-checkout').innerHTML = `<h1>Оформление</h1><div class="skel" style="aspect-ratio:3/1"></div>`;
-      try { shopInfo = await api('/checkout-info'); } catch (e) { $('v-checkout').innerHTML = `<h1>Оформление</h1><div class="empty">${esc(e.message)}<br><br><button class="btn ghost" data-checkout>Повторить</button></div>`; return; }
-    }
-    coInfo = shopInfo;
-    if (!co.city && coInfo.cities.length) co.city = (coInfo.cities.find(c => /петербург/i.test(c.city)) || coInfo.cities[0]).city;
-    if (!co.city) co.city = '__other';
-    if (!coInfo.pickup && co.delivery === 'pickup') co.delivery = 'city';
-    if (coInfo.post && !co.carrier) co.carrier = coInfo.post.carriers[0]?.id || '';
     const saved = String(coInfo.contact || '').split(/\s+/);
     if (!co.phone) co.phone = saved.find(x => !x.includes('@') && x.replace(/\D/g, '').length >= 10) || '';
     if (!co.email) co.email = saved.find(x => x.includes('@')) || '';
     coReady = true;
   }
+  if (co.promoPct) { try { const d = await api('/promo', { code: co.promo }, 1); co.promoPct = d.percent; } catch (e) { co.promoPct = 0; co.promoOk = false; } }
   co.err = {};
   renderCheckout();
 }
@@ -1526,48 +1672,48 @@ function renderCheckout() {
   const cityName = c => (lang === 'en' && c.city_en) || c.city;
   const minCity = coInfo.cities.length ? Math.min(...coInfo.cities.map(c => c.price)) : coInfo.otherPrice;
   const tiles = [
-    ['city', '🚚', 'Курьер по городу', `от ${rub(minCity)} · привезём домой`],
-    ...(coInfo.pickup ? [['pickup', '🏠', 'Самовывоз', 'бесплатно · заберёте сами']] : []),
-    ...(coInfo.post ? [['post', '📦', 'СДЭК / Почта России', `от ${rub(Math.min(...coInfo.post.carriers.map(c => c.price)))} · в другой город`]] : []),
-    ...(coInfo.distance ? [['distance', '📍', 'Доставка по расстоянию', `до ${coInfo.distance.maxKm} км · цена по адресу`]] : []),
+    ['city', '🚚', tt('Курьер по городу', 'City courier'), tt(`от ${rub(minCity)} · привезём домой`, `from ${rub(minCity)} · to your door`)],
+    ...(coInfo.pickup ? [['pickup', '🏠', tt('Самовывоз', 'Pickup'), tt('бесплатно · заберёте сами', 'free · collect it yourself')]] : []),
+    ...(coInfo.post ? [['post', '📦', tt('СДЭК / Почта России', 'CDEK / Russian Post'), tt(`от ${rub(Math.min(...coInfo.post.carriers.map(c => c.price)))} · в другой город`, `from ${rub(Math.min(...coInfo.post.carriers.map(c => c.price)))} · to another city`)]] : []),
+    ...(coInfo.distance ? [['distance', '📍', tt('Доставка по расстоянию', 'Delivery by distance'), tt(`до ${coInfo.distance.maxKm} км · цена по адресу`, `up to ${coInfo.distance.maxKm} km · price by address`)]] : []),
   ];
   const lines = Object.entries(cart).map(([id, q]) => ({ p: byId(id), q })).filter(x => x.p);
-  const addr = (ph = 'Улица, дом, квартира, подъезд') => fld('coAddr', 'Адрес', `<textarea id="coAddr" class="${bad('coAddr')}" placeholder="${ph}">${esc(co.address)}</textarea>`);
+  const addr = (ph = tt('Улица, дом, квартира, подъезд', 'Street, house, flat, entrance')) => fld('coAddr', tt('Адрес', 'Address'), `<textarea id="coAddr" class="${bad('coAddr')}" placeholder="${ph}">${esc(co.address)}</textarea>`);
   let body;
-  if (co.delivery === 'pickup') body = `<div class="note" style="text-align:left;margin:4px 0 0">${coInfo.pickupAddress ? '📍 ' + esc(coInfo.pickupAddress) + '<br>' : ''}Напишем в чат, когда заказ будет готов к выдаче.</div>`;
-  else if (co.delivery === 'city') body = fld('coCity', 'Город', `<select id="coCity">${coInfo.cities.map(c => `<option value="${esc(c.city)}" ${co.city === c.city ? 'selected' : ''}>${esc(cityName(c))} — ${rub(c.price)}</option>`).join('')}
-          <option value="__other" ${co.city === '__other' ? 'selected' : ''}>Другой город — ${rub(coInfo.otherPrice)}</option></select>`)
-    + (co.city === '__other' ? fld('coOther', 'Название города', `<input id="coOther" class="${bad('coOther')}" placeholder="Например, Тверь" value="${esc(co.other)}">`) : '') + addr();
-  else if (co.delivery === 'post') body = fld('coCarrier', 'Перевозчик', `<select id="coCarrier">${coInfo.post.carriers.map(c => `<option value="${esc(c.id)}" ${co.carrier === c.id ? 'selected' : ''}>${esc(c.name)} — ${rub(c.price)}</option>`).join('')}</select>`)
-    + fld('coOther', 'Город', `<input id="coOther" class="${bad('coOther')}" placeholder="Город получателя" value="${esc(co.other)}">`) + addr('Улица, дом, квартира — или пункт выдачи и индекс')
-    + `<div class="note" style="text-align:left">Отправим выбранным перевозчиком и пришлём трек-номер в этот чат.</div>`;
-  else body = fld('coOther', 'Город', `<input id="coOther" class="${bad('coOther')}" placeholder="Ваш город" value="${esc(co.other)}">`) + addr()
-    + `<button class="btn ghost" data-quote style="margin-top:8px">Рассчитать стоимость</button>
-       <div class="note" style="text-align:left">${co.quote && co.quote.key === coKey() ? `✓ Расстояние ≈ ${co.quote.km} км — доставка ${rub(co.quote.delivery)}` : `Возим до ${coInfo.distance.maxKm} км. Стоимость зависит от расстояния до вашего адреса.`}</div>`;
-  $('v-checkout').innerHTML = `<h1>Оформление</h1>
-    <div class="steps2"><b>① Получение</b><span>② Оплата</span><span>③ Статус в чате</span></div>
-    <div class="box"><h3>Ваш заказ</h3>
+  if (co.delivery === 'pickup') body = `<div class="note" style="text-align:left;margin:4px 0 0">${coInfo.pickupAddress ? '📍 ' + esc(coInfo.pickupAddress) + '<br>' : ''}${tt('Напишем в чат, когда заказ будет готов к выдаче.', "We'll message you in the chat when your order is ready for pickup.")}</div>`;
+  else if (co.delivery === 'city') body = fld('coCity', tt('Город', 'City'), `<select id="coCity">${coInfo.cities.map(c => `<option value="${esc(c.city)}" ${co.city === c.city ? 'selected' : ''}>${esc(cityName(c))} — ${rub(c.price)}</option>`).join('')}
+          <option value="__other" ${co.city === '__other' ? 'selected' : ''}>${tt('Другой город', 'Other city')} — ${rub(coInfo.otherPrice)}</option></select>`)
+    + (co.city === '__other' ? fld('coOther', tt('Название города', 'City name'), `<input id="coOther" class="${bad('coOther')}" placeholder="${tt('Например, Тверь', 'E.g. Tver')}" value="${esc(co.other)}">`) : '') + addr();
+  else if (co.delivery === 'post') body = fld('coCarrier', tt('Перевозчик', 'Carrier'), `<select id="coCarrier">${coInfo.post.carriers.map(c => `<option value="${esc(c.id)}" ${co.carrier === c.id ? 'selected' : ''}>${esc(c.name)} — ${rub(c.price)}</option>`).join('')}</select>`)
+    + fld('coOther', tt('Город', 'City'), `<input id="coOther" class="${bad('coOther')}" placeholder="${tt('Город получателя', 'Recipient city')}" value="${esc(co.other)}">`) + addr(tt('Улица, дом, квартира — или пункт выдачи и индекс', 'Street, house, flat — or a pickup point and postcode'))
+    + `<div class="note" style="text-align:left">${tt('Отправим выбранным перевозчиком и пришлём трек-номер в этот чат.', 'We will ship with the chosen carrier and send the tracking number to this chat.')}</div>`;
+  else body = fld('coOther', tt('Город', 'City'), `<input id="coOther" class="${bad('coOther')}" placeholder="${tt('Ваш город', 'Your city')}" value="${esc(co.other)}">`) + addr()
+    + `<button class="btn ghost" data-quote style="margin-top:8px">${tt('Рассчитать стоимость', 'Calculate the cost')}</button>
+       <div class="note" style="text-align:left">${co.quote && co.quote.key === coKey() ? tt(`✓ Расстояние ≈ ${co.quote.km} км — доставка ${rub(co.quote.delivery)}`, `✓ Distance ≈ ${co.quote.km} km — delivery ${rub(co.quote.delivery)}`) : tt(`Возим до ${coInfo.distance.maxKm} км. Стоимость зависит от расстояния до вашего адреса.`, `We deliver up to ${coInfo.distance.maxKm} km. The price depends on the distance to your address.`)}</div>`;
+  $('v-checkout').innerHTML = `<h1>${tt('Оформление', 'Checkout')}</h1>
+    <div class="steps2"><b>${tt('① Получение', '① Delivery')}</b><span>${tt('② Оплата', '② Payment')}</span><span>${tt('③ Статус в чате', '③ Status in chat')}</span></div>
+    <div class="box"><h3>${tt('Ваш заказ', 'Your order')}</h3>
       <ul class="osum">${lines.map(({ p, q }) => `<li><span>${esc(nm(p))}${isW(p) ? ', ' + gram(q, p.unit) : q > 1 ? ' × ' + q : ''}</span><span>${rub(p.price * q)}</span></li>`).join('')}</ul></div>
-    <div class="box"><h3>Как получить</h3>
+    <div class="box"><h3>${tt('Как получить', 'How to receive')}</h3>
       ${tiles.map(([k, ic, t, sub]) => `<button class="tile ${co.delivery === k ? 'on' : ''}" data-dl="${k}"><i>${ic}</i><span><div class="tt">${t}</div><div class="ts">${sub}</div></span><span class="dot"></span></button>`).join('')}
-      ${co.delivery !== 'pickup' && coInfo.freeFrom > 0 ? `<div class="note" style="text-align:left;margin:0 0 4px">${coFree() ? '✓ Доставка для вас бесплатная' : `Бесплатная доставка от ${rub(coInfo.freeFrom)} — осталось ${rub(coInfo.freeFrom - coGoods())}`}</div>` : ''}
+      ${co.delivery !== 'pickup' && coInfo.freeFrom > 0 ? `<div class="note" style="text-align:left;margin:0 0 4px">${coFree() ? tt('✓ Доставка для вас бесплатная', '✓ Delivery is free for you') : tt(`Бесплатная доставка от ${rub(coInfo.freeFrom)} — осталось ${rub(coInfo.freeFrom - coGoods())}`, `Free delivery from ${rub(coInfo.freeFrom)} — ${rub(coInfo.freeFrom - coGoods())} to go`)}</div>` : ''}
       ${body}</div>
-    <div class="box"><h3>Контакты</h3>
-      ${fld('coPhone', 'Телефон', `<input id="coPhone" class="${bad('coPhone')}" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" value="${esc(co.phone)}">`, 'чтобы связаться по заказу')}
-      ${coInfo.receipts ? fld('coEmail', 'E-mail', `<input id="coEmail" class="${bad('coEmail')}" type="email" inputmode="email" autocomplete="email" placeholder="name@mail.ru" value="${esc(co.email)}">`, 'необязательно — для чека') + `<div class="note" style="text-align:left">Чек придёт после оплаты на телефон или e-mail.</div>` : ''}
+    <div class="box"><h3>${tt('Контакты', 'Contacts')}</h3>
+      ${fld('coPhone', tt('Телефон', 'Phone'), `<input id="coPhone" class="${bad('coPhone')}" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" value="${esc(co.phone)}">`, tt('чтобы связаться по заказу', 'so we can reach you about the order'))}
+      ${coInfo.receipts ? fld('coEmail', 'E-mail', `<input id="coEmail" class="${bad('coEmail')}" type="email" inputmode="email" autocomplete="email" placeholder="name@mail.ru" value="${esc(co.email)}">`, tt('необязательно — для чека', 'optional — for the receipt')) + `<div class="note" style="text-align:left">${tt('Чек придёт после оплаты на телефон или e-mail.', 'The receipt will be sent after payment to your phone or e-mail.')}</div>` : ''}
     </div>
-    <div class="box"><h3>Промокод</h3>
-      <div class="promo"><input id="coPromo" placeholder="Если есть" value="${esc(co.promo)}" autocapitalize="characters"><button class="btn ghost" data-promo>Применить</button></div>
-      ${co.promoOk ? `<div class="fld ok">✓ ${esc(co.promoOk)}</div>` : ''}
+    <div class="box"><h3>${tt('Промокод', 'Promo code')}</h3>
+      <div class="promo"><input id="coPromo" placeholder="${tt('Если есть', 'If you have one')}" value="${esc(co.promo)}" autocapitalize="characters"><button class="btn ghost" data-promo>${tt('Применить', 'Apply')}</button></div>
+      ${co.promoOk && co.promoPct ? `<div class="fld ok">✓ ${tt(`Скидка ${co.promoPct}%`, `Discount ${co.promoPct}%`)}</div>` : ''}
     </div>
     <div class="box">
-      <div class="sumrow"><span>Товары</span><span>${rub(sum)}</span></div>
-      ${disc ? `<div class="sumrow"><span>Скидка ${co.promoPct}%</span><span>−${rub(disc)}</span></div>` : ''}
-      <div class="sumrow"><span>Доставка</span><span>${co.delivery === 'pickup' || coFree() ? 'бесплатно' : dcost == null ? 'посчитаем по адресу' : rub(dcost)}</span></div>
-      <div class="sumrow big"><span>К оплате</span><span>${dcost == null ? '—' : rub(total)}</span></div>
+      <div class="sumrow"><span>${tt('Товары', 'Items')}</span><span>${rub(sum)}</span></div>
+      ${disc ? `<div class="sumrow"><span>${tt(`Скидка ${co.promoPct}%`, `Discount ${co.promoPct}%`)}</span><span>−${rub(disc)}</span></div>` : ''}
+      <div class="sumrow"><span>${L.delivery}</span><span>${co.delivery === 'pickup' || coFree() ? tt('бесплатно', 'free') : dcost == null ? tt('посчитаем по адресу', 'calculated by address') : rub(dcost)}</span></div>
+      <div class="sumrow big"><span>${tt('К оплате', 'To pay')}</span><span>${dcost == null ? '—' : rub(total)}</span></div>
     </div>
-    ${inTg ? '' : `<button class="btn" data-pay>${dcost == null ? 'Рассчитать и оформить' : 'Оплатить · ' + rub(total)}</button>`}
-    <div class="note">${L.checkoutNote} Деньги списываются только после вашего подтверждения оплаты.</div>`;
+    ${inTg ? '' : `<button class="btn" data-pay>${dcost == null ? tt('Рассчитать и оформить', 'Calculate and place order') : tt('Оплатить · ', 'Pay · ') + rub(total)}</button>`}
+    <div class="note">${L.checkoutNote} ${tt('Деньги списываются только после вашего подтверждения оплаты.', 'You are charged only after you confirm the payment.')}</div>`;
   const clr = el => { el.classList.remove('bad'); el.closest('.fld')?.querySelector('.ferr')?.remove(); if (co.err) delete co.err[el.id]; };
   const bind = (id, k, rerender) => { const el = $(id); if (el) el[el.tagName === 'SELECT' ? 'onchange' : 'oninput'] = e => { co[k] = e.target.value; clr(el); if (rerender) renderCheckout(); else mainButton(); }; };
   bind('coCity', 'city', true); bind('coCarrier', 'carrier', true); bind('coOther', 'other'); if ($('coOther') && co.delivery === 'city') $('coOther').onchange = () => renderCheckout();
@@ -1577,7 +1723,7 @@ function renderCheckout() {
 }
 function coTotal() { return coGoods() + (coCost() || 0); }
 async function quoteDistance() {
-  if (co.other.trim().length < 2 || co.address.trim().length < 5) { toast('Укажите город и адрес'); return false; }
+  if (co.other.trim().length < 2 || co.address.trim().length < 5) { toast(tt('Укажите город и адрес', 'Enter a city and an address')); return false; }
   try {
     const d = await api('/delivery-quote', { delivery: 'distance', city: co.other.trim(), address: co.address, promo: co.promoPct ? co.promo : '' }, 1);
     co.quote = { key: coKey(), delivery: d.delivery, km: d.km };
@@ -1586,20 +1732,20 @@ async function quoteDistance() {
 }
 async function applyPromo() {
   co.promo = ($('coPromo')?.value || '').trim();
-  if (!co.promo) { co.promoPct = 0; co.promoOk = ''; renderCheckout(); return; }
-  try { const d = await api('/promo', { code: co.promo }, 1); co.promoPct = d.percent; co.promoOk = `Скидка ${d.percent}%`; haptic('medium'); }
-  catch (e) { co.promoPct = 0; co.promoOk = ''; toast(e.message); }
+  if (!co.promo) { co.promoPct = 0; co.promoOk = false; renderCheckout(); return; }
+  try { const d = await api('/promo', { code: co.promo }, 1); co.promoPct = d.percent; co.promoOk = true; haptic('medium'); }
+  catch (e) { co.promoPct = 0; co.promoOk = false; toast(e.message); }
   renderCheckout();
 }
 let paying = false;
 async function pay() {
   if (paying) return;
   const m = co.delivery;
-  if (m === 'city' && co.city === '__other' && co.other.trim().length < 2) return coFail('coOther', 'Укажите город');
-  if ((m === 'post' || m === 'distance') && co.other.trim().length < 2) return coFail('coOther', 'Укажите город');
-  if (m !== 'pickup' && co.address.trim().length < 5) return coFail('coAddr', 'Укажите адрес: улица, дом, квартира');
-  if (co.phone.replace(/\D/g, '').length < 10 && !(co.email && coInfo.receipts)) return coFail('coPhone', 'Введите телефон полностью, например +7 900 123-45-67');
-  if (co.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(co.email.trim())) return coFail('coEmail', 'Проверьте e-mail — например, name@mail.ru');
+  if (m === 'city' && co.city === '__other' && co.other.trim().length < 2) return coFail('coOther', tt('Укажите город', 'Enter a city'));
+  if ((m === 'post' || m === 'distance') && co.other.trim().length < 2) return coFail('coOther', tt('Укажите город', 'Enter a city'));
+  if (m !== 'pickup' && co.address.trim().length < 5) return coFail('coAddr', tt('Укажите адрес: улица, дом, квартира', 'Enter an address: street, house, flat'));
+  if (co.phone.replace(/\D/g, '').length < 10 && !(co.email && coInfo.receipts)) return coFail('coPhone', tt('Введите телефон полностью, например +7 900 123-45-67', 'Enter the full phone number, e.g. +7 900 123-45-67'));
+  if (co.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(co.email.trim())) return coFail('coEmail', tt('Проверьте e-mail — например, name@mail.ru', 'Check the e-mail, e.g. name@mail.ru'));
   if (m === 'distance' && coCost() == null) { await quoteDistance(); return; } // сначала покажем цену, потом оплата
   if (co.promo && !co.promoPct) { await applyPromo(); if (!co.promoPct) return; }
   paying = true; tg?.MainButton?.showProgress?.();
@@ -1607,11 +1753,13 @@ async function pay() {
     const city = m === 'city' ? (co.city === '__other' ? co.other.trim() : co.city) : m === 'pickup' ? '' : co.other.trim();
     const d = await api('/order', { delivery: m, city, carrier: m === 'post' ? co.carrier : '', address: co.address, phone: co.phone, email: co.email.trim(), promo: co.promoPct ? co.promo : '' }, 1);
     haptic('heavy');
-    cart = {}; renderCart(); renderGrid();
-    co.promo = ''; co.promoPct = 0; co.promoOk = ''; co.quote = null;
+    cart = {};
+    try { products = (await api('/catalog')).products; renderChips(); } catch (e) {}
+    renderCart(); renderGrid();
+    co.promo = ''; co.promoPct = 0; co.promoOk = false; co.quote = null;
     if (tg?.openLink) tg.openLink(d.pay_url); else window.open(d.pay_url, '_blank');
     go('orders');
-    toast(`Заказ ${d.code} создан — осталось оплатить`);
+    toast(tt(`Заказ ${d.code} создан — осталось оплатить`, `Order ${d.code} created — now pay for it`));
   } catch (e) { toast(e.message); }
   finally { paying = false; tg?.MainButton?.hideProgress?.(); }
 }
@@ -1638,28 +1786,29 @@ document.addEventListener('click', async e => {
     if (d.repeat) {
       const r = await api(`/orders/${d.repeat}/repeat`, {}, 1);
       cart = r.cart || {}; renderCart(); renderGrid(); go('cart');
-      toast(r.missing ? 'Часть товаров закончилась — добавили то, что есть' : 'Товары в корзине');
+      toast(r.missing ? tt('Часть товаров закончилась — добавили то, что есть', 'Some items ran out — we added what is available') : tt('Товары в корзине', 'Items added to the cart'));
     } else if (d.subnew) {
       const opts = window.__subIntervals || [14, 30];
       const days = await pickInterval(opts);
       if (!days) return;
       await api('/subscriptions', { order_id: +d.subnew, days }, 1);
-      toast('Регулярный заказ настроен'); loadOrders();
+      toast(tt('Регулярный заказ настроен', 'Recurring order set up')); loadOrders();
     } else if (d.subact) {
-      if (d.subact === 'delete' && !(await ask('Отменить регулярный заказ?'))) return;
+      if (d.subact === 'delete' && !(await ask(tt('Отменить регулярный заказ?', 'Cancel the recurring order?')))) return;
       await api(`/subscriptions/${d.sub}`, { action: d.subact }, 1);
       loadOrders();
     }
   } catch (err) { toast(err.message); }
 });
 function pickInterval(opts) {
-  const name = n => n === 7 ? 'Раз в неделю' : n === 14 ? 'Раз в 2 недели' : n === 21 ? 'Раз в 3 недели' : n === 30 ? 'Раз в месяц' : n === 60 ? 'Раз в 2 месяца' : `Раз в ${n} дн.`;
+  const name = n => lang === 'en' ? (n === 7 ? 'Every week' : n === 14 ? 'Every 2 weeks' : n === 21 ? 'Every 3 weeks' : n === 30 ? 'Every month' : n === 60 ? 'Every 2 months' : `Every ${n} days`) : (n === 7 ? 'Раз в неделю' : n === 14 ? 'Раз в 2 недели' : n === 21 ? 'Раз в 3 недели' : n === 30 ? 'Раз в месяц' : n === 60 ? 'Раз в 2 месяца' : `Раз в ${n} дн.`);
   return new Promise(res => {
     const w = document.createElement('div');
     w.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99;display:flex;align-items:flex-end';
-    w.innerHTML = `<div style="background:var(--bg,#fff);width:100%;padding:16px;border-radius:16px 16px 0 0"><h3 style="margin:0 0 10px">Как часто повторять?</h3>
+    w.id = 'intervalPick';
+    w.innerHTML = `<div style="background:var(--card,#fff);color:var(--text,#222);width:100%;max-width:560px;margin:0 auto;padding:16px calc(16px + env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0"><h3 style="margin:0 0 10px">${tt('Как часто повторять?', 'How often to repeat?')}</h3>
       ${opts.map(n => `<button class="btn ghost" data-n="${n}" style="width:100%;margin-bottom:8px">${name(n)}</button>`).join('')}
-      <button class="btn ghost" data-n="0" style="width:100%">Закрыть</button></div>`;
+      <button class="btn ghost" data-n="0" style="width:100%">${tt('Закрыть', 'Close')}</button></div>`;
     w.onclick = ev => { const b = ev.target.closest('[data-n]'); if (b || ev.target === w) { w.remove(); res(b ? +b.dataset.n : 0); } };
     document.body.appendChild(w);
   });
@@ -1686,7 +1835,7 @@ async function load() {
   }
 }
 applyLang();
-load();
+load().then(() => { if (isOwner && tab === 'catalog' && !new URLSearchParams(location.search).get('tab')) go('admin'); });
 </script>
 <script>
 (() => {

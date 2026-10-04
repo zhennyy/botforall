@@ -166,7 +166,7 @@ const AR = [
     p.photo = URL.createObjectURL(raw); /* локальный превью: файл никуда не отправляется */
     return { ok: true }; }],
   ['POST', /^\/admin\/products\/(\d+)\/photo-url$/, () => err(400, 'В демо внешние ссылки отключены — загрузите фото кнопкой «📷»')],
-  ['POST', /^\/admin\/backup$/, () => err(400, 'В демо резервная копия не создаётся')],
+  ['POST', /^\/admin\/backup$/, () => ({ ok: true })],
   ['GET', /^\/admin\/orders$/, () => ({ orders: allOrders().sort((a, b) => b.at - a.at).map(admOrder) })],
   ['POST', /^\/admin\/orders\/(\d+)\/status$/, (b, r) => {
     const o = allOrders().find(x => x.id == r[1]); if (!o) return err(400, 'Заказ не найден');
@@ -250,7 +250,7 @@ function showPay(id) {
   const sum = Math.round(o.total / 100).toLocaleString('ru-RU') + ' ₽';
   const en = st.lang === 'en';
   box.innerHTML = en ? '<div class="c"><h2>Demo payment</h2><p>The YooKassa payment page would open here. In this demo no money is charged and no card is needed.</p><p><b>Order № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Pay ' + sum + ' (demo)</button><button class="g" data-no>Close, I will pay later</button></div>'
-    : '<div class="c"><h2>Демо-оплата</h2><p>Здесь открылась бы страница ЮKassa. В демо деньги не списываются, карта не нужна.</p><p><b>Заказ № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Оплатить ' + sum + ' (демо)</button><button class="g" data-no>Закрыть, оплачу позже</button></div>';
+    : '<div class="c"><h2>Демо-оплата</h2><p>Здесь открылась бы страница ЮKassa. В&nbsp;демо деньги не&nbsp;списываются, карта не нужна.</p><p><b>Заказ № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Оплатить ' + sum + ' (демо)</button><button class="g" data-no>Закрыть, оплачу позже</button></div>';
   box.onclick = e => {
     if (e.target.matches('[data-ok]')) {
       if (o.status === 'awaiting_payment') { o.status = 'paid'; o.was_paid = true; advance(o); }
@@ -266,16 +266,17 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
 </script>
 <style>
   :root{
-    --bg:#f5f3f0; --card:#ffffff; --text:#1f2328; --muted:#7b8088; --line:#ebe7e2;
-    --accent:#e8590c; --accent-soft:#fff1e8; --ok:#2f9e44; --bad:#c92a2a; --photo:#ffffff;
+    --bg:#f5f3f0; --card:#ffffff; --text:#1f2328; --muted:#646a72; --line:#e3ded8;
+    --accent:#d9480f; --accent-soft:#fff1e8; --ok:#2f9e44; --bad:#c92a2a; --photo:#ffffff;
     --r:18px; --tabh:64px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){ --bg:#141518; --card:#1d1f23; --text:#f1f3f5; --muted:#9aa0a6; --line:#2b2e33;
-      --accent-soft:#3a2416; --photo:#25272b; }
+      --accent-soft:#3a2416; --photo:#25272b; --accent:#e8590c; }
   }
   :root[data-theme="dark"]{ --bg:#141518; --card:#1d1f23; --text:#f1f3f5; --muted:#9aa0a6; --line:#2b2e33;
-      --accent-soft:#3a2416; --photo:#25272b; }
+      --accent-soft:#3a2416; --photo:#25272b; --accent:#e8590c; }
+  ::placeholder{color:var(--muted);opacity:.85}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
   body{padding-bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom))}
@@ -304,7 +305,7 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .ph{aspect-ratio:1/1;background:var(--photo);display:grid;place-items:center;position:relative;border-bottom:1px solid var(--line);overflow:hidden}
   .ph img{width:100%;height:100%;object-fit:cover}
   .noimg{font-size:40px;opacity:.35}
-  .tag{position:absolute;left:8px;top:8px;font-size:11px;font-weight:600;padding:4px 8px;border-radius:8px;background:var(--card);color:var(--muted);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .tag{position:absolute;left:8px;top:8px;font-size:12px;font-weight:600;padding:4px 8px;border-radius:8px;background:var(--card);color:var(--muted);box-shadow:0 1px 4px rgba(0,0,0,.12)}
   .tag.low{color:var(--accent)} .tag.out{color:var(--bad)}
   .card.out .ph img{filter:grayscale(1);opacity:.5}
   .info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
@@ -344,6 +345,8 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .order li{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
   .order .sum{display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-weight:700}
   .order .meta{font-size:12px;color:var(--muted);margin-top:6px}
+  .order li>span:first-child{min-width:0;overflow-wrap:anywhere}
+  .order li>span:last-child,.order .sum span,.hbar .hl b{white-space:nowrap;flex:none}
 
   .ai textarea{width:100%;min-height:96px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:12px;font:inherit;resize:vertical;outline:0}
   .hints{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 12px}
@@ -354,10 +357,10 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
 
   .tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
   .tabs .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--tabh)}
-  .tabs button{border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;font-weight:600;cursor:pointer;position:relative}
+  .tabs button{border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:600;cursor:pointer;position:relative}
   .tabs button i{font-style:normal;font-size:21px;line-height:1;filter:grayscale(1);opacity:.7}
   .tabs button.on{color:var(--accent)} .tabs button.on i{filter:none;opacity:1}
-  .tabs b{position:absolute;top:7px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:#fff;font-size:11px;display:grid;place-items:center}
+  .tabs b{position:absolute;top:7px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:#fff;font-size:12px;display:grid;place-items:center}
   .tabs b:empty{display:none}
   section.view{display:none} section.view.on{display:block}
 
@@ -377,7 +380,7 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .sheet .act .step{height:48px;border-radius:14px}
   .sheet .act .step button{width:44px;height:48px;font-size:24px}
   .x{position:absolute;z-index:3;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;font-size:16px;cursor:pointer}
-  .toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom));top:auto;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;transition:.25s;z-index:20;max-width:90vw;text-align:center}
+  .toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom));top:auto;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;transition:.25s;z-index:20;width:max-content;max-width:min(90vw,420px);text-align:center}
   .open .toast{bottom:auto;top:16px;transform:translate(-50%,-10px)}
   .toast.on,.open .toast.on{opacity:1;transform:translate(-50%,0)}
   .skel{background:linear-gradient(90deg,var(--card),var(--line),var(--card));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r);aspect-ratio:3/4}
@@ -390,7 +393,7 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .aline{display:flex;gap:12px;align-items:center;background:var(--card);border-radius:16px;padding:10px;margin-bottom:8px;cursor:pointer}
   .aline .thumb{width:56px;height:56px;border-radius:12px;overflow:hidden;background:var(--photo);display:grid;place-items:center;flex:none}
   .aline .thumb img{width:100%;height:100%;object-fit:cover} .aline .thumb .noimg{font-size:22px}
-  .aline .mid{flex:1;min-width:0} .aline .t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .aline .mid{flex:1;min-width:0} .aline .t{font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}
   .aline .s{font-size:13px;color:var(--muted);margin-top:3px}
   .aline .s .warn{color:var(--accent);font-weight:600}
   .form label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px}
@@ -414,6 +417,9 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .co select,.co input,.co textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;padding:11px 12px;font:inherit;outline:0}
   .co textarea{min-height:64px;resize:vertical}
   .co .fld{margin-top:10px}
+  .co .lbl,.form .lbl{display:block;font-size:13px;color:var(--muted);margin:0 0 5px}
+  .colh{display:flex;gap:8px;font-size:12px;color:var(--muted);margin:0 0 4px}
+  .colh span{min-width:0}
   .co .promo{display:flex;gap:8px} .co .promo .btn{width:auto;padding:0 16px}
   .co .sumrow{display:flex;justify-content:space-between;padding:4px 0;color:var(--muted)}
   .co .sumrow.big{color:var(--text);font-weight:800;font-size:19px;border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
@@ -422,7 +428,7 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
 
   /* админка 2.0 */
   .chips.adm{padding-top:0;margin-bottom:10px}
-  .chips.adm em,.cr .badge{font-style:normal;background:var(--accent);color:#fff;border-radius:9px;font-size:11px;font-weight:700;padding:1px 6px;margin-left:6px}
+  .chips.adm em,.cr .badge{font-style:normal;background:var(--accent);color:#fff;border-radius:9px;font-size:12px;font-weight:700;padding:1px 6px;margin-left:6px}
   .chips.adm em:empty{display:none}
   .chips.small{padding:0 0 10px} .chips.small .chip{padding:7px 12px;font-size:13px}
   .contact{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
@@ -442,18 +448,18 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .bars.dense{gap:1px}
   .bar{flex:1;height:100%;display:flex;align-items:flex-end;cursor:pointer;min-width:0}
   .bar i{display:block;width:100%;background:var(--accent);border-radius:4px 4px 0 0;opacity:.85}
-  .axis{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:6px}
+  .axis{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px}
   .hbar{margin-bottom:10px} .hbar .hl{display:flex;justify-content:space-between;gap:10px;font-size:14px}
-  .hbar .hl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hbar .hl span{min-width:0;overflow-wrap:anywhere}
   .hbar .ht{height:6px;background:var(--bg);border-radius:3px;margin:5px 0 2px;overflow:hidden} .hbar .ht i{display:block;height:100%;background:var(--accent);border-radius:3px}
   .hbar small{color:var(--muted);font-size:12px}
   .ava{width:44px;height:44px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:18px;flex:none}
-  .cr{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none} .cr small{color:var(--muted);font-size:11.5px}
+  .cr{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none} .cr small{color:var(--muted);font-size:12px}
   .chathead{display:flex;align-items:center;gap:10px;margin-bottom:10px} .chathead b{font-size:17px}
   .msgs{display:flex;flex-direction:column;gap:6px;padding-bottom:80px}
   .msg{max-width:82%;background:var(--card);border-radius:16px 16px 16px 4px;padding:8px 12px;white-space:pre-wrap;word-wrap:break-word;align-self:flex-start}
   .msg.me{align-self:flex-end;background:var(--accent);color:#fff;border-radius:16px 16px 4px 16px}
-  .msg small{display:block;font-size:11px;opacity:.6;margin-top:3px;text-align:right}
+  .msg small{display:block;font-size:12px;opacity:.6;margin-top:3px;text-align:right}
   .msg img{display:block;max-width:100%;border-radius:12px;margin:-2px 0 4px}
   .composer{position:fixed;left:0;right:0;bottom:calc(var(--tabh) + env(safe-area-inset-bottom));z-index:7;display:flex;gap:8px;padding:8px 16px;background:var(--bg);border-top:1px solid var(--line);max-width:760px;margin:0 auto}
   .composer textarea{flex:1;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:18px;padding:10px 14px;font:inherit;resize:none;outline:0;max-height:140px}
@@ -469,7 +475,9 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .sw i::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
   .sw input:checked+i{background:var(--ok)} .sw input:checked+i::after{transform:translateX(18px)}
   .form .line2{display:flex;justify-content:space-between;align-items:center;color:var(--text);font-size:15px;margin:16px 0 8px}
-  .two3{display:grid;grid-template-columns:1.6fr .8fr 1fr;gap:8px;margin-top:6px}
+  .two3{display:grid;grid-template-columns:1.5fr .9fr 1.1fr;gap:8px;margin-top:12px}
+  .form .two3 .lbl{margin:0 0 5px}
+  .form textarea{display:block}
   .form .two3 input,.form .crow input{width:100%}
   .form .crow .cn,.form .crow #ncity{flex:1 1 0;width:auto;min-width:0}
   .form .crow .cp,.form .crow #nprice{flex:none;width:76px}
@@ -477,7 +485,7 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .form .crow .sw input{width:0;height:0}
   /* трекер заказа у покупателя */
   .steps{display:flex;align-items:flex-start;margin:4px 0 12px}
-  .steps div{flex:1;text-align:center;font-size:11.5px;color:var(--muted);position:relative}
+  .steps div{flex:1;text-align:center;font-size:12px;color:var(--muted);position:relative}
   .steps div::before{content:'';display:block;width:14px;height:14px;border-radius:50%;background:var(--line);margin:0 auto 5px;position:relative;z-index:1}
   .steps div::after{content:'';position:absolute;top:6px;left:-50%;width:100%;height:2px;background:var(--line)}
   .steps div:first-child::after{display:none}
@@ -502,10 +510,10 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
     <div class="logo">Radiator<span>Pro</span> 🔥</div>
     <div class="lang" id="lang"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div>
   </header>
-  <div class="dmode" id="dmode" role="group" aria-label="Режим демо"><span>Режим демо</span><div class="sg"><button type="button" data-mode="buyer" class="on" aria-pressed="true">Покупатель</button><button type="button" data-mode="owner" aria-pressed="false">Владелец</button></div></div>
+  <div class="dmode" id="dmode" role="group" aria-label="Режим демо"><span id="dmLbl">Режим демо</span><div class="sg"><button type="button" id="dmBuyer" data-mode="buyer" class="on" aria-pressed="true">Покупатель</button><button type="button" id="dmOwner" data-mode="owner" aria-pressed="false">Владелец</button></div></div>
 
   <section class="view on" id="v-catalog">
-    <label class="search">🔍<input id="q" type="search" autocomplete="off"></label>
+    <label class="search">🔍<input id="q" type="search" autocomplete="off" aria-label="Search"></label>
     <div class="chips" id="chips"></div>
     <main class="grid" id="grid"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></main>
   </section>
@@ -554,6 +562,7 @@ const T = {
         checkoutNote: 'Оплата картой или СБП через ЮKassa — безопасно.',
         ordersTitle: 'Мои заказы', ordersEmpty: 'Заказов пока нет', delivery: 'Доставка',
         aiTitle: 'Подберём радиатор', aiPh: 'Опишите комнату: площадь, где стоит, стиль, бюджет…', aiGo: 'Подобрать', aiWait: 'Подбираю',
+        lblCity: 'Город доставки', lblOther: 'Название города', lblAddr: 'Адрес', lblPhone: 'Телефон', lblPromo: 'Промокод', demoMode: 'Режим демо', buyerMode: 'Покупатель', ownerMode: 'Владелец', aiLbl: 'Ваш запрос',
         aiHints: ['Ванная 5 м², хром, до 10 000 ₽', 'Гостиная 25 м², белый, вертикальный', 'Лофт, чёрный, большой'], aiNone: 'Под запрос ничего не нашлось — попробуйте описать иначе' },
   en: { tCatalog: 'Catalog', tCart: 'Cart', tOrders: 'Orders', tAi: 'AI pick', tAdmin: 'Admin', all: 'All', search: 'Search radiators',
         inStock: n => `In stock: ${n}`, low: n => `Only ${n} left`, out: 'Out of stock', empty: 'Nothing found',
@@ -564,6 +573,7 @@ const T = {
         checkoutNote: 'Pay by card or SBP via ЮKassa — secure.',
         ordersTitle: 'My orders', ordersEmpty: 'No orders yet', delivery: 'Delivery',
         aiTitle: 'Find the right radiator', aiPh: 'Describe the room: size, placement, style, budget…', aiGo: 'Find', aiWait: 'Thinking',
+        lblCity: 'Delivery city', lblOther: 'City name', lblAddr: 'Address', lblPhone: 'Phone', lblPromo: 'Promo code', demoMode: 'Demo mode', buyerMode: 'Buyer', ownerMode: 'Owner', aiLbl: 'Your request',
         aiHints: ['Bathroom 5 m², chrome, under 10 000 ₽', 'Living room 25 m², white, vertical', 'Loft, black, large'], aiNone: 'Nothing matched — try describing it differently' },
 };
 Object.assign(T.ru, { coTitle: 'Оформление', recv: 'Получение', delBtn: '🚚 Доставка', pickBtn: '🏠 Самовывоз', freeYes: '🎉 Доставка бесплатно!',
@@ -619,6 +629,7 @@ function applyLang() {
   document.querySelectorAll('[data-t]').forEach(el => el.textContent = L[el.dataset.t]);
   document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
   $('q').placeholder = L.search;
+  $('dmLbl').textContent = L.demoMode; $('dmBuyer').textContent = L.buyerMode; $('dmOwner').textContent = L.ownerMode; $('dmode').setAttribute('aria-label', L.demoMode); $('aiQ').setAttribute('aria-label', L.aiLbl);
   $('aiTitle').textContent = L.aiTitle; $('aiQ').placeholder = L.aiPh; $('aiGo').textContent = L.aiGo;
   $('aiHints').innerHTML = L.aiHints.map(h => `<button class="chip" data-hint="${esc(h)}">${esc(h)}</button>`).join('');
 }
@@ -800,7 +811,7 @@ document.addEventListener('click', e => {
     lang = d.lang; applyLang(); renderChips(); renderGrid(); renderCart();
     if (tab === 'checkout' && coInfo) renderCheckout();
     if (openId) renderSheet();
-    api('/lang', { lang }).catch(() => {}).then(() => { if (tab === 'orders') loadOrders(); });
+    api('/lang', { lang }).catch(() => {}).then(() => { if (tab === 'orders') loadOrders(); if ($('aiAdvice').textContent && $('aiQ').value.trim()) aiAsk(); });
   }
 });
 $('veil').onclick = closeSheet;
@@ -865,7 +876,6 @@ function openEditor(id) {
     ${id === 'new' ? '' : `<div class="big photoEdit">${photo(p)}<button class="up" data-photo="${p.id}">📷 ${p.has_photo ? 'Заменить фото' : 'Добавить фото'}</button></div>`}
     <form class="body form" id="pform" onsubmit="return false">
       <h2>${id === 'new' ? 'Новый товар' : 'Редактирование'}</h2>
-      ${id === 'new' ? '' : `<details><summary>Фото по ссылке</summary><div style="display:flex;gap:8px;margin-top:8px"><input id="photoUrl" placeholder="https://…" inputmode="url"><button class="btn" style="width:auto;padding:0 16px" data-purl="${p.id}">OK</button></div></details>`}
       ${f('name', 'Название')}
       <div class="two"><div>${f('price', 'Цена, ₽', 'number', 'inputmode="decimal" min="0.01" step="0.01"')}</div><div>${f('stock', 'Остаток, шт.', 'number', 'inputmode="numeric" min="0"')}</div></div>
       ${f('category', 'Категория', 'text', 'list="cats"')}
@@ -953,7 +963,7 @@ function trackSheet(id, then) {
   $('sheet').innerHTML = `<button class="x" data-close>✕</button>
     <div class="body form" style="padding-top:24px"><h2>Заказ № ${esc(o?.code || id)} отправлен 🚚</h2>
       <p>Если есть трек-номер — впишите, покупатель получит его в сообщении. Можно оставить пустым.</p>
-      <input id="trackIn" placeholder="Трек-номер (необязательно)" value="${esc(o?.track || '')}" autocapitalize="characters">
+      <label class="lbl" for="trackIn">Трек-номер</label><input id="trackIn" placeholder="Трек-номер (необязательно)" value="${esc(o?.track || '')}" autocapitalize="characters">
       <div class="actions"><button class="btn" id="trackGo">${then === 'ship' ? 'Отправить уведомление' : 'Сохранить трек'}</button></div></div>`;
   document.body.classList.add('open'); tg?.BackButton?.show();
   setTimeout(() => $('trackIn')?.focus(), 250);
@@ -1072,19 +1082,21 @@ function renderSettings() {
   const k2r = k => (k ? Math.round(k / 100) : 0);
   $('admBody').innerHTML = `
     <div class="box form"><h3>🚚 Доставка по городам</h3>
+      <div class="colh"><span style="flex:1">Город и цена доставки</span><span style="width:44px">Активен</span><span style="width:36px"></span></div>
       ${s.cities.map(c => `
         <div class="crow ${c.active ? '' : 'off'}" data-cid="${c.id}">
-          <input class="cn" value="${esc(c.city)}"><input class="cp" type="number" inputmode="numeric" value="${k2r(c.price)}"><span class="rub">₽</span>
+          <input class="cn" aria-label="Город" value="${esc(c.city)}"><input class="cp" aria-label="Цена, ₽" type="number" inputmode="numeric" value="${k2r(c.price)}"><span class="rub">₽</span>
           <label class="sw"><input type="checkbox" class="ca" ${c.active ? 'checked' : ''}><i></i></label>
           <button class="mini" data-cdel="${c.id}" aria-label="Удалить">🗑</button>
         </div>`).join('')}
-      <div class="crow new"><input id="ncity" placeholder="Новый город"><input id="nprice" type="number" inputmode="numeric" placeholder="Цена"><span class="rub">₽</span><button class="btn small" data-cadd>＋</button></div>
+      <div class="colh" style="margin-top:12px"><span>Добавить город и цену доставки</span></div>
+      <div class="crow new"><input id="ncity" aria-label="Новый город" placeholder="Новый город"><input id="nprice" aria-label="Цена доставки" type="number" inputmode="numeric" placeholder="Цена"><span class="rub">₽</span><button class="btn small" data-cadd aria-label="Добавить город">＋</button></div>
       <div class="two">
         <div><label>Другие города, ₽</label><input id="dOther" type="number" inputmode="numeric" value="${k2r(d.otherPrice)}"></div>
         <div><label>Бесплатно от суммы, ₽</label><input id="dFree" type="number" inputmode="numeric" value="${d.freeFrom ? k2r(d.freeFrom) : ''}" placeholder="выкл."></div>
       </div>
       <label class="line2"><span>🏠 Самовывоз</span><span class="sw"><input type="checkbox" id="dPickup" ${d.pickup ? 'checked' : ''}><i></i></span></label>
-      <input id="dPickupAddr" placeholder="Адрес и часы самовывоза — покупатель увидит после оплаты" value="${esc(d.pickupAddress || '')}">
+      <label class="lbl" for="dPickupAddr">Адрес и часы самовывоза</label><textarea id="dPickupAddr" rows="2" placeholder="Покупатель увидит после оплаты">${esc(d.pickupAddress || '')}</textarea>
       <div class="actions"><button class="btn" data-dsave>Сохранить доставку</button></div>
     </div>
     <div class="box form"><h3>🎟 Промокоды</h3>
@@ -1095,7 +1107,7 @@ function renderSettings() {
           <label class="sw"><input type="checkbox" data-ptoggle="${p.id}" ${p.active ? 'checked' : ''}><i></i></label>
           <button class="mini" data-pdel="${p.id}" aria-label="Удалить">🗑</button>
         </div>`).join('') : '<div class="note" style="text-align:left">Промокодов пока нет</div>'}
-      <div class="two3"><input id="pcode" placeholder="КОД" autocapitalize="characters"><input id="ppct" type="number" inputmode="numeric" placeholder="%"><input id="pmax" type="number" inputmode="numeric" placeholder="лимит"></div>
+      <div class="two3"><div><label class="lbl" for="pcode">Код</label><input id="pcode" placeholder="LETO20" autocapitalize="characters"></div><div><label class="lbl" for="ppct">Скидка, %</label><input id="ppct" type="number" inputmode="numeric" placeholder="10"></div><div><label class="lbl" for="pmax">Лимит</label><input id="pmax" type="number" inputmode="numeric" placeholder="нет"></div></div>
       <div class="actions"><button class="btn" data-padd>Создать промокод</button></div>
     </div>
     <div class="box"><h3>📦 Резервная копия</h3>
@@ -1162,6 +1174,7 @@ document.addEventListener('click', async e => {
 
 
 /* ---------- оформление и оплата ---------- */
+const PICK_RU = 'Санкт-Петербург, Выборгское ш., 503 · пн–сб 10:00–19:00', PICK_EN = 'Saint Petersburg, Vyborgskoye sh. 503 · Mon–Sat 10:00–19:00';
 let co = { delivery: 'city', city: '', other: '', address: '', phone: '', promo: '', promoPct: 0, promoOk: false }, coInfo = null;
 const coGoods = () => { const { sum } = cartTotals(); return sum - (co.promoPct ? Math.round(sum * co.promoPct / 100) : 0); };
 const coFree = () => Boolean(coInfo && coInfo.freeFrom > 0 && coGoods() >= coInfo.freeFrom);
@@ -1191,20 +1204,21 @@ function renderCheckout() {
   const disc = co.promoPct ? Math.round(sum * co.promoPct / 100) : 0;
   const dcost = coCost();
   const total = sum - disc + dcost;
+  const pickAddr = a => (lang === 'en' && a === PICK_RU ? PICK_EN : a);
   const cityName = c => (lang === 'en' && c.city_en) || c.city;
   $('v-checkout').innerHTML = `<h1>${L.coTitle}</h1>
     <div class="box"><h3>${L.recv}</h3>
       ${coInfo.pickup ? `<div class="seg"><button data-dl="city" class="${co.delivery === 'city' ? 'on' : ''}">${L.delBtn}</button><button data-dl="pickup" class="${co.delivery === 'pickup' ? 'on' : ''}">${L.pickBtn}</button></div>` : ''}
       ${co.delivery === 'city' && coInfo.freeFrom > 0 ? `<div class="note" style="text-align:left;margin:0 0 6px">${coFree() ? L.freeYes : L.freeLeft(rub(coInfo.freeFrom), rub(coInfo.freeFrom - coGoods()))}</div>` : ''}
       ${co.delivery === 'city' ? `
-        <div class="fld"><select id="coCity">${coInfo.cities.map(c => `<option value="${esc(c.city)}" ${co.city === c.city ? 'selected' : ''}>${esc(cityName(c))} — ${rub(c.price)}</option>`).join('')}
+        <div class="fld"><label class="lbl" for="coCity">${L.lblCity}</label><select id="coCity">${coInfo.cities.map(c => `<option value="${esc(c.city)}" ${co.city === c.city ? 'selected' : ''}>${esc(cityName(c))} — ${rub(c.price)}</option>`).join('')}
           <option value="__other" ${co.city === '__other' ? 'selected' : ''}>${L.other} — ${rub(coInfo.otherPrice)}</option></select></div>
-        ${co.city === '__other' ? `<div class="fld"><input id="coOther" placeholder="${L.cityPh}" value="${esc(co.other)}"></div>` : ''}
-        <div class="fld"><textarea id="coAddr" placeholder="${L.addrPh}">${esc(co.address)}</textarea></div>` : `<div class="note" style="text-align:left;margin-top:10px">${coInfo.pickupAddress ? '📍 ' + esc(coInfo.pickupAddress) + '<br>' : ''}${L.pickNote}</div>`}
-      <div class="fld"><input id="coPhone" type="tel" inputmode="tel" placeholder="${L.phonePh}" value="${esc(co.phone)}"></div>
+        ${co.city === '__other' ? `<div class="fld"><label class="lbl" for="coOther">${L.lblOther}</label><input id="coOther" placeholder="${L.cityPh}" value="${esc(co.other)}"></div>` : ''}
+        <div class="fld"><label class="lbl" for="coAddr">${L.lblAddr}</label><textarea id="coAddr" placeholder="${L.addrPh}">${esc(co.address)}</textarea></div>` : `<div class="note" style="text-align:left;margin-top:10px">${coInfo.pickupAddress ? '📍 ' + esc(pickAddr(coInfo.pickupAddress)) + '<br>' : ''}${L.pickNote}</div>`}
+      <div class="fld"><label class="lbl" for="coPhone">${L.lblPhone}</label><input id="coPhone" type="tel" inputmode="tel" placeholder="${L.phonePh}" value="${esc(co.phone)}"></div>
     </div>
     <div class="box"><h3>${L.promoTitle}</h3>
-      <div class="promo"><input id="coPromo" placeholder="${L.promoPh}" value="${esc(co.promo)}" autocapitalize="characters"><button class="btn ghost" data-promo>${L.apply}</button></div>
+      <div class="promo"><input id="coPromo" aria-label="${L.lblPromo}" placeholder="${L.promoPh}" value="${esc(co.promo)}" autocapitalize="characters"><button class="btn ghost" data-promo>${L.apply}</button></div>
       ${co.promoOk && co.promoPct ? `<div class="fld ok">✓ ${L.discount(co.promoPct)}</div>` : ''}
     </div>
     <div class="box">
@@ -1216,7 +1230,7 @@ function renderCheckout() {
     ${inTg ? '' : `<button class="btn" data-pay>${L.payBtn(rub(total))}</button>`}
     <div class="note">${L.checkoutNote}</div>`;
   const bind = (id, k, rerender) => { const el = $(id); if (el) el[el.tagName === 'SELECT' ? 'onchange' : 'oninput'] = e => { co[k] = e.target.value; if (rerender) renderCheckout(); else mainButton(); }; };
-  bind('coCity', 'city', true); bind('coOther', 'other'); if ($('coOther')) $('coOther').onchange = () => renderCheckout(); bind('coAddr', 'address'); bind('coPhone', 'phone'); bind('coPromo', 'promo');
+  bind('coCity', 'city', true); bind('coOther', 'other'); if ($('coOther')) $('coOther').onchange = () => { const v = co.other.trim().toLowerCase().replace(/ё/g, 'е'); if (coInfo.cities.some(c => c.city.toLowerCase().replace(/ё/g, 'е') === v || (c.city_en || '').toLowerCase() === v)) renderCheckout(); else mainButton(); }; bind('coAddr', 'address'); bind('coPhone', 'phone'); bind('coPromo', 'promo');
   mainButton();
 }
 function coTotal() { return coGoods() + coCost(); }
