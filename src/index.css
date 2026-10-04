@@ -361,3 +361,19 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .work { grid-template-columns: 40px minmax(0, 1fr); grid-template-areas: "num main" ". text" ". side"; row-gap: 14px; column-gap: 12px; }
   .work-side { flex-direction: column; align-items: flex-start; padding-top: 14px; }
 }
+
+/* ---------- projects v3: clean 2x2 cards ---------- */
+.works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; border: 0; padding: 0; list-style: none; }
+.works .work { display: flex; flex-direction: column; gap: 12px; padding: 30px 30px 26px; border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent); border-radius: calc(var(--r) + 4px); position: relative; background: color-mix(in srgb, var(--ink) 2%, transparent); transition: box-shadow .3s var(--ease), border-color .3s, transform .3s var(--ease); }
+.works .work::before, .works .work + .work::before { display: none; }
+.works .work:hover, .works .work:focus-within { padding: 30px 30px 26px; border-color: var(--accent); box-shadow: var(--neon); transform: translateY(-3px); background: color-mix(in srgb, var(--ink) 3%, transparent); }
+.works .work .num { position: absolute; top: 26px; right: 28px; padding: 0; font-size: .95rem; color: var(--accent); opacity: .9; }
+.works .work-main { padding-right: 36px; }
+.works .work h3 { font-size: clamp(1.35rem, 2vw, 1.7rem); }
+.works .work-kind { margin-top: 6px; }
+.works .work-text { flex: 1; max-width: none; padding: 6px 0 0; font-size: .95rem; line-height: 1.55; }
+.works .work-side { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding: 0; border: 0; }
+.works .work-side .tags { gap: 8px; }
+.works .work-links { margin: 0; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 860px) { .works { grid-template-columns: 1fr; } .works .work { padding: 24px 22px 22px; } .works .work:hover { padding: 24px 22px 22px; transform: none; } .works .work .num { top: 22px; right: 22px; } }
+@media (max-width: 560px) { .works .work-links a { padding: 9px 13px; font-size: .84rem; } }
