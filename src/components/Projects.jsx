@@ -1,28 +1,29 @@
 import Reveal from './Reveal'
+import NeonIcon from './NeonIcon'
 const works = [
   {
-    num: '1', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
+    num: '1', icon: 'coffee', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
     text: 'Варианты и допы, наборы, продажа на вес и объём, склад с загрузкой из Excel, отчёты, доставка, чеки 54-ФЗ. В проект входит CRM для команды.',
     stack: ['Mini App', 'ЮKassa', 'Excel', 'Railway'],
     demo: '/coffeejd-demo.html',
     bot: 'https://t.me/CoFFeeeJD_bot',
   },
   {
-    num: '2', name: 'Флёр', kind: 'Цветочный магазин',
+    num: '2', icon: 'flower', name: 'Флёр', kind: 'Цветочный магазин',
     text: 'Витрина с букетами, оплата онлайн, фото готового букета на согласование.',
     stack: ['Mini App', 'ЮKassa', 'Railway'],
     demo: '/fleur-demo.html',
     bot: 'https://t.me/Fleeer_bot', code: 'https://github.com/zhennyy/flowerbot',
   },
   {
-    num: '3', name: 'RadiatorPro', kind: 'Отопительное оборудование',
+    num: '3', icon: 'radiator', name: 'RadiatorPro', kind: 'Отопительное оборудование',
     text: 'Корзина, доставка по городам, трекинг заказа, статистика и чаты в админке.',
     stack: ['Mini App', 'ЮKassa', 'Railway'],
     demo: '/radiator-demo.html',
     bot: 'https://t.me/RadiatorBZ_bot', code: 'https://github.com/zhennyy/radiatorbot',
   },
   {
-    num: '4', name: 'Ассистент', kind: 'Личный помощник',
+    num: '4', icon: 'person', name: 'Ассистент', kind: 'Личный помощник',
     text: 'Помнит переписку, ставит напоминания, отвечает на вопросы с помощью ИИ.',
     stack: ['ИИ', 'Railway'],
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
@@ -38,6 +39,7 @@ export default function Projects() {
           {works.map((w) => (
             <li className="work" key={w.num}>
               <span className="num">{w.num}</span>
+              <NeonIcon name={w.icon} />
               <div className="work-main">
                 <h3>{w.bot ? '@' + w.bot.split('/').pop() : w.name}</h3>
                 <p className="work-kind">{w.bot ? `${w.name} · ${w.kind}` : w.kind}</p>

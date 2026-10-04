@@ -395,3 +395,37 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 .cbtn .ico svg { width: 30px; height: 30px; }
 .cbtn:hover .ico, .cbtn:focus-visible .ico { background: color-mix(in srgb, var(--accent) 24%, transparent); box-shadow: 0 0 18px -2px var(--glow); }
 .topo-bg.is-paused g { animation-play-state: paused; }
+
+/* Неоновые иконки проектов */
+.neon-ic { --c: #e8873a; position: absolute; right: 26px; bottom: 22px; width: 96px; height: 96px; color: var(--c); pointer-events: none; opacity: .92; }
+.neon-ic svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 7px color-mix(in srgb, var(--c) 55%, transparent)); }
+.neon-flower { --c: #e0559a; }
+.neon-radiator { --c: #e8553a; }
+.neon-person { --c: var(--accent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .neon-coffee { --c: #ffb36b; } :root:not([data-theme="light"]) .neon-flower { --c: #ff7ab6; } :root:not([data-theme="light"]) .neon-radiator { --c: #ff6a4d; } }
+:root[data-theme="dark"] .neon-coffee { --c: #ffb36b; } :root[data-theme="dark"] .neon-flower { --c: #ff7ab6; } :root[data-theme="dark"] .neon-radiator { --c: #ff6a4d; }
+.works .work:hover .neon-ic { opacity: 1; }
+.ni-steam path, .ni-heat path { stroke-dasharray: 5 6; animation: ni-flow 2.2s linear infinite; }
+.ni-steam path:nth-child(2), .ni-heat path:nth-child(2) { animation-delay: -.7s; }
+.ni-steam path:nth-child(3), .ni-heat path:nth-child(3) { animation-delay: -1.4s; }
+.ni-heat path { animation-duration: 1.6s; }
+@keyframes ni-flow { to { stroke-dashoffset: -22; } }
+.ni-sway { transform-origin: 32px 60px; animation: ni-sway 3.6s ease-in-out infinite; }
+@keyframes ni-sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.ni-bloom { transform-origin: 32px 18px; animation: ni-bloom 3.6s ease-in-out infinite; }
+@keyframes ni-bloom { 50% { transform: scale(1.07); } }
+.ni-fins { animation: ni-flick 2.4s ease-in-out infinite; }
+@keyframes ni-flick { 50% { opacity: .45; } }
+.ni-bob { animation: ni-bob 3s ease-in-out infinite; }
+@keyframes ni-bob { 50% { transform: translateY(-2px); } }
+.ni-dots circle { animation: ni-dot 1.4s infinite; }
+.ni-dots circle:nth-child(2) { animation-delay: .2s; } .ni-dots circle:nth-child(3) { animation-delay: .4s; }
+@keyframes ni-dot { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
+@media (max-width: 560px) {
+  .neon-ic { top: 18px; right: 16px; bottom: auto; width: 48px; height: 48px; }
+  .works .work .num { right: 72px; top: 34px; }
+  .works .work-main { padding-right: 0; }
+  .works .work h3 { padding-right: 96px; }
+  .works .work-kind { padding-right: 56px; }
+}
+@media (prefers-reduced-motion: reduce) { .neon-ic * { animation: none !important; } }
