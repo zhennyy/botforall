@@ -66,11 +66,15 @@ function statusOf(o) {
 const view = o => { const s = statusOf(o); return { id:o.id, status:s, status_label:LABELS[s], items:o.items.map(({id,name,qty,unit,price}) => ({id,name,qty,unit,price})), total:o.total, delivery_fee:o.delivery_fee,
   when:`${niceDay(o.delivery_date)}, ${o.delivery_time.replace(/:00/g,'')}`, address:o.address, card_text:o.card_text, recipient:o.recipient, rating:0, payment_status:o.payment_status, pay_url:o.payment_status === 'pending' ? 'demo-pay:' + o.id : null, photo_status:null }; };
 
+const slotTaken = (date, time) => allOrders().filter(o => o.delivery_date === date && o.delivery_time === time && statusOf(o) !== 'cancelled').length;
 const H = {
   'GET /api/products': () => PRODUCTS.filter(p => p.in_stock !== 0).map(p => ({ unit:null, min_qty:1, stock:null, addon:0, emoji:null, sizes:null, in_stock:1, ...p })),
   'GET /api/delivery-info': () => ({ shop:'Флёр', city:TARIFF.city, region:TARIFF.region, freeFrom:TARIFF.freeFrom, payOnline:true }),
   'GET /api/slots': (b, q) => { const date = q.get('date') || ''; if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return err(400,'Неверная дата');
-    const day = new Date(date).getDay(); return { closed:false, slots: SLOTS.map((time,i) => { const left = (day + i) % 4 === 3 ? 0 : (i === 1 ? 2 : null); return { time, available:left !== 0, left }; }) }; },
+    if (CAL.closed.includes(date)) return { closed:true, slots: SLOTS.map(time => ({ time, available:false, left:null })) };
+    const day = new Date(date).getDay(); return { closed:false, slots: SLOTS.map((time,i) => { let left = (day + i) % 4 === 3 ? 0 : (i === 1 ? 2 : null);
+      if (CAL.slotLimit) left = Math.max(0, CAL.slotLimit - slotTaken(date, time));
+      return { time, available:left !== 0, left }; }) }; },
   'POST /api/delivery-quote': b => { const a = String(b.address || '').trim(); if (a.length < 5) return err(400,'Введите адрес');
     let t = 0; try { t = priceItems(b.items).reduce((s,i) => s + i.price*i.qty, 0); } catch {} return quote(a, b.zone, t); },
   'GET /api/my-orders': () => st.orders.slice().reverse().map(view),
@@ -84,6 +88,8 @@ const H = {
     if (o.address.length < 5) return err(400,'Укажите адрес доставки');
     if (!/^\d{4}-\d{2}-\d{2}$/.test(o.delivery_date)) return err(400,'Выберите дату доставки');
     if (!SLOTS.includes(o.delivery_time)) return err(400,'Выберите время доставки');
+    if (CAL.closed.includes(o.delivery_date)) return err(400,'В этот день мы не работаем 🌿 Выберите другую дату');
+    if (CAL.slotLimit && slotTaken(o.delivery_date, o.delivery_time) >= CAL.slotLimit) return err(400,'На это время мест нет, выберите другой интервал');
     const sum = items.reduce((s,i) => s + i.price*i.qty, 0);
     const q = quote(o.address, b.delivery_zone, sum); if (q.s !== 200) { st.nid--; return err(400, q.d.error); }
     o.delivery_fee = q.d.fee; o.total = sum + q.d.fee; o.payment_status = 'pending'; o.created = Date.now();
@@ -96,7 +102,7 @@ const H = {
 const ASTAT = { new:'🆕 Новый', confirmed:'✅ Подтверждён', assembling:'💐 Собираем букет', delivering:'🚚 В пути', done:'🌷 Доставлен', cancelled:'❌ Отменён' };
 const mskDay = plus => new Date(Date.now() + 3*3600e3 + plus*864e5).toISOString().slice(0,10);
 const seedOrder = (id, forced, pay, day, time, raw, f) => { const items = priceItems(raw), sum = items.reduce((s,i) => s + i.price*i.qty, 0), fee = f.fee ?? 0;
-  return { id, forced, payment_status:pay, delivery_date:mskDay(day), delivery_time:time, items, delivery_fee:fee, total:sum + fee, km:f.km ?? null,
+  return { id, forced, payment_status:pay, day:mskDay(Math.min(day,0)), delivery_date:mskDay(day), delivery_time:time, items, delivery_fee:fee, total:sum + fee, km:f.km ?? null,
     customer_name:f.name, phone:f.phone, address:f.address, recipient:f.recipient || null, card_text:f.card || null, comment:f.comment || null, rating:f.rating || 0, review_text:f.review || null }; };
 const A = 'Санкт-Петербург, ул. Демонстрационная, ';
 st.seeded = [
@@ -109,11 +115,111 @@ st.seeded = [
   seedOrder(1234, 'cancelled', 'paid', -1, SLOTS[0], [{id:5,qty:1}], { name:'Захар Макетов', phone:'+7 000 000-00-07', address:A+'14, кв. 8', fee:290, km:2.2 }),
 ];
 const adminProduct = p => ({ unit:null, min_qty:1, stock:null, addon:0, emoji:null, sizes:null, in_stock:1, badge:'', ...p });
-const aView = o => ({ id:o.id, status:statusOf(o), payment_status:o.payment_status, delivery_date:o.delivery_date, delivery_time:o.delivery_time,
+const aView = o => ({ id:o.id, user_id:uidOf(o), status:statusOf(o), payment_status:o.payment_status, delivery_date:o.delivery_date, delivery_time:o.delivery_time,
   items:o.items.map(({name,qty,unit}) => ({name,qty,unit})), total:o.total, delivery_fee:o.delivery_fee, delivery_km:o.km ?? null, customer_name:o.customer_name, username:null,
   phone:o.phone, address:o.address, recipient:o.recipient || null, card_text:o.card_text || null, comment:o.comment || null, rating:o.rating || 0, review_text:o.review_text || null,
   bouquet_photo:o.bouquet_photo || null, photo_status:o.photo_status || null });
-const allOrders = () => st.seeded.concat(st.orders).sort((a,b) => b.id - a.id);
+const allOrders = () => st.seeded.concat(st.orders, st.hist || []).sort((a,b) => b.id - a.id);
+/* ─── Расширенная админка (паритет с настоящей): статистика, чаты, доставка, календарь, копия. Всё в памяти, данные вымышленные ─── */
+const CAL = { closed:[], slotLimit:0 };       // выходные дни и лимит заказов на интервал
+const PHOTO = { minutes:30 };                  // демо-значение: сколько ждать ответа по фото букета
+const uidOf = o => o.uid ?? (100 + [...String(o.phone || '')].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 1000003, 7));
+const dayOf = o => o.day || new Date((o.created || Date.now()) + 3*3600e3).toISOString().slice(0,10);
+
+/* История заказов за ~90 дней (стабильный генератор: цифры одинаковы при каждой загрузке) */
+st.hist = (() => {
+  let s = 20261004; const rnd = () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const pick = a => a[Math.floor(rnd() * a.length)];
+  const NAMES = ['Алина Макетова','Богдан Образцов','Вера Пробная','Глеб Условный','Дина Примерова','Елена Тестова','Игорь Демин','Карина Вымышленная','Лев Черновой','Мила Эталонова','Нина Образцова','Олег Пример','Полина Демо','Роман Тестов','София Условная','Тимур Макетов','Ульяна Пробная','Фёдор Эталонов','Ирина Демина','Артём Вымышленный','Таисия Пример','Матвей Образцов','Лилия Тестова','Платон Условный'];
+  const FN = ['Алла','Валерия','Дарина','Ева','Кира','Лада','Марина','Оксана','Рита','Тамара'], FL = ['Макетова','Пробная','Примерова','Эталонова','Демина'], MN = ['Антон','Виктор','Давид','Ильяр','Кирилл','Назар','Павел','Савва'], ML = ['Макетов','Пробный','Примеров','Эталонов','Демин'];
+  for (let i = 0; i < 28; i++) { const n = i % 2 ? FN[i % FN.length] + ' ' + FL[(i * 3) % FL.length] : MN[i % MN.length] + ' ' + ML[(i * 3 + 1) % ML.length]; if (!NAMES.includes(n)) NAMES.push(n); }
+  const pool = NAMES.map((name, i) => ({ name, phone:'+7 000 100-00-' + String(10 + i) }));
+  const slotsFor = () => SLOTS[Math.floor(rnd() * SLOTS.length)];
+  const weekW = [0.9, 0.7, 0.6, 0.7, 0.9, 1.5, 1.7];
+  const hot = [1,1,1,2,2,3,3,4,5,6,8,10,7,9,1,4,5,2];
+  const out = []; let id = 1233;
+  for (let off = 2; off <= 89; off++) {
+    const wd = new Date(Date.now() + 3*3600e3 - off*864e5).getUTCDay();
+    const n = Math.floor(weekW[wd] * (0.9 + rnd() * 1.8));
+    for (let k = 0; k < n; k++) {
+      const c = pool[Math.floor(Math.pow(rnd(), 1.15) * pool.length)], p = prod(pick(hot));
+      const raw = [{ id:p.id, qty:p.unit ? 5 + Math.floor(rnd() * 11) : (rnd() < 0.1 ? 2 : 1), size:p.sizes ? pick(['S','M','M','L']).toString() : undefined }];
+      if (rnd() < 0.3) raw.push({ id:rnd() < 0.5 ? 11 : 12, qty:1 });
+      const items = priceItems(raw), sum = items.reduce((a, i) => a + i.price * i.qty, 0);
+      const region = rnd() < 0.08, km = region ? 22 + rnd() * 20 : 2 + rnd() * 16, kk = Math.round(km * 10) / 10;
+      const fee0 = region ? TARIFF.region.base + Math.ceil(Math.max(0, kk - TARIFF.region.fromKm)) * TARIFF.region.perKm : (TARIFF.city.find(r => kk <= r.km) || TARIFF.city.at(-1)).price;
+      const fee = sum >= TARIFF.freeFrom ? 0 : fee0, cancelled = rnd() < 0.06;
+      const rating = !cancelled && rnd() < 0.4 ? (rnd() < 0.8 ? 5 : rnd() < 0.5 ? 4 : 3) : 0;
+      out.push({ id:id--, forced:cancelled ? 'cancelled' : 'done', payment_status:'paid', day:mskDay(-off), delivery_date:mskDay(-off), delivery_time:slotsFor(), items, delivery_fee:fee, total:sum + fee, km:kk,
+        customer_name:c.name, phone:c.phone, address:(region ? 'Ленинградская область, ' : 'Санкт-Петербург, ') + 'ул. Демонстрационная, ' + (1 + Math.floor(rnd() * 60)) + ', кв. ' + (1 + Math.floor(rnd() * 90)),
+        recipient:null, card_text:rnd() < 0.4 ? pick(['С днём рождения!','Люблю тебя','Спасибо за всё','Поздравляю!','Просто так 🌷']) : null, comment:null, rating,
+        review_text:rating >= 4 && rnd() < 0.5 ? pick(['Красиво и вовремя!','Букет свежий, спасибо','Всё понравилось','Курьер приехал точно в срок']) : null });
+    }
+  }
+  return out;
+})();
+
+/* Переписка с покупателями */
+st.chats = {}; let msgId = 0;
+const tsAgo = min => new Date(Date.now() - min * 60000).toISOString().replace('T', ' ').slice(0, 19);
+const say = (o, dir, text, min, x = {}) => { const uid = uidOf(o); (st.chats[uid] ||= { name:o.customer_name, username:null, msgs:[] })
+  .msgs.push({ id:++msgId, user_id:uid, direction:dir, text, photo:x.photo || null, order_id:x.order || null, created_at:tsAgo(min), is_read:dir === 'out' || x.read ? 1 : 0, name:o.customer_name }); };
+{ const S = id => st.seeded.find(z => z.id === id);
+  say(S(1238), 'in', 'Здравствуйте! Можно к розам добавить открытку с текстом?', 1500, { read:1 });
+  say(S(1238), 'out', 'Да, конечно! Напишите текст, мы приложим 🌷', 1490, { order:1238 });
+  say(S(1238), 'in', 'Спасибо! «С днём рождения, мама!»', 1480, { read:1, order:1238 });
+  say(S(1237), 'out', 'Вот ваш букет перед отправкой', 190, { order:1237, photo:PH(3) });
+  say(S(1237), 'in', 'Очень красиво, одобряю!', 170, { order:1237, read:1 });
+  say(S(1236), 'in', 'Курьер уже выехал?', 55, { order:1236, read:1 });
+  say(S(1236), 'out', 'Курьер выехал 🚚', 50, { order:1236 });
+  say(S(1239), 'in', 'Не получается оплатить, ссылка не открывается', 25, { order:1239 });
+  say(S(1240), 'in', 'Здравствуйте! Можно побольше зелени в букет?', 14, { order:1240 });
+  say(S(1240), 'in', 'И без открытки, пожалуйста', 12, { order:1240 }); }
+const chatList = () => Object.entries(st.chats).map(([uid, c]) => { const l = c.msgs.at(-1);
+  return { user_id:+uid, name:c.name, username:c.username, text:l.text, photo:l.photo, direction:l.direction, created_at:l.created_at, unread:c.msgs.filter(m => m.direction === 'in' && !m.is_read).length, _id:l.id }; })
+  .sort((a, b) => b._id - a._id).map(({ _id, ...r }) => r);
+
+/* Статистика: считается из тех же заказов, что и вкладка «Заказы» */
+function statsFor(daysRaw) {
+  const days = [7, 30, 90].includes(+daysRaw) ? +daysRaw : 30, from = mskDay(-days);
+  const all = allOrders().filter(o => dayOf(o) > from);
+  const paid = all.filter(o => statusOf(o) !== 'cancelled' && o.payment_status !== 'pending');
+  const byDay = []; for (let i = days - 1; i >= 0; i--) { const d = mskDay(-i), l = paid.filter(o => dayOf(o) === d); byDay.push({ date:d, revenue:l.reduce((a, o) => a + o.total, 0), orders:l.length }); }
+  const top = new Map(); for (const o of paid) for (const i of o.items) { const t = top.get(i.id) || { name:prod(i.id)?.name || i.name, qty:0, revenue:0, unit:i.unit }; t.qty += i.qty; t.revenue += i.price * i.qty; top.set(i.id, t); }
+  const per = new Map(); for (const o of paid) per.set(uidOf(o), (per.get(uidOf(o)) || 0) + 1);
+  const revenue = paid.reduce((a, o) => a + o.total, 0), byStatus = {}; for (const o of all) { const s = statusOf(o); byStatus[s] = (byStatus[s] || 0) + 1; }
+  const rated = paid.filter(o => o.rating);
+  return { days, revenue, goods:paid.reduce((a, o) => a + o.items.reduce((s, i) => s + i.price * i.qty, 0), 0), delivery:paid.reduce((a, o) => a + (o.delivery_fee || 0), 0), orders:paid.length,
+    cancelled:byStatus.cancelled || 0, avg:paid.length ? Math.round(revenue / paid.length) : 0, customers:per.size, repeat:[...per.values()].filter(n => n > 1).length,
+    cards:paid.filter(o => o.card_text).length, rated:rated.length, rating:rated.length ? Math.round(rated.reduce((a, o) => a + o.rating, 0) / rated.length * 10) / 10 : null,
+    byDay, top:[...top.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 7), byStatus, statuses:ASTAT };
+}
+function cleanTariff(t = {}) {
+  const num = (v, min = 0) => Math.max(min, Math.round(Number(v)) || 0);
+  const city = (Array.isArray(t.city) ? t.city : []).map(r => ({ km:num(r.km, 1), price:num(r.price) })).filter(r => r.km > 0).sort((a, b) => a.km - b.km).slice(0, 10);
+  if (!city.length) throw 'Добавьте хотя бы одну зону по городу';
+  return { city, region:{ base:num(t.region?.base), perKm:num(t.region?.perKm), fromKm:num(t.region?.fromKm) }, freeFrom:num(t.freeFrom) };
+}
+function adminRoute2(m, path, body, q) {
+  let x;
+  if (m === 'GET' && path === '/stats') return statsFor(q.get('days'));
+  if (m === 'GET' && path === '/chats') { const l = chatList(); return { chats:l, unread:l.reduce((a, c) => a + c.unread, 0) }; }
+  if ((x = path.match(/^\/chats\/(\d+)$/))) { const c = st.chats[x[1]]; if (!c) return err(404, 'Диалог не найден');
+    if (m === 'GET') { c.msgs.forEach(z => { if (z.direction === 'in') z.is_read = 1; });
+      return { messages:c.msgs, orders:allOrders().filter(o => uidOf(o) == x[1]).slice(0, 10).map(o => ({ id:o.id, status:ASTAT[statusOf(o)], total:o.total, date:o.delivery_date })) }; }
+    if (m === 'POST') { const text = String(body.text ?? '').trim().slice(0, 3000); if (!text) return err(400, 'Пустое сообщение');
+      c.msgs.push({ id:++msgId, user_id:+x[1], direction:'out', text, photo:null, order_id:Number(body.orderId) || null, created_at:tsAgo(0), is_read:1, name:c.name }); return { messages:c.msgs }; } }
+  if (m === 'POST' && path === '/backup') return { ok:true, size:48213 };   // демо: архив не создаётся
+  if (path === '/delivery') { if (m === 'GET') return JSON.parse(JSON.stringify({ city:TARIFF.city, region:TARIFF.region, freeFrom:TARIFF.freeFrom }));
+    if (m === 'PUT') { try { const t = cleanTariff(body); TARIFF.city = t.city; TARIFF.region = t.region; TARIFF.freeFrom = t.freeFrom; return t; } catch (e) { return err(400, String(e)); } } }
+  if (path === '/calendar') { if (m === 'GET') return { closed:CAL.closed.slice(), slotLimit:CAL.slotLimit };
+    if (m === 'PUT') { CAL.closed = [...new Set((Array.isArray(body.closed) ? body.closed : []).map(String).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)))].sort().slice(0, 100);
+      CAL.slotLimit = Math.max(0, Math.min(99, Math.floor(Number(body.slotLimit)) || 0)); return { closed:CAL.closed.slice(), slotLimit:CAL.slotLimit }; } }
+  if (path === '/photo-timeout') { if (m === 'GET') return { minutes:PHOTO.minutes };
+    if (m === 'PUT') { PHOTO.minutes = Math.max(0, Math.min(240, Math.floor(Number(body.minutes)) || 0)); return { minutes:PHOTO.minutes }; } }
+  return null;
+}
+
 function cleanProduct(b = {}) {
   const p = { category:String(b.category ?? '').trim().slice(0,40), name:String(b.name ?? '').trim().slice(0,80), description:String(b.description ?? '').trim().slice(0,200),
     price:Math.round(Number(b.price)), photo_url:String(b.photo_url ?? '').trim().slice(0,500) || null, badge:String(b.badge ?? '').trim().slice(0,20) || '',
@@ -128,9 +234,9 @@ function cleanProduct(b = {}) {
   if (p.photo_url && !/^(blob:|\/demo\/)/.test(p.photo_url)) throw 'В демо фото можно только загрузить с устройства';
   return p;
 }
-function adminRoute(m, path, body) {
-  let x;
-  if (m === 'GET' && path === '/orders') return { orders:allOrders().map(aView), statuses:ASTAT };
+function adminRoute(m, path, body, q) {
+  let x; const r2 = adminRoute2(m, path, body, q); if (r2) return r2;
+  if (m === 'GET' && path === '/orders') return { orders:allOrders().slice(0,100).map(aView), statuses:ASTAT };
   if (m === 'POST' && (x = path.match(/^\/orders\/(\d+)\/status$/))) { const o = allOrders().find(z => z.id == x[1]);
     if (!o) return err(404,'Заказ не найден'); if (!ASTAT[body.status]) return err(400,'Неизвестный статус'); o.forced = body.status; return aView(o); }
   if (m === 'POST' && (x = path.match(/^\/orders\/(\d+)\/photo$/))) { const o = allOrders().find(z => z.id == x[1]);
@@ -150,7 +256,7 @@ window.fetch = async (url, o = {}) => {
   await new Promise(r => setTimeout(r, 120));
   let res;
   const one = u.pathname.match(/^\/api\/my-orders\/(\d+)$/);
-  if (u.pathname.startsWith('/api/admin/')) res = adminRoute(m, u.pathname.slice(10), body);
+  if (u.pathname.startsWith('/api/admin/')) res = adminRoute(m, u.pathname.slice(10), body, u.searchParams);
   else if (one) { const x = st.orders.find(z => z.id == one[1]); res = x ? { id:x.id, items:x.items.map(({id,qty,size}) => ({id,qty,size})), address:x.address, zone:/област/i.test(x.address) ? 'region' : 'city', recipient:x.recipient } : err(404,'Заказ не найден'); }
   else { const h = H[m + ' ' + u.pathname]; res = h ? h(body, u.searchParams) : err(404, 'Нет в демо'); }
   const s = res.s || 200, d = res.s ? res.d : res;

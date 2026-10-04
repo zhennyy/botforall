@@ -201,8 +201,32 @@ if (window.parent !== window) { window.fetch = (...a) => window.parent.fetch(...
 <header>Флёр<span>.</span> админка <small style="font:500 12px Inter,sans-serif;color:var(--muted)">демо</small></header>
 <div class="tabs">
   <button class="tab active" data-tab="orders"><i>📦</i>Заказы<span class="count" id="newCount" hidden></span></button>
+  <button class="tab" data-tab="chats"><i>💬</i>Чаты<span class="count" id="chatCount" hidden></span></button>
+  <button class="tab" data-tab="stats"><i>📊</i>Статистика</button>
   <button class="tab" data-tab="products"><i>💐</i>Букеты</button>
+  <button class="tab" data-tab="delivery"><i>🚚</i>Доставка</button>
 </div>
+<div id="chatsView" hidden>
+  <div class="list" id="chatList"></div>
+</div>
+
+<!-- Открытый диалог с покупателем -->
+<section class="thread" id="thread" hidden>
+  <div class="thead">
+    <button class="back" onclick="closeThread()" aria-label="Назад">←</button>
+    <div class="who"><div class="nm" id="tName"></div><div class="un" id="tUser"></div></div>
+  </div>
+  <div class="torders" id="tOrders"></div>
+  <div class="msgs" id="msgs"></div>
+  <div class="composer">
+    <div class="quick" id="quick"></div>
+    <div class="row2">
+      <textarea id="reply" rows="1" maxlength="3000" placeholder="Сообщение покупателю…"></textarea>
+      <button class="send" id="sendBtn" onclick="sendReply()" aria-label="Отправить">➤</button>
+    </div>
+  </div>
+</section>
+
 <input type="file" id="bouquetFile" accept="image/*" hidden onchange="sendBouquetFile(event)">
 <div id="ordersView">
   <div class="list"><input type="text" id="orderSearch" class="osearch" placeholder="🔍 Номер, имя, телефон, адрес…"></div>
@@ -210,8 +234,69 @@ if (window.parent !== window) { window.fetch = (...a) => window.parent.fetch(...
   <div class="list" id="orders"></div>
 </div>
 <div id="productsView" hidden>
-  <div style="display:flex;gap:8px"><button class="add" style="flex:1" onclick="editProduct(null)">＋ Добавить букет</button></div>
+  <div style="display:flex;gap:8px"><button class="add" style="flex:2" onclick="editProduct(null)">＋ Добавить букет</button><button class="add" style="flex:1" onclick="makeBackup()">📦 Копия</button></div>
   <div class="list" id="products"></div>
+</div>
+
+<div id="statsView" hidden>
+  <div class="period" id="period"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="list">
+    <div class="card"><div class="num">Выручка по дням</div>
+      <div class="chart" id="chart" role="img"></div><div class="axis" id="axis"></div>
+      <div class="tip" id="tip">Нажмите на столбик, чтобы увидеть день</div></div>
+    <div class="card"><div class="num">Топ товаров</div><div id="top"></div></div>
+    <div class="card"><div class="num">Из чего выручка</div><div id="split"></div></div>
+    <div class="card"><div class="num">Заказы по статусам</div><div id="bystatus"></div></div>
+    <div class="card"><div class="num">Отзывы и открытки</div><div class="minis" id="quality"></div></div>
+  </div>
+</div>
+
+<div id="deliveryView" hidden>
+  <div class="list">
+    <div class="card">
+      <div class="num">Санкт-Петербург</div>
+      <div class="meta">Расстояние по прямой от пл. Восстания. Демо: значения как в витрине демо-магазина, правки живут только до перезагрузки страницы</div>
+      <div id="tiers"></div>
+      <div class="btns"><button type="button" onclick="addTier()">＋ Добавить зону</button></div>
+    </div>
+    <div class="card">
+      <div class="num">Ленинградская область</div>
+      <div class="two">
+        <div><label for="r_base">Базовая цена, ₽</label><input type="number" id="r_base" min="0"></div>
+        <div><label for="r_per">За каждый км, ₽</label><input type="number" id="r_per" min="0"></div>
+      </div>
+      <label for="r_from">Считать км начиная с, км</label><input type="number" id="r_from" min="0">
+      <div class="meta" id="r_example"></div>
+    </div>
+    <div class="card">
+      <div class="num">Бесплатная доставка</div>
+      <label for="free_from">От суммы заказа, ₽ (0 — выключено)</label><input type="number" id="free_from" min="0">
+    </div>
+    <div class="error" id="dError"></div>
+    <button class="big" onclick="saveDelivery()">Сохранить тарифы</button>
+
+    <div class="card" style="margin-top:20px">
+      <div class="num">📅 Выходные дни</div>
+      <div class="meta">В эти даты витрина не даст оформить доставку</div>
+      <div class="two"><input type="date" id="c_date"><button type="button" class="upload" style="margin-top:0" onclick="addClosed()">＋ Закрыть дату</button></div>
+      <div id="closedList"></div>
+    </div>
+    <div class="card">
+      <div class="num">⏱ Лимит заказов на интервал</div>
+      <div class="meta">Например, перед 8 Марта поставьте 10 — когда на «12:00–15:00» наберётся 10 заказов, интервал станет «нет мест». 0 — без лимита</div>
+      <input type="number" id="c_limit" min="0" max="99" step="1">
+    </div>
+    <div class="error" id="cError"></div>
+    <button class="big" onclick="saveCalendar()">Сохранить календарь</button>
+
+    <div class="card" style="margin-top:20px">
+      <div class="num">📸 Согласование фото букета <small style="color:var(--muted);font-weight:500">(демо)</small></div>
+      <div class="meta">Сколько минут ждать ответа покупателя. На половине срока бот напомнит, а потом считает букет одобренным. 0 — ждать, пока не ответит</div>
+      <input type="number" id="ph_timeout" min="0" max="240" step="5">
+    </div>
+    <button class="big" onclick="savePhotoTimeout()">Сохранить</button>
+  </div>
 </div>
 
 <div id="sheetWrap">
@@ -265,6 +350,10 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const fmtDate = d => d.split("-").reverse().join(".");
 
 // Все запросы подписаны данными Telegram — сервер проверит, что это именно владелица
+async function makeBackup(){
+  try { await api('/backup', { method: 'POST', body: '{}' }); alert('Демо: в настоящем магазине бот пришлёт ZIP-архив с каталогом, заказами, отзывами и перепиской в чат. Здесь ничего не скачивается 📦'); }
+  catch (e) { tg?.showAlert ? tg.showAlert(e.message) : alert(e.message); }
+}
 async function api(path, opts = {}){
   const res = await fetch("/api/admin" + path, {
     ...opts,
@@ -284,7 +373,10 @@ document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
   document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x === t));
   $("ordersView").hidden = t.dataset.tab !== "orders";
   $("productsView").hidden = t.dataset.tab !== "products";
-  ({ orders: loadOrders, products: loadProducts })[t.dataset.tab]();
+  $("deliveryView").hidden = t.dataset.tab !== "delivery";
+  $("statsView").hidden = t.dataset.tab !== "stats";
+  $("chatsView").hidden = t.dataset.tab !== "chats";
+  ({ orders: loadOrders, products: loadProducts, delivery: loadDelivery, stats: loadStats, chats: loadChats })[t.dataset.tab]();
 });
 
 // ─── Заказы ──────────────────────────────────────────────
@@ -369,6 +461,7 @@ function renderOrders(){
       <div class="oact">
         ${primaryBtn(o, next)}
         <a class="iconbtn" href="tel:${esc(o.phone.replace(/[^\d+]/g, ""))}" aria-label="Позвонить">📞</a>
+        <button class="iconbtn" onclick="chatWith(${o.id})" aria-label="Написать">💬</button>
         ${["confirmed", "assembling"].includes(o.status) && o.photo_status !== "changes" ? `<button class="iconbtn" onclick="pickBouquetPhoto(${o.id})" aria-label="Фото на согласование" title="Фото на согласование">📸</button>` : ""}
         <button class="iconbtn" onclick="openMore = openMore === ${o.id} ? null : ${o.id}; renderOrders()" aria-label="Ещё">⋯</button>
       </div>
@@ -419,6 +512,12 @@ function cancelOrder(id){
   const q = `Отменить заказ №${id}? Покупатель получит уведомление, цветы вернутся на склад.`;
   const doIt = ok => ok && setStatus(id, "cancelled");
   tg?.showConfirm ? tg.showConfirm(q, doIt) : doIt(confirm(q));
+}
+// Написать покупателю — прямо в «Чатах» админки
+function chatWith(orderId){
+  const o = orders.find(x => x.id === orderId);
+  if (!chats.some(c => c.user_id === o.user_id)) chats.unshift({ user_id: o.user_id, name: o.customer_name, username: o.username, text: "", created_at: new Date().toISOString().replace("T", " ").slice(0, 19), unread: 0 });
+  openThread(o.user_id).then(() => { replyOrder = orderId; refreshThread(); });
 }
 $("orderSearch").oninput = e => { orderQuery = e.target.value.trim(); if (orderQuery) orderFilter = "all"; renderOrders(); };
 // Автообновление заказов раз в 30 секунд, пока открыта вкладка «Заказы»
@@ -540,11 +639,227 @@ function deleteProduct(){
   tg?.showConfirm ? tg.showConfirm(q, doIt) : doIt(confirm(q));
 }
 
-// Фото в демо — это уже готовые object URL
+// ─── Статистика ──────────────────────────────────────────
+let statDays = 30, stats = null;
+const plural = (n, [one, few, many]) => { const m10 = n % 10, m100 = n % 100;
+  return m10 === 1 && m100 !== 11 ? one : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? few : many; };
+async function loadStats(){
+  $("period").innerHTML = [7, 30, 90].map(d =>
+    `<button class="f ${d === statDays ? "active" : ""}" onclick="statDays=${d};loadStats()">${d} дней</button>`).join("");
+  try { stats = await api(`/stats?days=${statDays}`); renderStats(); }
+  catch (e) { $("kpis").innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+function renderStats(){
+  const s = stats;
+  $("kpis").innerHTML = [
+    ["Выручка", rub(s.revenue), `товары ${rub(s.goods)}`],
+    ["Заказов", s.orders, s.cancelled ? `ещё ${s.cancelled} отменено` : "без отмен 🎉"],
+    ["Средний чек", rub(s.avg), ""],
+    ["Покупателей", s.customers, s.repeat ? `${s.repeat} ${plural(s.repeat, ["вернулся", "вернулись", "вернулись"])} снова` : ""],
+  ].map(([l, v, sub]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${sub}</div></div>`).join("");
+
+  // Столбики выручки по дням (один цвет — одна величина)
+  const max = Math.max(...s.byDay.map(d => d.revenue), 1);
+  $("chart").setAttribute("aria-label", `Выручка по дням за ${s.days} дней, максимум ${rub(max)}`);
+  $("chart").innerHTML = `<div class="ymax">${rub(max)}</div>` + s.byDay.map((d, i) =>
+    `<div class="bar ${d.revenue ? "" : "zero"}" data-i="${i}" title="${fmtDate(d.date)}: ${rub(d.revenue)}">
+       <span style="height:${Math.max(d.revenue ? 2 : 0, d.revenue / max * 100)}%"></span></div>`).join("");
+  const first = s.byDay[0].date, mid = s.byDay[Math.floor(s.byDay.length / 2)].date, last = s.byDay.at(-1).date;
+  $("axis").innerHTML = [first, mid, last].map(d => `<span>${fmtDate(d).slice(0, 5)}</span>`).join("");
+  $("chart").querySelectorAll(".bar").forEach(b => b.onclick = b.onmouseenter = () => {
+    const d = s.byDay[b.dataset.i];
+    $("chart").querySelectorAll(".bar").forEach(x => x.classList.toggle("sel", x === b));
+    $("tip").innerHTML = `<b>${fmtDate(d.date)}</b> · ${rub(d.revenue)} · ${d.orders} ${plural(d.orders, ["заказ", "заказа", "заказов"])}`;
+  });
+
+  const topMax = Math.max(...s.top.map(t => t.revenue), 1);
+  $("top").innerHTML = s.top.length ? s.top.map((t, i) => `
+    <div class="toprow"><div class="t"><span>${i + 1}. ${esc(t.name)} <span style="color:var(--muted)">× ${t.qty}${t.unit ? " шт" : ""}</span></span><span>${rub(t.revenue)}</span></div>
+    <div class="track"><div class="fill" style="width:${t.revenue / topMax * 100}%"></div></div></div>`).join("")
+    : `<div class="empty">Пока нет продаж за этот период</div>`;
+
+  // Из чего выручка: одна полоса «товары / доставка» + подписи с процентами
+  const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+  const parts = [["Товары", s.goods, "var(--accent)"], ["Доставка", s.delivery, "#8fa8d8"]];
+  $("split").innerHTML = s.revenue ? `
+    <div class="stack" role="img" aria-label="Товары ${pct(s.goods, s.revenue)}%, доставка ${pct(s.delivery, s.revenue)}%">
+      ${parts.filter(p => p[1]).map(([, v, c]) => `<span style="width:${v / s.revenue * 100}%;background:${c}"></span>`).join("")}</div>
+    <div class="legend one">${parts.map(([t, v, c]) =>
+      `<div class="lg"><i style="background:${c}"></i>${t}<b>${rub(v)}<small>${pct(v, s.revenue)}%</small></b></div>`).join("")}</div>`
+    : `<div class="empty">Пока нет продаж за этот период</div>`;
+
+  // Статусы: та же цветовая схема, что и у карточек заказов
+  const ST_COLORS = { new: "#d9668b", confirmed: "#5b8def", assembling: "#a173d6", delivering: "#e0a030", done: "#4caf7d", cancelled: "#8a7d83" };
+  const total = Object.values(s.byStatus).reduce((a, b) => a + b, 0);
+  const present = Object.keys(s.statuses).filter(k => s.byStatus[k]);
+  const label = k => s.statuses[k].replace(/^\S+\s/, "");
+  $("bystatus").innerHTML = total ? `
+    <div class="stack" role="img" aria-label="${present.map(k => `${label(k)}: ${s.byStatus[k]}`).join(", ")}">
+      ${present.map(k => `<span title="${esc(label(k))}: ${s.byStatus[k]}" style="width:${s.byStatus[k] / total * 100}%;background:${ST_COLORS[k]}"></span>`).join("")}</div>
+    <div class="legend">${present.map(k =>
+      `<div class="lg"><i style="background:${ST_COLORS[k]}"></i>${esc(label(k))}<b>${s.byStatus[k]}</b></div>`).join("")}</div>`
+    : `<div class="empty">Заказов нет</div>`;
+
+  // Отзывы и открытки — отдельно от денег
+  $("quality").innerHTML = `
+    <div class="mini"><div class="v">${s.rating ? `${String(s.rating).replace(".", ",")} <span style="font-size:14px">/ 5</span>` : "—"}</div>
+      <div class="l">${s.rated ? `средняя оценка · ${s.rated} ${plural(s.rated, ["отзыв", "отзыва", "отзывов"])}` : "отзывов пока нет"}</div></div>
+    <div class="mini"><div class="v">${s.cards}</div>
+      <div class="l">${plural(s.cards, ["заказ", "заказа", "заказов"])} с открыткой${s.orders ? ` · ${pct(s.cards, s.orders)}%` : ""}</div></div>`;
+}
+
+// ─── Доставка ────────────────────────────────────────────
+let tiers = [];
+async function loadDelivery(){
+  loadCalendar();
+  try {
+    const t = await api("/delivery");
+    tiers = t.city.map(r => ({ ...r }));
+    $("r_base").value = t.region.base; $("r_per").value = t.region.perKm; $("r_from").value = t.region.fromKm;
+    $("free_from").value = t.freeFrom; renderTiers(); regionExample();
+  } catch (e) { $("dError").textContent = e.message; }
+}
+function renderTiers(){
+  $("tiers").innerHTML = tiers.map((r, i) => `
+    <div class="tier">до <input type="number" min="1" value="${r.km}" oninput="tiers[${i}].km=+this.value"> км —
+      <input type="number" min="0" value="${r.price}" oninput="tiers[${i}].price=+this.value"> ₽
+      <button class="x" type="button" onclick="tiers.splice(${i},1);renderTiers()" aria-label="Удалить">✕</button></div>`).join("");
+}
+function addTier(){ const last = tiers[tiers.length - 1]; tiers.push({ km: (last?.km || 0) + 5, price: (last?.price || 0) + 100 }); renderTiers(); }
+function regionExample(){
+  const b = +$("r_base").value || 0, p = +$("r_per").value || 0, f = +$("r_from").value || 0;
+  $("r_example").textContent = `Пример: 35 км от магазина → ${rub(b + Math.max(0, 35 - f) * p)}`;
+}
+["r_base", "r_per", "r_from"].forEach(id => $(id).oninput = regionExample);
+// ─── Календарь ───
+let closedDates = [];
+async function loadPhotoTimeout(){ try { $("ph_timeout").value = (await api("/photo-timeout")).minutes; } catch {} }
+async function savePhotoTimeout(){
+  try {
+    const d = await api("/photo-timeout", { method: "PUT", body: JSON.stringify({ minutes: $("ph_timeout").value }) });
+    $("ph_timeout").value = d.minutes; tg?.HapticFeedback?.notificationOccurred("success");
+    tg ? tg.showAlert(d.minutes ? `Ждём ответа ${d.minutes} мин, потом отправляем как на фото 📸` : "Будем ждать ответа покупателя без ограничения") : null;
+  } catch (e) { tg ? tg.showAlert(e.message) : alert(e.message); }
+}
+async function loadCalendar(){
+  loadPhotoTimeout();
+  try { const c = await api("/calendar"); closedDates = c.closed; $("c_limit").value = c.slotLimit; renderClosed(); } catch {}
+}
+function renderClosed(){
+  const today = new Date().toISOString().slice(0, 10);
+  $("closedList").innerHTML = closedDates.filter(d => d >= today).map(d =>
+    `<span class="chipd">${fmtDate(d)}<button type="button" onclick="closedDates=closedDates.filter(x=>x!=='${d}');renderClosed()" aria-label="Открыть дату">✕</button></span>`).join("")
+    || `<div class="meta">Выходных нет — работаем каждый день</div>`;
+}
+function addClosed(){ const d = $("c_date").value; if (d && !closedDates.includes(d)) { closedDates.push(d); closedDates.sort(); renderClosed(); } }
+async function saveCalendar(){
+  $("cError").textContent = "";
+  try {
+    const c = await api("/calendar", { method: "PUT", body: JSON.stringify({ closed: closedDates, slotLimit: $("c_limit").value }) });
+    closedDates = c.closed; renderClosed();
+    tg?.HapticFeedback?.notificationOccurred("success"); tg ? tg.showAlert("Календарь сохранён 📅") : alert("Сохранено");
+  } catch (e) { $("cError").textContent = e.message; }
+}
+
+async function saveDelivery(){
+  $("dError").textContent = "";
+  try {
+    const t = await api("/delivery", { method: "PUT", body: JSON.stringify({
+      city: tiers, region: { base: $("r_base").value, perKm: $("r_per").value, fromKm: $("r_from").value }, freeFrom: $("free_from").value,
+    }) });
+    tiers = t.city; renderTiers();
+    tg?.HapticFeedback?.notificationOccurred("success");
+    tg ? tg.showAlert("Тарифы сохранены 🚚") : alert("Сохранено");
+  } catch (e) { $("dError").textContent = e.message; }
+}
+
+// ─── Чаты с покупателями ─────────────────────────────────
+let chats = [], openUser = null, replyOrder = null, threadTimer = null;
+const QUICK = ["Здравствуйте! 🌷", "Да, всё получится!", "Ваш букет уже собираем 💐", "Курьер выехал 🚚", "Спасибо за заказ! ❤️"];
+const timeOf = s => new Date(s.replace(" ", "T") + "Z").toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+const dayOf = s => new Date(s.replace(" ", "T") + "Z").toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+
+async function loadChats(){
+  try {
+    const d = await api("/chats"); chats = d.chats;
+    $("chatCount").hidden = !d.unread; $("chatCount").textContent = d.unread;
+    if (!$("chatsView").hidden) renderChats();
+  } catch {}
+}
+function renderChats(){
+  $("chatList").innerHTML = chats.length ? chats.map(c => `
+    <div class="card chat ${c.unread ? "unread" : ""}" onclick="openThread(${c.user_id})">
+      <div class="ava">${esc((c.name || "?")[0].toUpperCase())}</div>
+      <div class="mid"><div class="nm"><span>${esc(c.name || "Покупатель")}</span><small>${dayOf(c.created_at) === dayOf(new Date().toISOString().replace("T", " ").slice(0, 19)) ? timeOf(c.created_at) : dayOf(c.created_at)}</small></div>
+        <div class="last">${c.direction === "out" ? "Вы: " : ""}${c.photo ? "📷 Фото " : ""}${esc(c.text || "")}</div></div>
+      ${c.unread ? `<span class="dot">${c.unread}</span>` : ""}
+    </div>`).join("") : `<div class="empty">Сообщений пока нет 🌿<br>Когда покупатель напишет боту, диалог появится здесь</div>`;
+}
+
+async function openThread(userId){
+  openUser = userId; replyOrder = null;
+  const c = chats.find(x => x.user_id === userId) || {};
+  $("tName").textContent = c.name || "Покупатель";
+  $("tUser").textContent = c.username ? "@" + c.username : "";
+  $("quick").innerHTML = QUICK.map(q => `<button class="f" onclick="$('reply').value=this.textContent;$('reply').focus()">${esc(q)}</button>`).join("");
+  $("thread").hidden = false; tg?.BackButton?.show();
+  await refreshThread(true);
+  clearInterval(threadTimer);
+  threadTimer = setInterval(() => !document.hidden && refreshThread(), 8000); // новые сообщения подтягиваются сами
+}
+function closeThread(){
+  $("thread").hidden = true; openUser = null; clearInterval(threadTimer); tg?.BackButton?.hide(); loadChats();
+}
+tg?.BackButton?.onClick(() => { if (!$("thread").hidden) closeThread(); });
+
+async function refreshThread(scroll){
+  if (!openUser) return;
+  try {
+    const d = await api(`/chats/${openUser}`);
+    renderThread(d.messages, scroll);
+    $("tOrders").innerHTML = d.orders.map(o =>
+      `<button class="f ${replyOrder === o.id ? "active" : ""}" onclick="replyOrder = replyOrder === ${o.id} ? null : ${o.id}; refreshThread()">№${o.id} · ${esc(o.status)}</button>`).join("");
+    loadChats();
+  } catch (e) { $("msgs").innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+let lastCount = 0;
+function renderThread(list, scroll){
+  const box = $("msgs"), atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
+  let prevDay = "";
+  box.innerHTML = list.map(m => {
+    const day = dayOf(m.created_at), sep = day !== prevDay ? `<div class="day">${day}</div>` : ""; prevDay = day;
+    return `${sep}<div class="bubble ${m.direction}">${m.photo ? `<img data-photo="${esc(m.photo)}" alt="Фото">` : ""}${esc(m.text || "")}<div class="meta2">${m.order_id ? `№${m.order_id} · ` : ""}${timeOf(m.created_at)}</div></div>`;
+  }).join("") || `<div class="empty">Нет сообщений</div>`;
+  box.querySelectorAll("img[data-photo]").forEach(loadPhoto);
+  if (scroll || atBottom || list.length > lastCount) box.scrollTop = box.scrollHeight;
+  lastCount = list.length;
+}
+// Фото в демо — это уже готовые локальные картинки или object URL
 function loadPhoto(img){ img.src = img.dataset.photo; }
+async function sendReply(){
+  const text = $("reply").value.trim(); if (!text || !openUser) return;
+  $("sendBtn").disabled = true;
+  try {
+    const d = await api(`/chats/${openUser}`, { method: "POST", body: JSON.stringify({ text, orderId: replyOrder }) });
+    $("reply").value = ""; $("reply").style.height = ""; renderThread(d.messages, true);
+    tg?.HapticFeedback?.notificationOccurred("success");
+  } catch (e) { tg ? tg.showAlert(e.message) : alert(e.message); }
+  finally { $("sendBtn").disabled = false; }
+}
+$("reply").oninput = e => { e.target.style.height = "auto"; e.target.style.height = Math.min(120, e.target.scrollHeight) + "px"; };
+$("reply").onkeydown = e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendReply(); }; // Cmd+Enter на компьютере
+
+// Счётчик непрочитанных обновляется сам, на любой вкладке
+setInterval(() => !document.hidden && loadChats(), 15000);
 
 if (!tg?.initData) denied("Демо-админка открывается из демо магазина");
-else loadOrders();
+else {
+  const chatParam = new URLSearchParams(location.search).get("chat");
+  if (chatParam) { // открыли из уведомления «📬 Открыть чат»
+    document.querySelector('.tab[data-tab="chats"]').click();
+    loadChats().then(() => openThread(Number(chatParam)));
+  } else { loadOrders(); loadChats(); }
+}
 </script>
 </body>
 </html>

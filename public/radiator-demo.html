@@ -27,8 +27,10 @@ const INFO = { cities: [
   { city: 'Псков', city_en: 'Pskov', price: 70000 }, { city: 'Санкт-Петербург', city_en: 'Saint Petersburg', price: 40000 }],
   otherPrice: 150000, freeFrom: 3000000, pickup: true, pickupAddress: 'Санкт-Петербург, Выборгское ш., 503 · пн–сб 10:00–19:00', payOnline: true };
 const LABEL = { awaiting_payment: '⏳ Ждёт оплату', paid: '🆕 Оплачен', assembling: '📦 Собираем', shipped: '🚚 Отправлен', delivered: '✅ Доставлен', cancelled: '❌ Отменён' };
+const LABEL_EN = { awaiting_payment: '⏳ Awaiting payment', paid: '🆕 Paid', assembling: '📦 Packing', shipped: '🚚 Shipped', delivered: '✅ Delivered', cancelled: '❌ Cancelled' };
 const FLOW = ['paid', 'assembling', 'shipped', 'delivered'];
 const prod = id => CAT.products.find(p => p.id == id);
+const tr = (ru, en) => (st.lang === 'en' ? en : ru);
 const err = (s, m) => ({ s, d: { error: m } });
 const goods = () => Object.entries(st.cart).reduce((a, [id, q]) => a + prod(id).price * q, 0);
 const cartMap = () => ({ ...st.cart });
@@ -37,8 +39,8 @@ const findPromo = c => { const n = String(c || '').trim().toUpperCase().replace(
 const promoPct = c => { const p = findPromo(c); return p ? p.discount_percent : 0; };
 function view(o) {
   const pickup = o.pickup;
-  return { id: o.id, code: o.code, status: o.status, statusLabel: o.status === 'shipped' && pickup ? '🏠 Готов к выдаче' : LABEL[o.status], step: FLOW.indexOf(o.status), pickup,
-    track: o.track || '', rating: 0, can_pay: o.status === 'awaiting_payment', total: o.total, delivery_cost: o.dcost, address: o.address,
+  return { id: o.id, code: o.code, status: o.status, statusLabel: o.status === 'shipped' && pickup ? tr('🏠 Готов к выдаче', '🏠 Ready for pickup') : (st.lang === 'en' ? LABEL_EN : LABEL)[o.status], step: FLOW.indexOf(o.status), pickup,
+    track: o.track || '', rating: 0, can_pay: o.status === 'awaiting_payment', total: o.total, delivery_cost: o.dcost, address: o.address, address_en: o.address_en || o.address,
     created_at: new Date(o.at).toISOString().slice(0, 19).replace('T', ' '), items: o.items };
 }
 function advance(o) {
@@ -49,41 +51,44 @@ function advance(o) {
 function quote(pct, city) {
   const g = goods(), gd = Math.round(g * (100 - pct) / 100);
   if (!city) return { goods: gd, delivery: 0, total: gd };
-  const c = INFO.cities.find(x => x.city.toLowerCase() === String(city).toLowerCase());
+  const nn = v => String(v || '').trim().toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ');
+  const c = INFO.cities.find(x => nn(x.city) === nn(city) || (x.city_en && nn(x.city_en) === nn(city)));
   const d = INFO.freeFrom > 0 && gd >= INFO.freeFrom ? 0 : (c ? c.price : INFO.otherPrice);
   return { goods: gd, delivery: d, total: gd + d };
 }
 const H = {
-  'GET /catalog': () => ({ ...CAT, unread: CAT.isOwner ? unreadTotal() : 0, lang: st.lang, cart: cartMap() }),
-  'POST /cart': b => { const p = prod(b.product_id); if (!p) return err(404, 'Товар не найден'); const q = Math.max(0, parseInt(b.qty, 10) || 0);
-    if (q > p.stock) return err(400, 'Больше нет в наличии'); if (q === 0) delete st.cart[p.id]; else st.cart[p.id] = q; return { ok: true, cart: cartMap() }; },
+  'GET /catalog': () => { Object.keys(st.cart).forEach(id => { const p = prod(id); if (!p || p.stock <= 0) delete st.cart[id]; else if (st.cart[id] > p.stock) st.cart[id] = p.stock; }); return { ...CAT, unread: CAT.isOwner ? unreadTotal() : 0, lang: st.lang, cart: cartMap() }; },
+  'POST /cart': b => { const p = prod(b.product_id); if (!p) return err(404, tr('Товар не найден', 'Product not found')); const q = Math.max(0, parseInt(b.qty, 10) || 0);
+    if (q > p.stock) return err(400, tr('Больше нет в наличии', 'No more in stock')); if (q === 0) delete st.cart[p.id]; else st.cart[p.id] = q; return { ok: true, cart: cartMap() }; },
   'POST /lang': b => { st.lang = b.lang === 'en' ? 'en' : 'ru'; return { ok: true, lang: st.lang }; },
   'GET /orders': () => ({ orders: st.orders.slice().reverse().map(view) }),
   'GET /checkout-info': () => INFO,
   'POST /promo': b => { const n = String(b.code || '').trim(); if (!n) return { ok: true, code: null, percent: 0 };
     const pr = findPromo(n), hint = PROMOS.find(p => p.active && (!p.max_uses || p.used_count < p.max_uses));
-    return pr ? { ok: true, code: pr.code, percent: pr.discount_percent } : err(400, 'Такого промокода нет' + (hint ? ' (в демо — ' + hint.code + ')' : '')); },
+    return pr ? { ok: true, code: pr.code, percent: pr.discount_percent } : err(400, tr('Такого промокода нет', 'No such promo code') + (hint ? tr(' (в демо — ', ' (in the demo: ') + hint.code + ')' : '')); },
   'POST /order': b => {
-    if (!Object.keys(st.cart).length) return err(400, 'Корзина пуста');
+    if (!Object.keys(st.cart).length) return err(400, tr('Корзина пуста', 'Your cart is empty'));
+    const short = Object.entries(st.cart).find(([id, n]) => !prod(id) || n > prod(id).stock); if (short) return err(400, tr('Больше нет в наличии: ', 'Not enough in stock: ') + (prod(short[0]) ? prod(short[0]).name : '#' + short[0]));
     const pickup = b.delivery === 'pickup', city = String(b.city || '').trim(), addr = String(b.address || '').trim();
-    if (!pickup) { if (!city) return err(400, 'Выберите город'); if (addr.length < 5) return err(400, 'Укажите адрес: улица, дом, квартира'); }
-    const ph = String(b.phone || '').replace(/\D/g, ''); if (b.phone && ph.length < 10) return err(400, 'Проверьте номер телефона');
+    if (!pickup) { if (!city) return err(400, tr('Выберите город', 'Choose a city')); if (addr.length < 5) return err(400, tr('Укажите адрес: улица, дом, квартира', 'Enter an address: street, house, flat')); }
+    const ph = String(b.phone || '').replace(/\D/g, ''); if (b.phone && ph.length < 10) return err(400, tr('Проверьте номер телефона', 'Check the phone number'));
     const pr = findPromo(b.promo), q = quote(pr ? pr.discount_percent : 0, pickup ? null : city);
     if (pr) pr.used_count++;
     const o = { id: st.nid++, code: String(2400 + st.nid * 3), status: 'awaiting_payment', pickup, city: pickup ? null : city, promo: pr ? pr.code : '', discount: pr ? pr.discount_percent : 0, buyer: 'Вы (демо)', chat_id: 1, total: q.total, dcost: q.delivery, at: Date.now(),
       address: pickup ? 'Самовывоз' : city + ', ' + addr + (ph ? ' · тел. ' + b.phone : ''),
+      address_en: pickup ? 'Pickup' : (((INFO.cities.find(x => x.city.toLowerCase() === city.toLowerCase()) || {}).city_en) || city) + ', ' + addr + (ph ? ' · tel. ' + b.phone : ''),
       items: Object.entries(st.cart).map(([id, n]) => ({ id: +id, qty: n, price: prod(id).price, name: prod(id).name })) };
     o.items.forEach(i => { prod(i.id).stock -= i.qty; });
     st.orders.push(o); st.cart = {};
     return { ok: true, id: o.id, code: o.code, total: o.total, pay_url: 'demo-pay:' + o.id };
   },
-  'POST /orders/:id/pay': (b, id) => { const o = st.orders.find(x => x.id == id); return o && o.status === 'awaiting_payment' ? { pay_url: 'demo-pay:' + o.id } : err(404, 'Этот заказ уже не ждёт оплату'); },
+  'POST /orders/:id/pay': (b, id) => { const o = st.orders.find(x => x.id == id); return o && o.status === 'awaiting_payment' ? { pay_url: 'demo-pay:' + o.id } : err(404, tr('Этот заказ уже не ждёт оплату', 'This order is no longer awaiting payment')); },
   'POST /checkout': () => ({ ok: true }),
   'POST /ai': b => {
-    const q = String(b.query || '').toLowerCase(); if (!q.trim()) return err(400, 'Опишите, что нужно подобрать');
-    if (/ванн|полотенц|хром/.test(q)) return { advice: 'Для ванной лучше всего подойдёт водяной полотенцесушитель: сушит вещи и прогревает небольшое помещение.', ids: [3] };
-    if (/лофт|чёрн|черн|больш/.test(q)) return { advice: 'В лофт-интерьер хорошо впишется трубчатый радиатор матового чёрного цвета.', ids: [4, 2] };
-    return { advice: 'Для гостиной на 20–25 м² подойдёт вертикальный дизайнерский радиатор или стальной панельный — оба быстро прогревают комнату.', ids: [1, 2, 6] };
+    const q = String(b.query || '').toLowerCase(); if (!q.trim()) return err(400, tr('Опишите, что нужно подобрать', 'Describe what you need'));
+    if (/ванн|полотенц|хром|bath|towel|chrome/.test(q)) return { advice: tr('Для ванной лучше всего подойдёт водяной полотенцесушитель: сушит вещи и прогревает небольшое помещение.', 'For a bathroom, a water-heated towel warmer works best: it dries towels and warms a small room.'), ids: [3] };
+    if (/лофт|чёрн|черн|больш|loft|black|large|big/.test(q)) return { advice: tr('В лофт-интерьер хорошо впишется трубчатый радиатор матового чёрного цвета.', 'A tubular radiator in matte black suits a loft interior well.'), ids: [4, 2] };
+    return { advice: tr('Для гостиной на 20–25 м² подойдёт вертикальный дизайнерский радиатор или стальной панельный — оба быстро прогревают комнату.', 'For a 20–25 m² living room, a vertical designer radiator or a steel panel one will do: both warm the room quickly.'), ids: [1, 2, 7] };
   },
 };
 /* ===== ДЕМО-АДМИНКА (режим «Владелец»): данные выдуманы, живут только в памяти страницы и пропадают при перезагрузке ===== */
@@ -233,21 +238,24 @@ window.fetch = async (url, o = {}) => {
   await new Promise(r => setTimeout(r, 120));
   const res = /^\/admin\//.test(path) && !CAT.isOwner ? err(403, 'Только для владельца — переключитесь в режим «Владелец»') : h ? h(body, arg) : err(404, 'Нет в демо');
   const s = res.s || 200, d = res.d || res;
-  return { ok: s < 400, status: s, json: async () => d };
+  return { ok: s < 400, status: s, json: async () => JSON.parse(JSON.stringify(d)) };
 };
 /* имитация оплаты: вместо страницы ЮKassa — окно «Демо-оплата» */
 const css = document.createElement('style');
-css.textContent = '#demoPay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}#demoPay .c{background:#fff;color:#1f2328;border-radius:20px;max-width:360px;width:100%;padding:24px;text-align:center;font:15px/1.4 -apple-system,Segoe UI,Roboto,sans-serif}#demoPay h2{margin:0 0 8px}#demoPay button{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:700 16px inherit;cursor:pointer;margin-top:10px;background:#e8590c;color:#fff}#demoPay button.g{background:#f1f3f5;color:#1f2328}#demoPay .ok{color:#2f9e44;font-size:42px}';
+css.textContent = '#demoPay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}#demoPay .c{background:#fff;color:#1f2328;border-radius:20px;max-width:360px;width:100%;padding:24px;text-align:center;font:15px/1.4 -apple-system,Segoe UI,Roboto,sans-serif}#demoPay h2{margin:0 0 8px}#demoPay button{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:700 16px/1.2 -apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;margin-top:10px;background:#e8590c;color:#fff}#demoPay button.g{background:#f1f3f5;color:#1f2328}#demoPay .ok{color:#2f9e44;font-size:42px}';
 document.addEventListener('DOMContentLoaded', () => document.head.appendChild(css));
 function showPay(id) {
   const o = st.orders.find(x => x.id == id); if (!o) return;
   const box = document.createElement('div'); box.id = 'demoPay';
   const sum = Math.round(o.total / 100).toLocaleString('ru-RU') + ' ₽';
-  box.innerHTML = '<div class="c"><h2>Демо-оплата</h2><p>Здесь открылась бы страница ЮKassa. В демо деньги не списываются, карта не нужна.</p><p><b>Заказ № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Оплатить ' + sum + ' (демо)</button><button class="g" data-no>Закрыть, оплачу позже</button></div>';
+  const en = st.lang === 'en';
+  box.innerHTML = en ? '<div class="c"><h2>Demo payment</h2><p>The YooKassa payment page would open here. In this demo no money is charged and no card is needed.</p><p><b>Order № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Pay ' + sum + ' (demo)</button><button class="g" data-no>Close, I will pay later</button></div>'
+    : '<div class="c"><h2>Демо-оплата</h2><p>Здесь открылась бы страница ЮKassa. В демо деньги не списываются, карта не нужна.</p><p><b>Заказ № ' + o.code + ' · ' + sum + '</b></p><button data-ok>Оплатить ' + sum + ' (демо)</button><button class="g" data-no>Закрыть, оплачу позже</button></div>';
   box.onclick = e => {
     if (e.target.matches('[data-ok]')) {
       if (o.status === 'awaiting_payment') { o.status = 'paid'; o.was_paid = true; advance(o); }
-      box.querySelector('.c').innerHTML = '<div class="ok">✓</div><h2>Оплата прошла (демо)</h2><p>Заказ оплачен. Статус будет меняться на вкладке «Заказы».</p><button data-no>Вернуться в магазин</button>';
+      box.querySelector('.c').innerHTML = en ? '<div class="ok">✓</div><h2>Payment successful (demo)</h2><p>The order is paid. Its status will change on the Orders tab.</p><button data-no>Back to the shop</button>'
+        : '<div class="ok">✓</div><h2>Оплата прошла (демо)</h2><p>Заказ оплачен. Статус будет меняться на вкладке «Заказы».</p><button data-no>Вернуться в магазин</button>';
       try { if (typeof tab !== 'undefined' && tab === 'orders') loadOrders(); } catch (x) {}
     } else if (e.target.matches('[data-no]')) { box.remove(); try { if (typeof tab !== 'undefined' && tab === 'orders') loadOrders(); } catch (x) {} }
   };
@@ -368,9 +376,10 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .sheet .act .add{width:auto;padding:0 20px;height:48px;font-size:16px;font-weight:700;border-radius:14px}
   .sheet .act .step{height:48px;border-radius:14px}
   .sheet .act .step button{width:44px;height:48px;font-size:24px}
-  .x{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;font-size:16px;cursor:pointer}
-  .toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-80px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;transition:.25s;z-index:20;max-width:90vw;text-align:center}
-  .toast.on{transform:translate(-50%,0)}
+  .x{position:absolute;z-index:3;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;font-size:16px;cursor:pointer}
+  .toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom));top:auto;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;transition:.25s;z-index:20;max-width:90vw;text-align:center}
+  .open .toast{bottom:auto;top:16px;transform:translate(-50%,-10px)}
+  .toast.on,.open .toast.on{opacity:1;transform:translate(-50%,0)}
   .skel{background:linear-gradient(90deg,var(--card),var(--line),var(--card));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r);aspect-ratio:3/4}
   @keyframes sk{to{background-position:-200% 0}}
 
@@ -462,6 +471,10 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .form .line2{display:flex;justify-content:space-between;align-items:center;color:var(--text);font-size:15px;margin:16px 0 8px}
   .two3{display:grid;grid-template-columns:1.6fr .8fr 1fr;gap:8px;margin-top:6px}
   .form .two3 input,.form .crow input{width:100%}
+  .form .crow .cn,.form .crow #ncity{flex:1 1 0;width:auto;min-width:0}
+  .form .crow .cp,.form .crow #nprice{flex:none;width:76px}
+  .form .crow .cn{font-size:14px;padding-left:9px;padding-right:4px}
+  .form .crow .sw input{width:0;height:0}
   /* трекер заказа у покупателя */
   .steps{display:flex;align-items:flex-start;margin:4px 0 12px}
   .steps div{flex:1;text-align:center;font-size:11.5px;color:var(--muted);position:relative}
@@ -553,6 +566,16 @@ const T = {
         aiTitle: 'Find the right radiator', aiPh: 'Describe the room: size, placement, style, budget…', aiGo: 'Find', aiWait: 'Thinking',
         aiHints: ['Bathroom 5 m², chrome, under 10 000 ₽', 'Living room 25 m², white, vertical', 'Loft, black, large'], aiNone: 'Nothing matched — try describing it differently' },
 };
+Object.assign(T.ru, { coTitle: 'Оформление', recv: 'Получение', delBtn: '🚚 Доставка', pickBtn: '🏠 Самовывоз', freeYes: '🎉 Доставка бесплатно!',
+  freeLeft: (a, b) => `Бесплатная доставка от ${a} — осталось ${b}`, other: 'Другой город', cityPh: 'Город', addrPh: 'Улица, дом, квартира, подъезд', phonePh: 'Телефон для связи',
+  pickNote: 'Напишем в чат, когда заказ будет готов к выдаче.', promoTitle: 'Промокод', promoPh: 'Если есть', apply: 'Применить', goods: 'Товары', discount: p => `Скидка ${p}%`,
+  discRow: 'Скидка', free: 'бесплатно', payBtn: s => `Оплатить · ${s}`, needCity: 'Укажите город', needAddr: 'Укажите адрес доставки', ordMade: c => `Заказ ${c} создан — осталось оплатить 💳`,
+  payOrder: s => `💳 Оплатить ${s}`, track: 'Трек-номер' });
+Object.assign(T.en, { coTitle: 'Checkout', recv: 'Delivery method', delBtn: '🚚 Delivery', pickBtn: '🏠 Pickup', freeYes: '🎉 Free delivery!',
+  freeLeft: (a, b) => `Free delivery from ${a} — ${b} to go`, other: 'Other city', cityPh: 'City', addrPh: 'Street, house, flat, entrance', phonePh: 'Contact phone',
+  pickNote: "We'll message you in the chat when your order is ready for pickup.", promoTitle: 'Promo code', promoPh: 'If you have one', apply: 'Apply', goods: 'Items', discount: p => `Discount ${p}%`,
+  discRow: 'Discount', free: 'free', payBtn: s => `Pay · ${s}`, needCity: 'Enter a city', needAddr: 'Enter a delivery address', ordMade: c => `Order ${c} created — now pay for it 💳`,
+  payOrder: s => `💳 Pay ${s}`, track: 'Tracking' });
 let lang = 'ru', L = T.ru;
 let products = [], cart = {}, cat = null, query = '', tab = 'catalog', orders = null;
 
@@ -660,7 +683,7 @@ function mainButton() {
   const { n, sum } = cartTotals();
   // в корзине — «Оформить», на других вкладках при непустой корзине — «Корзина · сумма»
   if (n > 0 && tab !== 'orders' && tab !== 'admin') {
-    const text = tab === 'checkout' ? `Оплатить · ${rub(coTotal())}` : tab === 'cart' ? L.checkout(rub(sum)) : `🛒 ${L.tCart} · ${rub(sum)}`;
+    const text = tab === 'checkout' ? L.payBtn(rub(coTotal())) : tab === 'cart' ? L.checkout(rub(sum)) : `🛒 ${L.tCart} · ${rub(sum)}`;
     tg.MainButton.setParams({ text, color: '#e8590c', text_color: '#ffffff' });
     tg.MainButton.show();
   } else tg.MainButton.hide();
@@ -691,6 +714,7 @@ async function checkout() {
 }
 
 /* ---------- заказы ---------- */
+const ordDisc = o => Math.max(0, o.items.reduce((a, i) => a + i.price * i.qty, 0) + (o.delivery_cost || 0) - o.total);
 async function loadOrders() {
   $('v-orders').innerHTML = `<h1>${L.ordersTitle}</h1><div class="skel" style="aspect-ratio:3/1"></div>`;
   try { orders = (await api('/orders')).orders; } catch (e) { $('v-orders').innerHTML = `<h1>${L.ordersTitle}</h1><div class="empty">${esc(e.message)}</div>`; return; }
@@ -699,13 +723,14 @@ async function loadOrders() {
       <div class="top"><span class="code">№ ${esc(o.code)}</span><span class="pill ${esc(o.status)}">${esc(o.statusLabel)}</span></div>
       ${o.step >= 0 ? `<div class="steps">${(lang === 'en' ? ['Paid', 'Packing', o.pickup ? 'Ready' : 'Shipped', o.pickup ? 'Picked up' : 'Delivered'] : ['Оплачен', 'Собираем', o.pickup ? 'Готов' : 'Отправлен', o.pickup ? 'Получен' : 'Доставлен'])
         .map((n, i) => `<div class="${i < o.step || o.step === 3 ? 'done' : i === o.step ? 'now' : ''}">${n}</div>`).join('')}</div>` : ''}
-      <ul>${o.items.map(i => `<li><span>${esc(i.name)} × ${i.qty}</span><span>${rub(i.price * i.qty)}</span></li>`).join('')}
-        ${o.delivery_cost ? `<li><span>${L.delivery}</span><span>${rub(o.delivery_cost)}</span></li>` : ''}</ul>
+      <ul>${o.items.map(i => `<li><span>${esc((byId(i.id) ? nm(byId(i.id)) : i.name))} × ${i.qty}</span><span>${rub(i.price * i.qty)}</span></li>`).join('')}
+        ${o.delivery_cost ? `<li><span>${L.delivery}</span><span>${rub(o.delivery_cost)}</span></li>` : ''}
+        ${ordDisc(o) ? `<li><span>${L.discRow}</span><span>−${rub(ordDisc(o))}</span></li>` : ''}</ul>
       <div class="sum"><span>${L.total}</span><span>${rub(o.total)}</span></div>
-      <div class="meta">${esc(when(o.created_at))}${o.address ? ' · ' + esc(o.address) : ''}</div>
-      ${o.track ? `<div class="track">🚚 ${lang === 'en' ? 'Tracking' : 'Трек-номер'}: <b>${esc(o.track)}</b></div>` : ''}
+      <div class="meta">${esc(when(o.created_at))}${o.address ? ' · ' + esc((lang === 'en' && o.address_en) || o.address) : ''}</div>
+      ${o.track ? `<div class="track">🚚 ${L.track}: <b>${esc(o.track)}</b></div>` : ''}
       ${o.rating ? `<div class="stars">${'★'.repeat(o.rating)}${'☆'.repeat(5 - o.rating)}</div>` : ''}
-      ${o.can_pay ? `<button class="btn pay" data-payorder="${o.id}">💳 Оплатить ${rub(o.total)}</button>` : ''}
+      ${o.can_pay ? `<button class="btn pay" data-payorder="${o.id}">${L.payOrder(rub(o.total))}</button>` : ''}
     </div>`).join('') : `<div class="empty"><b>📦</b>${L.ordersEmpty}</div>`);
 }
 
@@ -773,8 +798,9 @@ document.addEventListener('click', e => {
   else if (d.retry !== undefined) load();
   else if (d.lang && d.lang !== lang) {
     lang = d.lang; applyLang(); renderChips(); renderGrid(); renderCart();
-    if (tab === 'orders') loadOrders();
-    api('/lang', { lang }).catch(() => {});
+    if (tab === 'checkout' && coInfo) renderCheckout();
+    if (openId) renderSheet();
+    api('/lang', { lang }).catch(() => {}).then(() => { if (tab === 'orders') loadOrders(); });
   }
 });
 $('veil').onclick = closeSheet;
@@ -834,14 +860,14 @@ function openEditor(id) {
   editId = id;
   const p = id === 'new' ? { name: '', price: '', stock: 1, category: '', description: '' } : admProducts.find(x => x.id == id);
   if (!p) return;
-  const f = (k, label, type = 'text', extra = '') => `<label>${label}</label><input name="${k}" type="${type}" value="${esc(k === 'price' && p.price ? Math.round(p.price / 100) : p[k] ?? '')}" ${extra}>`;
+  const f = (k, label, type = 'text', extra = '') => `<label>${label}</label><input name="${k}" type="${type}" value="${esc(k === 'price' ? (p.price ? p.price / 100 : '') : p[k] ?? '')}" ${extra}>`;
   $('sheet').innerHTML = `<button class="x" data-close>✕</button>
     ${id === 'new' ? '' : `<div class="big photoEdit">${photo(p)}<button class="up" data-photo="${p.id}">📷 ${p.has_photo ? 'Заменить фото' : 'Добавить фото'}</button></div>`}
     <form class="body form" id="pform" onsubmit="return false">
       <h2>${id === 'new' ? 'Новый товар' : 'Редактирование'}</h2>
       ${id === 'new' ? '' : `<details><summary>Фото по ссылке</summary><div style="display:flex;gap:8px;margin-top:8px"><input id="photoUrl" placeholder="https://…" inputmode="url"><button class="btn" style="width:auto;padding:0 16px" data-purl="${p.id}">OK</button></div></details>`}
       ${f('name', 'Название')}
-      <div class="two"><div>${f('price', 'Цена, ₽', 'number', 'inputmode="numeric" min="1"')}</div><div>${f('stock', 'Остаток, шт.', 'number', 'inputmode="numeric" min="0"')}</div></div>
+      <div class="two"><div>${f('price', 'Цена, ₽', 'number', 'inputmode="decimal" min="0.01" step="0.01"')}</div><div>${f('stock', 'Остаток, шт.', 'number', 'inputmode="numeric" min="0"')}</div></div>
       ${f('category', 'Категория', 'text', 'list="cats"')}
       <datalist id="cats">${[...new Set(admProducts.map(x => x.category).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('')}</datalist>
       <label>Описание</label><textarea name="description">${esc(p.description || '')}</textarea>
@@ -904,7 +930,8 @@ function orderCard(o) {
     <div class="order" id="ord-${o.id}">
       <div class="top"><span class="code">№ ${esc(o.code)}${o.buyer ? ' · ' + esc(o.buyer) : ''}</span><span class="pill ${esc(o.status)}">${esc(stLabel(o))}</span></div>
       <ul>${o.items.map(i => `<li><span>${esc(i.name)} × ${i.qty}</span><span>${rub(i.price * i.qty)}</span></li>`).join('')}
-        ${o.pickup ? '' : `<li><span>Доставка</span><span>${o.delivery_cost ? rub(o.delivery_cost) : 'бесплатно'}</span></li>`}</ul>
+        ${o.pickup ? '' : `<li><span>Доставка</span><span>${o.delivery_cost ? rub(o.delivery_cost) : 'бесплатно'}</span></li>`}
+        ${ordDisc(o) ? `<li><span>Скидка${o.discount ? ' ' + o.discount + '%' : ''}</span><span>−${rub(ordDisc(o))}</span></li>` : ''}</ul>
       <div class="sum"><span>Итого</span><span>${rub(o.total)}</span></div>
       <div class="meta">${esc(when(o.created_at))} · ${o.pickup ? '🏠 Самовывоз' : '📍 ' + esc(o.address)}</div>
       ${extra ? `<div class="meta">${extra}</div>` : ''}
@@ -1135,7 +1162,7 @@ document.addEventListener('click', async e => {
 
 
 /* ---------- оформление и оплата ---------- */
-let co = { delivery: 'city', city: '', other: '', address: '', phone: '', promo: '', promoPct: 0, promoOk: '' }, coInfo = null;
+let co = { delivery: 'city', city: '', other: '', address: '', phone: '', promo: '', promoPct: 0, promoOk: false }, coInfo = null;
 const coGoods = () => { const { sum } = cartTotals(); return sum - (co.promoPct ? Math.round(sum * co.promoPct / 100) : 0); };
 const coFree = () => Boolean(coInfo && coInfo.freeFrom > 0 && coGoods() >= coInfo.freeFrom);
 const coCost = () => {
@@ -1150,12 +1177,13 @@ async function openCheckout() {
   if (!cartTotals().n) { toast(L.cartEmpty); return; }
   go('checkout');
   if (!coInfo) {
-    $('v-checkout').innerHTML = `<h1>Оформление</h1><div class="skel" style="aspect-ratio:3/1"></div>`;
-    try { coInfo = await api('/checkout-info'); } catch (e) { $('v-checkout').innerHTML = `<h1>Оформление</h1><div class="empty">${esc(e.message)}</div>`; return; }
-    if (!co.city && coInfo.cities.length) co.city = (coInfo.cities.find(c => /петербург/i.test(c.city)) || coInfo.cities[0]).city;
-    if (!co.city) co.city = '__other';
-    if (!coInfo.pickup) co.delivery = 'city';
+    $('v-checkout').innerHTML = `<h1>${L.coTitle}</h1><div class="skel" style="aspect-ratio:3/1"></div>`;
   }
+  /* условия доставки владелец может менять — берём свежие при каждом открытии */
+  try { coInfo = await api('/checkout-info'); } catch (e) { $('v-checkout').innerHTML = `<h1>${L.coTitle}</h1><div class="empty">${esc(e.message)}</div>`; return; }
+  if (co.city !== '__other' && !coInfo.cities.some(c => c.city === co.city)) co.city = coInfo.cities.length ? (coInfo.cities.find(c => /петербург/i.test(c.city)) || coInfo.cities[0]).city : '__other';
+  if (!coInfo.pickup) co.delivery = 'city';
+  if (co.promoPct) { try { const d = await api('/promo', { code: co.promo }, 1); co.promoPct = d.percent; } catch (e) { co.promoPct = 0; co.promoOk = false; } }
   renderCheckout();
 }
 function renderCheckout() {
@@ -1164,28 +1192,28 @@ function renderCheckout() {
   const dcost = coCost();
   const total = sum - disc + dcost;
   const cityName = c => (lang === 'en' && c.city_en) || c.city;
-  $('v-checkout').innerHTML = `<h1>Оформление</h1>
-    <div class="box"><h3>Получение</h3>
-      ${coInfo.pickup ? `<div class="seg"><button data-dl="city" class="${co.delivery === 'city' ? 'on' : ''}">🚚 Доставка</button><button data-dl="pickup" class="${co.delivery === 'pickup' ? 'on' : ''}">🏠 Самовывоз</button></div>` : ''}
-      ${co.delivery === 'city' && coInfo.freeFrom > 0 ? `<div class="note" style="text-align:left;margin:0 0 6px">${coFree() ? '🎉 Доставка бесплатно!' : `Бесплатная доставка от ${rub(coInfo.freeFrom)} — осталось ${rub(coInfo.freeFrom - coGoods())}`}</div>` : ''}
+  $('v-checkout').innerHTML = `<h1>${L.coTitle}</h1>
+    <div class="box"><h3>${L.recv}</h3>
+      ${coInfo.pickup ? `<div class="seg"><button data-dl="city" class="${co.delivery === 'city' ? 'on' : ''}">${L.delBtn}</button><button data-dl="pickup" class="${co.delivery === 'pickup' ? 'on' : ''}">${L.pickBtn}</button></div>` : ''}
+      ${co.delivery === 'city' && coInfo.freeFrom > 0 ? `<div class="note" style="text-align:left;margin:0 0 6px">${coFree() ? L.freeYes : L.freeLeft(rub(coInfo.freeFrom), rub(coInfo.freeFrom - coGoods()))}</div>` : ''}
       ${co.delivery === 'city' ? `
         <div class="fld"><select id="coCity">${coInfo.cities.map(c => `<option value="${esc(c.city)}" ${co.city === c.city ? 'selected' : ''}>${esc(cityName(c))} — ${rub(c.price)}</option>`).join('')}
-          <option value="__other" ${co.city === '__other' ? 'selected' : ''}>Другой город — ${rub(coInfo.otherPrice)}</option></select></div>
-        ${co.city === '__other' ? `<div class="fld"><input id="coOther" placeholder="Город" value="${esc(co.other)}"></div>` : ''}
-        <div class="fld"><textarea id="coAddr" placeholder="Улица, дом, квартира, подъезд">${esc(co.address)}</textarea></div>` : `<div class="note" style="text-align:left;margin-top:10px">${coInfo.pickupAddress ? '📍 ' + esc(coInfo.pickupAddress) + '<br>' : ''}Напишем в чат, когда заказ будет готов к выдаче.</div>`}
-      <div class="fld"><input id="coPhone" type="tel" inputmode="tel" placeholder="Телефон для связи" value="${esc(co.phone)}"></div>
+          <option value="__other" ${co.city === '__other' ? 'selected' : ''}>${L.other} — ${rub(coInfo.otherPrice)}</option></select></div>
+        ${co.city === '__other' ? `<div class="fld"><input id="coOther" placeholder="${L.cityPh}" value="${esc(co.other)}"></div>` : ''}
+        <div class="fld"><textarea id="coAddr" placeholder="${L.addrPh}">${esc(co.address)}</textarea></div>` : `<div class="note" style="text-align:left;margin-top:10px">${coInfo.pickupAddress ? '📍 ' + esc(coInfo.pickupAddress) + '<br>' : ''}${L.pickNote}</div>`}
+      <div class="fld"><input id="coPhone" type="tel" inputmode="tel" placeholder="${L.phonePh}" value="${esc(co.phone)}"></div>
     </div>
-    <div class="box"><h3>Промокод</h3>
-      <div class="promo"><input id="coPromo" placeholder="Если есть" value="${esc(co.promo)}" autocapitalize="characters"><button class="btn ghost" data-promo>Применить</button></div>
-      ${co.promoOk ? `<div class="fld ok">✓ ${esc(co.promoOk)}</div>` : ''}
+    <div class="box"><h3>${L.promoTitle}</h3>
+      <div class="promo"><input id="coPromo" placeholder="${L.promoPh}" value="${esc(co.promo)}" autocapitalize="characters"><button class="btn ghost" data-promo>${L.apply}</button></div>
+      ${co.promoOk && co.promoPct ? `<div class="fld ok">✓ ${L.discount(co.promoPct)}</div>` : ''}
     </div>
     <div class="box">
-      <div class="sumrow"><span>Товары</span><span>${rub(sum)}</span></div>
-      ${disc ? `<div class="sumrow"><span>Скидка ${co.promoPct}%</span><span>−${rub(disc)}</span></div>` : ''}
-      <div class="sumrow"><span>Доставка</span><span>${co.delivery === 'pickup' || coFree() ? 'бесплатно' : rub(dcost)}</span></div>
-      <div class="sumrow big"><span>Итого</span><span>${rub(total)}</span></div>
+      <div class="sumrow"><span>${L.goods}</span><span>${rub(sum)}</span></div>
+      ${disc ? `<div class="sumrow"><span>${L.discount(co.promoPct)}</span><span>−${rub(disc)}</span></div>` : ''}
+      <div class="sumrow"><span>${L.delivery}</span><span>${co.delivery === 'pickup' || coFree() ? L.free : rub(dcost)}</span></div>
+      <div class="sumrow big"><span>${L.total}</span><span>${rub(total)}</span></div>
     </div>
-    ${inTg ? '' : `<button class="btn" data-pay>Оплатить · ${rub(total)}</button>`}
+    ${inTg ? '' : `<button class="btn" data-pay>${L.payBtn(rub(total))}</button>`}
     <div class="note">${L.checkoutNote}</div>`;
   const bind = (id, k, rerender) => { const el = $(id); if (el) el[el.tagName === 'SELECT' ? 'onchange' : 'oninput'] = e => { co[k] = e.target.value; if (rerender) renderCheckout(); else mainButton(); }; };
   bind('coCity', 'city', true); bind('coOther', 'other'); if ($('coOther')) $('coOther').onchange = () => renderCheckout(); bind('coAddr', 'address'); bind('coPhone', 'phone'); bind('coPromo', 'promo');
@@ -1194,17 +1222,17 @@ function renderCheckout() {
 function coTotal() { return coGoods() + coCost(); }
 async function applyPromo() {
   co.promo = ($('coPromo')?.value || '').trim();
-  if (!co.promo) { co.promoPct = 0; co.promoOk = ''; renderCheckout(); return; }
-  try { const d = await api('/promo', { code: co.promo }, 1); co.promoPct = d.percent; co.promoOk = `Скидка ${d.percent}%`; haptic('medium'); }
-  catch (e) { co.promoPct = 0; co.promoOk = ''; toast(e.message); }
+  if (!co.promo) { co.promoPct = 0; co.promoOk = false; renderCheckout(); return; }
+  try { const d = await api('/promo', { code: co.promo }, 1); co.promoPct = d.percent; co.promoOk = true; haptic('medium'); }
+  catch (e) { co.promoPct = 0; co.promoOk = false; toast(e.message); }
   renderCheckout();
 }
 let paying = false;
 async function pay() {
   if (paying) return;
   if (co.delivery === 'city') {
-    if (co.city === '__other' && co.other.trim().length < 2) { toast('Укажите город'); $('coOther')?.focus(); return; }
-    if (co.address.trim().length < 5) { toast('Укажите адрес доставки'); $('coAddr')?.focus(); return; }
+    if (co.city === '__other' && co.other.trim().length < 2) { toast(L.needCity); $('coOther')?.focus(); return; }
+    if (co.address.trim().length < 5) { toast(L.needAddr); $('coAddr')?.focus(); return; }
   }
   if (co.promo && !co.promoPct) { await applyPromo(); if (!co.promoPct) return; }
   paying = true; tg?.MainButton?.showProgress?.();
@@ -1212,11 +1240,13 @@ async function pay() {
     const d = await api('/order', { delivery: co.delivery === 'pickup' ? 'pickup' : 'city', city: co.city === '__other' ? co.other.trim() : co.city,
       address: co.address, phone: co.phone, promo: co.promoPct ? co.promo : '' }, 1);
     haptic('heavy');
-    cart = {}; renderCart(); renderGrid();
-    co.promo = ''; co.promoPct = 0; co.promoOk = '';
+    cart = {};
+    try { products = (await api('/catalog')).products; renderChips(); } catch (e) {}
+    renderCart(); renderGrid();
+    co.promo = ''; co.promoPct = 0; co.promoOk = false;
     if (tg?.openLink) tg.openLink(d.pay_url); else window.open(d.pay_url, '_blank');
     go('orders');
-    toast(`Заказ ${d.code} создан — осталось оплатить 💳`);
+    toast(L.ordMade(d.code));
   } catch (e) { toast(e.message); }
   finally { paying = false; tg?.MainButton?.hideProgress?.(); }
 }
