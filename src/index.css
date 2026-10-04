@@ -169,7 +169,6 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
 /* ---------- footer ---------- */
 footer { border-top: 1px solid var(--line); padding-block: 26px; font-size: .82rem; color: var(--soft); }
 footer .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
-footer b { color: var(--ink); }
 
 /* ---------- анимации ---------- */
 .rise { opacity: 0; transform: translateY(18px); animation: rise .9s var(--ease) forwards; animation-delay: var(--d, 0ms); }
@@ -217,7 +216,6 @@ h1, h2, h3, .brand { font-weight: 700; letter-spacing: -0.035em; font-feature-se
 .after-letter { font-family: var(--sans); font-weight: 700; font-size: .9rem; }
 .work h3 { line-height: 1.1; }
 .contact h2 { font-size: clamp(1.5rem, 2.8vw, 2.1rem); }
-footer b { font-family: var(--sans); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.03em; }
 
 /* заголовок блока возможностей */
 #benefits .section-title { font-weight: 400; letter-spacing: -0.02em; }
@@ -336,10 +334,6 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
 @media (prefers-reduced-motion: reduce) { .ma-tr, .ma-prog i { animation: none; } }
 
 /* ---------- footer: help + social; mini-app only on mobile ---------- */
-.foot-help { max-width: 40ch; margin: 0; line-height: 1.5; color: var(--soft); }
-.foot-social { display: flex; justify-content: center; }
-.foot-social a { border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); transition: box-shadow .25s, color .25s, border-color .25s; }
-.foot-social a:hover, .foot-social a:focus-visible { color: var(--accent); border-color: var(--accent); box-shadow: var(--neon); outline: 0; }
 @media (min-width: 701px) { .ma-wrap { display: none; } }
 
 /* ---------- projects: tidy layout, pill links ---------- */
@@ -400,6 +394,4 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 .cbtn .ico { width: 56px; height: 56px; flex: none; display: grid; place-items: center; border-radius: 16px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent); transition: box-shadow .25s, background .25s; }
 .cbtn .ico svg { width: 30px; height: 30px; }
 .cbtn:hover .ico, .cbtn:focus-visible .ico { background: color-mix(in srgb, var(--accent) 24%, transparent); box-shadow: 0 0 18px -2px var(--glow); }
-.foot-social { gap: 16px; }
-.foot-social a { width: 56px; height: 56px; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: color-mix(in srgb, var(--accent) 38%, transparent); }
 .topo-bg.is-paused g { animation-play-state: paused; }
