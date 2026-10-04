@@ -307,3 +307,25 @@ footer nav.foot-links { border: 0; position: static; background: none; backdrop-
   .topo-wash { background: radial-gradient(ellipse 95% 70% at 50% 45%, var(--paper) 25%, transparent 100%); opacity: .9; }
   .hero-actions { margin-top: 32px; }
 }
+
+/* мини-чат бота в hero */
+.chat { margin-top: clamp(36px, 5vw, 56px); width: min(420px, 100%); text-align: left; background: var(--tint); border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 30px 70px -40px var(--glow), 0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent); overflow: hidden; }
+.chat-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.chat-ava { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--accent), var(--violet, #7C5CFF)); }
+.chat-ava svg { width: 20px; height: 20px; }
+.chat-name { display: flex; flex-direction: column; line-height: 1.2; }
+.chat-name b { font-size: .92rem; font-weight: 700; }
+.chat-name small { font-size: .72rem; color: var(--soft); }
+.chat-body { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px 20px; }
+.chat .msg { max-width: 82%; padding: 9px 14px; border-radius: 16px; font-size: .88rem; line-height: 1.4; opacity: 0; transform: translateY(8px); animation: msg-in .5s var(--ease) forwards; animation-delay: calc(900ms + var(--i) * 650ms); }
+.chat .msg.in { align-self: flex-start; background: color-mix(in srgb, var(--ink) 8%, transparent); border-bottom-left-radius: 5px; }
+.chat .msg.out { align-self: flex-end; color: #fff; background: var(--accent); border-bottom-right-radius: 5px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chat .msg.out { color: #06121f; } }
+:root[data-theme="dark"] .chat .msg.out { color: #06121f; }
+.chat .msg.done { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.chat .keys { display: flex; gap: 6px; flex-wrap: wrap; opacity: 0; animation: msg-in .5s var(--ease) forwards; animation-delay: calc(900ms + var(--i) * 650ms); }
+.chat .keys span { flex: 1 1 auto; text-align: center; padding: 8px 12px; border-radius: 10px; font-size: .8rem; font-weight: 600; background: color-mix(in srgb, var(--ink) 7%, transparent); border: 1px solid var(--line); }
+.chat .keys .ok { border-color: color-mix(in srgb, var(--accent) 55%, transparent); color: var(--accent); }
+@keyframes msg-in { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .chat .msg, .chat .keys { animation: none; opacity: 1; transform: none; } }
+@media (max-width: 700px) { .hero { padding-bottom: 48px; } }
