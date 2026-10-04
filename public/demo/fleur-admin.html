@@ -2,11 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Флёр — админка (демо)</title>
 <script>/* ДЕМО: запросы идут в мок-«сервер» родительской страницы (fleur-demo.html), в сеть ничего не уходит */
 if (window.parent !== window) { window.fetch = (...a) => window.parent.fetch(...a); window.Telegram = window.parent.Telegram; }</script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fleur-fonts.css">
 <style>
   :root{ --bg:#fbf7f4; --card:#fff; --text:#2b2227; --muted:#6e6168; --accent:#b84a70; --accent-soft:#f6e3ea;
     --line:#efe6e9; --danger:#c0392b; --shadow:0 6px 20px rgba(120,60,80,.08); color-scheme:light dark; }

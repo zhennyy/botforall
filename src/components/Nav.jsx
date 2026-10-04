@@ -2,7 +2,7 @@ import ThemeToggle from './ThemeToggle'
 
 export default function Nav() {
   return (
-    <nav>
+    <nav aria-label="Основное меню">
       <div className="wrap">
         <a className="brand" href="#top">BotFor_All</a>
         <div className="navlinks">

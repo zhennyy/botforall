@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const TG = 'BotFor_All'
 const EMAIL = 'doevev@gmail.com'
 
 export default function Contact() {
   const [copied, setCopied] = useState(false)
+  const timer = useRef(null)
+  useEffect(() => () => clearTimeout(timer.current), [])
 
   const handleClick = async () => {
     try {
@@ -13,7 +15,8 @@ export default function Contact() {
       window.prompt('Скопируйте адрес:', EMAIL)
     }
     setCopied(true)
-    setTimeout(() => setCopied(false), 1800)
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => setCopied(false), 1800)
   }
 
   return (

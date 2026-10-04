@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 function blob(cx, cy, r0, ph) {
   const pts = []
@@ -12,6 +12,15 @@ function blob(cx, cy, r0, ph) {
 }
 
 export default function TopoBg() {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(true)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   const paths = useMemo(() => {
     const d = []
     for (let j = 1; j <= 26; j++) d.push(blob(-120, -30, j * 20, j * 0.28))
@@ -19,7 +28,7 @@ export default function TopoBg() {
     return d
   }, [])
   return (
-    <div className="topo-bg" aria-hidden="true">
+    <div ref={ref} className={`topo-bg${visible ? '' : ' is-paused'}`} aria-hidden="true">
       <svg viewBox="-720 -400 1440 800" preserveAspectRatio="xMidYMid slice">
         <g>{paths.map((d, i) => <path key={i} d={d} />)}</g>
       </svg>
