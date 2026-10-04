@@ -18,12 +18,14 @@ export default function Contact() {
   return (
     <section id="contact">
       <div className="wrap contact">
+        <p className="kicker">Контакты</p>
         <h2>Расскажите <em>о задаче.</em></h2>
-        <p>Отвечу и назову сроки.</p>
+        <p className="contact-sub">Отвечу и назову сроки.</p>
         <button type="button" className="mail" onClick={handleClick} aria-label={`Скопировать адрес ${EMAIL}`}>
-          <span>{copied ? 'Адрес скопирован' : EMAIL}</span>
-          <span aria-hidden="true">{copied ? '✓' : '↗'}</span>
+          <span className="mail-text">{copied ? 'Адрес скопирован' : EMAIL}</span>
+          <span className="mail-icon" aria-hidden="true">{copied ? '✓' : '↗'}</span>
         </button>
+        <p className="mail-hint">Нажмите, чтобы скопировать адрес</p>
       </div>
     </section>
   )
