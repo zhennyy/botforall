@@ -4,7 +4,6 @@ export default function Nav() {
       <div className="wrap">
         <a className="brand" href="#top">BotForAll</a>
         <div className="navlinks">
-          <a href="#benefits">Что внутри</a>
           <a href="#projects">Работы</a>
           <a href="#process">Как работаем</a>
         </div>
