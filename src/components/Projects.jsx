@@ -18,10 +18,10 @@ const works = [
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
   },
   {
-    num: '04', name: 'Zerno', kind: 'Кофе и чай на развес',
+    num: '04', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
     text: 'Варианты и допы, продажа на вес и объём, наборы, склад с загрузкой из Excel, отчёты, доставка, чеки 54-ФЗ, повторные заказы. В проект входит CRM: заказы, клиенты, склад, задачи с напоминаниями команде.',
     stack: ['Mini App', 'ЮKassa', 'Excel', 'Railway'],
-    demo: '/zerno-demo.html',
+    demo: '/coffeejd-demo.html',
   },
 ]
 
