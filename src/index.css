@@ -528,3 +528,29 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 .works .work-links { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 420px; margin-inline: auto; }
 .works .work-links a { flex: 1 1 0; justify-content: center; text-align: center; display: inline-flex; align-items: center; min-height: 44px; }
 .works .work-links a:first-child:not(:only-child) { flex-basis: 100%; }
+
+/* ===== Кнопки контактов: Telegram — главная, яркая; почта — стеклянная с копированием ===== */
+.cbtn { position: relative; overflow: hidden; isolation: isolate; border-radius: 22px; padding: 18px 20px 18px 18px; gap: 16px; min-height: 92px; }
+.cbtn span { flex: 1; min-width: 0; }
+.cbtn b { overflow: hidden; text-overflow: ellipsis; }
+.cgo { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-style: normal; transition: transform .35s var(--ease), background .3s, color .3s; }
+.cgo svg { width: 20px; height: 20px; }
+
+.cbtn-tg { color: #fff; border: 0; background: linear-gradient(135deg, #2AABEE 0%, #1E88E5 55%, #3B5BDB 100%); box-shadow: 0 14px 34px -14px #2AABEEcc, inset 0 1px 0 #ffffff40; }
+.cbtn-tg small { color: #ffffffcc; }
+.cbtn-tg .ico { background: #ffffff26; border: 1px solid #ffffff40; color: #fff; }
+.cbtn-tg .cgo { background: #ffffff26; color: #fff; }
+.cbtn-tg::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 30%, #ffffff40 50%, transparent 70%); transform: translateX(-120%); animation: cbtn-shine 5s ease-in-out infinite 1.5s; }
+@keyframes cbtn-shine { 0%, 70% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+.cbtn-tg:hover, .cbtn-tg:focus-visible { box-shadow: 0 18px 44px -12px #2AABEE, inset 0 1px 0 #ffffff55; transform: translateY(-2px); border: 0; }
+.cbtn-tg:hover .cgo, .cbtn-tg:focus-visible .cgo { transform: translate(2px, -2px); background: #fff; color: #1E88E5; }
+
+.cbtn-mail { background: color-mix(in srgb, var(--ink) 4%, transparent); border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent); backdrop-filter: blur(8px); }
+.cbtn-mail .cgo { border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); color: var(--soft); }
+.cbtn-mail:hover .cgo, .cbtn-mail:focus-visible .cgo { color: var(--accent); border-color: var(--accent); }
+.cbtn-mail.is-copied { border-color: #3ccf7e; box-shadow: 0 0 0 1px #3ccf7e, 0 0 26px -6px #3ccf7e; }
+.cbtn-mail.is-copied small, .cbtn-mail.is-copied .cgo { color: #3ccf7e; border-color: #3ccf7e; }
+.cbtn-mail.is-copied .cgo { animation: cbtn-pop .35s var(--ease); }
+@keyframes cbtn-pop { 50% { transform: scale(1.25); } }
+@media (prefers-reduced-motion: reduce) { .cbtn-tg::after { animation: none; } }
+@media (max-width: 700px) { .cbtn { min-height: 84px; padding: 16px 16px 16px 14px; gap: 14px; } .cbtn .ico { width: 50px; height: 50px; border-radius: 14px; } .cbtn b { font-size: 1.02rem; } }
