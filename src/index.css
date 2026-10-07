@@ -466,3 +466,8 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .works .work .num { right: auto; left: 22px; top: 30px; }
   .neon-ic { top: 14px; right: 14px; }
 }
+
+/* hero: частицы собираются в самолётик Telegram (только на телефоне, как раньше мини-апп) */
+.pp-wrap { margin-top: 44px; display: flex; justify-content: center; width: 100%; padding-inline: 4px; }
+.pp { display: block; width: 100%; max-width: 360px; height: 200px; }
+@media (min-width: 701px) { .pp-wrap { display: none; } }
