@@ -538,7 +538,9 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 
 .cbtn-tg { color: var(--ink); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent), color-mix(in srgb, var(--accent) 4%, transparent)); box-shadow: 0 12px 30px -18px var(--glow); }
 .cbtn-tg small { color: var(--accent); }
-.cbtn-tg .cgo { background: var(--accent); color: var(--paper); }
+.cbtn-tg .cgo { background: transparent; border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--accent); }
+.cbtn .cgo svg { color: inherit; width: 18px; height: 18px; }
+.cbtn-tg:hover .cgo, .cbtn-tg:focus-visible .cgo { background: var(--accent); color: var(--paper); }
 .cbtn-tg::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 35%, color-mix(in srgb, var(--accent) 16%, transparent) 50%, transparent 65%); transform: translateX(-120%); animation: cbtn-shine 6s ease-in-out infinite 1.5s; }
 @keyframes cbtn-shine { 0%, 75% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
 .cbtn-tg:hover, .cbtn-tg:focus-visible { border-color: var(--accent); box-shadow: var(--neon); transform: translateY(-2px); }

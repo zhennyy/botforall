@@ -768,6 +768,10 @@ window.fetch = async (url, o = {}) => {
     .role{order:2;flex:0 0 100%;display:flex}
     .role button{flex:1;padding:10px 8px;font-size:14px}
   }
+
+  body.kb .tabs, body.kb .cartbar{opacity:0!important;pointer-events:none!important}
+  body.kb-chat .composer{bottom:env(safe-area-inset-bottom)!important}
+  body.kb .footer{position:static}
 </style>
 </head>
 <body><div id="demoBar" style="background:#7a4a2b;color:#fff;text-align:center;font:12px/1.35 sans-serif;padding:5px 12px">Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.</div>
@@ -1867,6 +1871,12 @@ load().then(() => { if (isOwner && tab === 'catalog' && !new URLSearchParams(loc
     go(own ? 'admin' : 'catalog');
   });
 })();
+</script>
+<script>
+// клавиатура на телефоне: помечаем body, пока активно поле ввода
+(function(){var isT=matchMedia('(pointer:coarse)').matches;if(!isT)return;
+document.addEventListener('focusin',function(e){var t=e.target;if(t.matches('input:not([type=checkbox]):not([type=radio]),textarea,select')){document.body.classList.add('kb');if(t.closest('.composer'))document.body.classList.add('kb-chat')}});
+document.addEventListener('focusout',function(){setTimeout(function(){var a=document.activeElement;if(!a||!a.matches('input,textarea,select'))document.body.classList.remove('kb','kb-chat')},50)});})();
 </script>
 </body>
 </html>
