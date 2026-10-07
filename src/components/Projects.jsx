@@ -4,28 +4,28 @@ const works = [
   {
     num: '1', icon: 'coffee', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
     text: 'Варианты и допы, наборы, продажа на вес и объём, склад с загрузкой из Excel, отчёты, доставка, чеки 54-ФЗ. В проект входит CRM для команды.',
-    stack: ['Mini App', 'ЮKassa', 'Excel', 'VPS · свой сервер'],
+    stack: ['Mini App', 'ЮKassa', 'Чеки 54-ФЗ', 'ИИ-консультант', 'СДЭК и Почта', 'Подписка на повтор', 'Excel', 'CRM', 'Свой сервер'],
     demo: '/coffeejd-demo.html',
     bot: 'https://t.me/CoFFeeeJD_bot',
   },
   {
     num: '2', icon: 'flower', name: 'Флёр', kind: 'Цветочный магазин',
     text: 'Витрина с букетами, оплата онлайн, фото готового букета на согласование.',
-    stack: ['Mini App', 'ЮKassa', 'VPS · свой сервер'],
+    stack: ['Mini App', 'ЮKassa', 'Доставка по расстоянию', 'Чат с флористом', 'Фото букета', 'Свой сервер'],
     demo: '/fleur-demo.html',
     bot: 'https://t.me/Fleeer_bot', code: 'https://github.com/zhennyy/flowerbot',
   },
   {
     num: '3', icon: 'radiator', name: 'RadiatorPro', kind: 'Отопительное оборудование',
     text: 'Корзина, доставка по городам, трекинг заказа, статистика и чаты в админке.',
-    stack: ['Mini App', 'ЮKassa', 'VPS · свой сервер'],
+    stack: ['Mini App', 'ЮKassa', 'ИИ-подбор', 'Чат с продавцом', 'Свой сервер'],
     demo: '/radiator-demo.html',
     bot: 'https://t.me/RadiatorBZ_bot', code: 'https://github.com/zhennyy/radiatorbot',
   },
   {
     num: '4', icon: 'person', name: 'Ассистент', kind: 'Личный помощник',
     text: 'Помнит переписку, ставит напоминания, отвечает на вопросы с помощью ИИ.',
-    stack: ['ИИ', 'VPS · свой сервер'],
+    stack: ['Claude ИИ', 'Память', 'Напоминания', 'Свой сервер'],
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
   },
 ]

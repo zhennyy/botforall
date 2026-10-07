@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/:path*", "destination": "https://botforall.ru/:path*", "permanent": true }
+  ]
+}
