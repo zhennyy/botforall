@@ -519,3 +519,5 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   nav .theme-toggle { pointer-events: auto; background: color-mix(in srgb, var(--paper) 70%, transparent); }
   .hero { padding-top: 76px; }
 }
+/* кнопки под проектом не переносятся внутри себя */
+.works .work-links a { white-space: nowrap; }
