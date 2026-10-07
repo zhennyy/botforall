@@ -560,3 +560,15 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 .cbtn .cgo svg { width: 20px; height: 20px; }
 .cbtn:hover .cgo, .cbtn:focus-visible .cgo { color: var(--accent); }
 .cbtn-mail.is-copied .cgo { color: #3ccf7e; }
+
+/* соседние карточки выравниваются по строкам: заголовок, описание, теги и кнопки
+   в карточках одного ряда начинаются на одной высоте */
+@supports (grid-template-rows: subgrid) {
+  .works { grid-auto-rows: auto; row-gap: 20px; }
+  .works .work { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 14px; align-content: start; }
+  .works .work-side { display: contents; }
+  .works .work-main { align-self: start; }
+  .works .work-text { align-self: start; }
+  .works .tags { align-self: start; padding-top: 4px; }
+  .works .work-links { align-self: end; }
+}
