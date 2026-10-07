@@ -42,7 +42,7 @@ export default function Projects() {
               <NeonIcon name={w.icon} />
               <div className="work-main">
                 <h3>{w.bot ? '@' + w.bot.split('/').pop() : w.name}</h3>
-                <p className="work-kind">{w.bot ? `${w.name} · ${w.kind}` : w.kind}</p>
+                <p className="work-kind">{w.kind}</p>
               </div>
               <p className="work-text">{w.text}</p>
               <div className="work-side">
