@@ -505,3 +505,17 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 }
 /* тег никогда не переносится внутри себя */
 .tags span { white-space: nowrap; }
+
+/* очень узкие телефоны: иконка проекта чуть меньше, чтобы длинный @ник не задевал её */
+@media (max-width: 400px) {
+  .neon-ic { top: 12px; right: 12px; width: 40px; height: 40px; }
+  .works .work-main { margin-top: 38px; }
+}
+
+/* планшет и телефон: без полоски шапки — переключатель темы просто висит в правом верхнем углу */
+@media (max-width: 860px) {
+  nav { position: absolute; top: 0; left: 0; right: 0; border-bottom: 0; background: transparent; pointer-events: none; }
+  nav .wrap { padding-block: 16px; justify-content: flex-end; }
+  nav .theme-toggle { pointer-events: auto; background: color-mix(in srgb, var(--paper) 70%, transparent); }
+  .hero { padding-top: 76px; }
+}
