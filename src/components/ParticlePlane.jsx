@@ -42,14 +42,16 @@ export default function ParticlePlane() {
     let guard = 0
     while (tgt.length < 520 && guard++ < 20000) { const px = Math.random() * 2 - 1, py = Math.random() * 1.6 - 0.8; if (inside(px, py, outline)) tgt.push([px, py, 0.45]) }
 
+    // точка в «облаке»: эллипс, гуще в центре, реже к краям — никаких прямых границ
+    const cloud = () => { const a = Math.random() * 6.283, r = Math.pow(Math.random(), 0.75) * 0.46; return { ax: 0.5 + Math.cos(a) * r, ay: 0.5 + Math.sin(a) * r * 0.82, edge: r / 0.46 } }
     const P = tgt.map((t) => ({
       x: 0, y: 0, vx: 0, vy: 0, t,
-      ax: Math.random(), ay: Math.random(), ph: Math.random() * 6.28, sp: 0.15 + Math.random() * 0.25,
+      ...cloud(), ph: Math.random() * 6.28, sp: 0.15 + Math.random() * 0.25,
       z: 0.5 + Math.random() * 0.8, delay: Math.random() * 0.12,
     }))
 
     const size = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      dpr = Math.min(window.devicePixelRatio || 1, 3)
       W = c.clientWidth * dpr; H = c.clientHeight * dpr
       c.width = W; c.height = H
       P.forEach((q) => { q.x = q.ax * W; q.y = q.ay * H })
@@ -59,13 +61,22 @@ export default function ParticlePlane() {
     const scale = () => Math.min(W, H * 1.6) * 0.2 // размер самолётика
     const draw = (k) => {
       x.clearRect(0, 0, W, H)
+      // мягкое свечение — только подложка, слабое
       x.globalCompositeOperation = dark ? 'lighter' : 'source-over'
       P.forEach((q) => {
-        const s = (q.t[2] === 1 ? 5.2 : 4.2) * q.z * dpr * (0.75 + 0.25 * k)
-        x.globalAlpha = (0.35 + 0.55 * k * (q.t[2] === 1 ? 1 : 0.7)) * (0.7 + 0.3 * q.z)
-        x.drawImage(sprite, q.x - s, q.y - s, s * 2, s * 2)
+        const g = (q.t[2] === 1 ? 4 : 3) * q.z * dpr
+        x.globalAlpha = (0.08 + 0.22 * k) * (1 - q.edge * (1 - k) * 0.6)
+        x.drawImage(sprite, q.x - g, q.y - g, g * 2, g * 2)
       })
-      x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'
+      // резкие ядра точек
+      x.globalCompositeOperation = 'source-over'
+      x.fillStyle = color
+      P.forEach((q) => {
+        const r = (q.t[2] === 1 ? 1.15 : 0.85) * q.z * dpr * (0.85 + 0.25 * k)
+        x.globalAlpha = Math.min(1, (0.45 + 0.55 * k) * (0.6 + 0.4 * q.z) * (1 - q.edge * (1 - k) * 0.7))
+        x.beginPath(); x.arc(q.x, q.y, r, 0, 6.283); x.fill()
+      })
+      x.globalAlpha = 1
     }
 
     if (reduce) {

@@ -469,7 +469,7 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 
 /* hero: частицы собираются в самолётик Telegram (только на телефоне, как раньше мини-апп) */
 .pp-wrap { margin-top: 44px; display: flex; justify-content: center; width: 100%; padding-inline: 4px; }
-.pp { display: block; width: 100%; max-width: 360px; height: 200px; }
+.pp { display: block; width: 100%; max-width: 380px; height: 230px; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); }
 @media (min-width: 701px) { .pp-wrap { display: none; } }
 
 /* теги в карточках проектов растягиваются, чтобы каждая строка была ровной от края до края */
