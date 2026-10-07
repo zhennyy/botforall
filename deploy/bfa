@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT=/opt/bots; DATA=/data; BK=/var/backups/botforall; U=bots
 [ -f /etc/botforall.conf ] && . /etc/botforall.conf
 ALL="coffeebot flowerbot radiatorbot assistant minicrm"
-p() { sudo -u $U -H pm2 "$@"; }
+p() { (cd $ROOT && sudo -u $U -H pm2 "$@"); }
 need() { [ -n "${1:-}" ] || { echo "Укажи бота: $ALL"; exit 1; }; [ -d $ROOT/$1 ] || { echo "Нет бота $1"; exit 1; }; }
 
 case "${1:-help}" in

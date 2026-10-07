@@ -80,6 +80,7 @@ for b in "${BOTS[@]}"; do
       setenv $E DB_PATH $DATA/$name/crm.db; setenv $E PORT $port ;;
   esac
   case $name in coffeebot|radiatorbot|assistant) [ -n "$AI_URL" ] && setenv $E ANTHROPIC_BASE_URL "$AI_URL" ;; esac
+  [ -n "$AI_URL" ] && [ $name != minicrm ] && setenv $E TELEGRAM_API_ROOT "$AI_URL/tg"
   chown $U:$U $E; chmod 600 $E
 done
 

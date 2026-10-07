@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Посредник для Claude API на сервере в Нидерландах.
+# Посредник для Claude API и Telegram API на сервере в Нидерландах.
 # Боты на российском сервере ходят к Claude через https://ai.<домен>, а этот сервер
 # пересылает запросы в api.anthropic.com. Пускает только IP российского сервера.
 # Запуск (от root на сервере в NL):  DOMAIN=botforall.ru RU_IP=1.2.3.4 EMAIL=you@mail.ru bash ai-proxy.sh
@@ -33,6 +33,11 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/$HOST/privkey.pem;
   allow $RU_IP; deny all;
   client_max_body_size 20m;
+  location /tg/ {
+    proxy_pass https://api.telegram.org/;
+    proxy_ssl_server_name on; proxy_set_header Host api.telegram.org;
+    proxy_read_timeout 120s; proxy_buffering off;
+  }
   location / {
     proxy_pass https://api.anthropic.com;
     proxy_ssl_server_name on; proxy_set_header Host api.anthropic.com;
@@ -45,4 +50,4 @@ command -v ufw >/dev/null && ufw status | grep -q active && ufw allow 80/tcp && 
 echo "deploy-hook = systemctl reload nginx" >> /etc/letsencrypt/cli.ini
 
 U="https://$HOST"; [ $PORT = 443 ] || U="$U:$PORT"
-echo; echo "✅ Готово. На российском сервере добавь ботам строку:"; echo "   ANTHROPIC_BASE_URL=$U"
+echo; echo "✅ Готово. На российском сервере добавь ботам строки:"; echo "   ANTHROPIC_BASE_URL=$U"; echo "   TELEGRAM_API_ROOT=$U/tg"
