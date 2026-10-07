@@ -503,3 +503,5 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .works .work-main { margin-top: 36px; }
   .works .tags { gap: 6px; }
 }
+/* тег никогда не переносится внутри себя */
+.tags span { white-space: nowrap; }
