@@ -572,3 +572,7 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .works .tags { align-self: start; padding-top: 4px; }
   .works .work-links { align-self: end; }
 }
+@supports (grid-template-rows: subgrid) {
+  .works .work { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; }
+  .works .work > *, .works .work-side > * { grid-column: 1; grid-area: auto; }
+}

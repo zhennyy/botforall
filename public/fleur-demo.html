@@ -1249,6 +1249,8 @@ load().then(() => repeatOrder()); loadDeliveryInfo(); loadMyOrders(false);
   body.kb .tabs, body.kb .cartbar{opacity:0!important;pointer-events:none!important}
   body.kb-chat .composer{bottom:env(safe-area-inset-bottom)!important}
   body.kb .footer{position:static}
+
+  .sheet{overscroll-behavior:contain}
 </style>
 <div class="roleDock"><span>Режим демо</span><div class="roleSw" role="group" aria-label="Режим демо"><button type="button" id="roleBuyer" aria-pressed="true">Покупатель</button><button type="button" id="roleOwner" aria-pressed="false">Владелец</button></div></div>
 <script>
@@ -1279,6 +1281,15 @@ load().then(() => repeatOrder()); loadDeliveryInfo(); loadMyOrders(false);
 (function(){var isT=matchMedia('(pointer:coarse)').matches;if(!isT)return;
 document.addEventListener('focusin',function(e){var t=e.target;if(t.matches('input:not([type=checkbox]):not([type=radio]),textarea,select')){document.body.classList.add('kb');if(t.closest('.composer'))document.body.classList.add('kb-chat')}});
 document.addEventListener('focusout',function(){setTimeout(function(){var a=document.activeElement;if(!a||!a.matches('input,textarea,select'))document.body.classList.remove('kb','kb-chat')},50)});})();
+</script>
+<script>
+// пока открыта карточка товара/шторка — страница под ней не прокручивается (iOS тоже)
+(function(){var locked=false,y=0,b=document.body,w=document.getElementById('sheetWrap');
+function isOpen(){return b.classList.contains('open')||(w&&w.classList.contains('open'))}
+function sync(){var o=isOpen();if(o===locked)return;locked=o;
+if(o){y=window.scrollY;b.style.position='fixed';b.style.top=(-y)+'px';b.style.left='0';b.style.right='0';b.style.width='100%';}
+else{b.style.position='';b.style.top='';b.style.left='';b.style.right='';b.style.width='';window.scrollTo(0,y);}}
+var mo=new MutationObserver(sync);mo.observe(b,{attributes:true,attributeFilter:['class']});if(w)mo.observe(w,{attributes:true,attributeFilter:['class']});})();
 </script>
 </body>
 </html>
