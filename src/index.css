@@ -471,3 +471,6 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 .pp-wrap { margin-top: 44px; display: flex; justify-content: center; width: 100%; padding-inline: 4px; }
 .pp { display: block; width: 100%; max-width: 360px; height: 200px; }
 @media (min-width: 701px) { .pp-wrap { display: none; } }
+
+/* теги в карточках проектов растягиваются, чтобы каждая строка была ровной от края до края */
+.works .tags span { flex: 1 1 auto; text-align: center; }
