@@ -754,6 +754,20 @@ window.fetch = async (url, o = {}) => {
     .sheet .big img{height:280px;width:100%}
     .toast{max-width:480px}
   }
+
+  /* клавиатура на телефоне: нижнее меню и кнопка корзины прячутся, чтобы не висеть посреди экрана */
+  body:has(#q:focus) .tabs, body:has(#q:focus) .cartbar, body:has(.search input:focus) .tabs{opacity:0;pointer-events:none;transform:translateY(20px)}
+  body:has(.composer :focus) .tabs{opacity:0;pointer-events:none}
+  body:has(.composer :focus) .composer{bottom:env(safe-area-inset-bottom)}
+
+  /* шапка демо на телефоне: логотип и язык в одну строку, переключатель роли — на всю ширину под ними */
+  @media(max-width:600px){
+    header{flex-wrap:wrap;row-gap:10px;column-gap:10px;padding:10px 0 10px}
+    .logo{flex:1 1 auto;white-space:nowrap;font-size:22px;order:0}
+    .lang{order:1;flex:none}
+    .role{order:2;flex:0 0 100%;display:flex}
+    .role button{flex:1;padding:10px 8px;font-size:14px}
+  }
 </style>
 </head>
 <body><div id="demoBar" style="background:#7a4a2b;color:#fff;text-align:center;font:12px/1.35 sans-serif;padding:5px 12px">Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.</div>

@@ -1243,6 +1243,8 @@ load().then(() => repeatOrder()); loadDeliveryInfo(); loadMyOrders(false);
   @media (max-width:359px){ .big{font-size:15px;padding:14px 8px} .roleDock span{display:none} .roleSw button{padding:11px 14px} .line .pic{width:52px;height:52px} .line{gap:8px;padding:8px} .qty button{width:24px} .qty{gap:4px} .sheet-foot{grid-template-columns:auto minmax(0,1fr)} .ghost-btn,.tocart{padding:13px 8px;font-size:13px;letter-spacing:-.01em} .sheet-foot{gap:6px} }
   #ownerFrame{position:fixed;top:60px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 60px);border:0;z-index:9000;background:var(--bg)}
   #ownerFrame[hidden]{display:none}
+
+  body:has(#q:focus) .cartbar{opacity:0;pointer-events:none}
 </style>
 <div class="roleDock"><span>Режим демо</span><div class="roleSw" role="group" aria-label="Режим демо"><button type="button" id="roleBuyer" aria-pressed="true">Покупатель</button><button type="button" id="roleOwner" aria-pressed="false">Владелец</button></div></div>
 <script>

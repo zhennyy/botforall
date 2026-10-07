@@ -503,6 +503,11 @@ window.open = url => { if (String(url).startsWith('demo-pay:')) showPay(String(u
   .dmode button{padding:10px 18px;font-size:15px;color:var(--text,inherit);opacity:.75}
   .dmode button.on{opacity:1}
   .track{margin-top:8px;font-size:14px} .stars{margin-top:6px;color:#f59f00;letter-spacing:2px}
+
+  /* клавиатура на телефоне: нижнее меню и кнопка корзины прячутся, чтобы не висеть посреди экрана */
+  body:has(#q:focus) .tabs, body:has(#q:focus) .cartbar, body:has(.search input:focus) .tabs{opacity:0;pointer-events:none;transform:translateY(20px)}
+  body:has(.composer :focus) .tabs{opacity:0;pointer-events:none}
+  body:has(.composer :focus) .composer{bottom:env(safe-area-inset-bottom)}
 </style>
 </head>
 <body>
