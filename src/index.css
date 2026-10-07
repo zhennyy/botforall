@@ -521,3 +521,10 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 }
 /* кнопки под проектом не переносятся внутри себя */
 .works .work-links a { white-space: nowrap; }
+
+/* кнопки проекта: главная «Как это выглядит» — во всю ширину,
+   остальные — ровным рядом под ней; одинаково на всех экранах */
+.works .work-side { align-self: stretch; }
+.works .work-links { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 420px; margin-inline: auto; }
+.works .work-links a { flex: 1 1 0; justify-content: center; text-align: center; display: inline-flex; align-items: center; min-height: 44px; }
+.works .work-links a:first-child:not(:only-child) { flex-basis: 100%; }
