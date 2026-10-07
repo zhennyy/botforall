@@ -4,28 +4,28 @@ const works = [
   {
     num: '1', icon: 'coffee', name: 'CoFFeeJD', kind: 'Кофе и чай на развес',
     text: 'Варианты и допы, наборы, продажа на вес и объём, склад с загрузкой из Excel, отчёты, доставка, чеки 54-ФЗ. В проект входит CRM для команды.',
-    stack: ['Mini App', 'ЮKassa', 'Excel', 'Railway'],
+    stack: ['Mini App', 'ЮKassa', 'Excel', 'VPS'],
     demo: '/coffeejd-demo.html',
     bot: 'https://t.me/CoFFeeeJD_bot',
   },
   {
     num: '2', icon: 'flower', name: 'Флёр', kind: 'Цветочный магазин',
     text: 'Витрина с букетами, оплата онлайн, фото готового букета на согласование.',
-    stack: ['Mini App', 'ЮKassa', 'Railway'],
+    stack: ['Mini App', 'ЮKassa', 'VPS'],
     demo: '/fleur-demo.html',
     bot: 'https://t.me/Fleeer_bot', code: 'https://github.com/zhennyy/flowerbot',
   },
   {
     num: '3', icon: 'radiator', name: 'RadiatorPro', kind: 'Отопительное оборудование',
     text: 'Корзина, доставка по городам, трекинг заказа, статистика и чаты в админке.',
-    stack: ['Mini App', 'ЮKassa', 'Railway'],
+    stack: ['Mini App', 'ЮKassa', 'VPS'],
     demo: '/radiator-demo.html',
     bot: 'https://t.me/RadiatorBZ_bot', code: 'https://github.com/zhennyy/radiatorbot',
   },
   {
     num: '4', icon: 'person', name: 'Ассистент', kind: 'Личный помощник',
     text: 'Помнит переписку, ставит напоминания, отвечает на вопросы с помощью ИИ.',
-    stack: ['ИИ', 'Railway'],
+    stack: ['ИИ', 'VPS'],
     code: 'https://github.com/zhennyy/telegram-assistant-bot',
   },
 ]
