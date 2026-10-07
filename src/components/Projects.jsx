@@ -48,7 +48,7 @@ export default function Projects() {
               <div className="work-side">
                 <div className="tags">{w.stack.map((s) => <span key={s}>{s}</span>)}</div>
                 <div className="work-links">
-                  {w.demo && <a href={w.demo} target="_blank" rel="noopener noreferrer">Как это выглядит ↗</a>}
+                  {w.demo && <a href={w.demo}>Как это выглядит ↗</a>}
                   {w.bot && <a href={w.bot} target="_blank" rel="noopener noreferrer">Открыть бота ↗</a>}
                   {w.code && <a href={w.code} target="_blank" rel="noopener noreferrer">Код</a>}
                 </div>
