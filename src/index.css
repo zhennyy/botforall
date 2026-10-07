@@ -474,3 +474,32 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
 
 /* теги в карточках проектов растягиваются, чтобы каждая строка была ровной от края до края */
 .works .tags span { flex: 1 1 auto; text-align: center; }
+
+/* ===== Карточки проектов: единая раскладка для ноутбука, планшета и телефона =====
+   номер — слева сверху, неоновая иконка — справа сверху, всё остальное по центру;
+   иконка больше не заезжает на теги и кнопки */
+.works .work, .works .work:hover, .works .work:focus-within { padding: 26px 28px 26px; gap: 14px; }
+.works .work .num { top: 26px; left: 28px; right: auto; }
+.neon-ic { top: 18px; right: 20px; bottom: auto; width: 60px; height: 60px; }
+.works .work-main { margin-top: 44px; padding-inline: 0; text-align: center; }
+.works .work h3, .works .work-kind { padding-right: 0; }
+.works .work-text { flex: 0 0 auto; text-align: center; padding-top: 2px; }
+.works .work-side { margin-top: auto; align-items: center; gap: 18px; padding-top: 4px; }
+.works .tags { justify-content: center; }
+.works .tags span { flex: 0 1 auto; }
+.works .work-links { justify-content: center; }
+
+/* планшет: одна колонка, но не во всю ширину — карточки читаются как карточки */
+@media (max-width: 860px) {
+  .works { max-width: 620px; margin-inline: auto; }
+  .works .work, .works .work:hover, .works .work:focus-within { padding: 24px 22px 24px; }
+  .works .work .num { top: 24px; left: 22px; }
+  .neon-ic { top: 16px; right: 16px; width: 54px; height: 54px; }
+}
+/* телефон */
+@media (max-width: 560px) {
+  .works .work .num { top: 22px; left: 20px; }
+  .neon-ic { top: 14px; right: 14px; width: 46px; height: 46px; }
+  .works .work-main { margin-top: 36px; }
+  .works .tags { gap: 6px; }
+}
