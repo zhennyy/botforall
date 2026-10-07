@@ -6,6 +6,7 @@ set -euo pipefail
 
 DOMAIN="${DOMAIN:-botforall.ru}"
 EMAIL="${EMAIL:-}"
+AI_URL="${AI_URL:-}"   # адрес посредника для Claude, например https://ai.botforall.ru:8443
 GH="https://github.com/zhennyy"
 ROOT=/opt/bots
 DATA=/data
@@ -78,6 +79,7 @@ for b in "${BOTS[@]}"; do
     minicrm)
       setenv $E DB_PATH $DATA/$name/crm.db; setenv $E PORT $port ;;
   esac
+  case $name in coffeebot|radiatorbot|assistant) [ -n "$AI_URL" ] && setenv $E ANTHROPIC_BASE_URL "$AI_URL" ;; esac
   chown $U:$U $E; chmod 600 $E
 done
 

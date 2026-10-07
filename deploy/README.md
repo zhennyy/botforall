@@ -42,6 +42,20 @@ DOMAIN=botforall.ru EMAIL=твоя@почта bash setup.sh
 4. На сервере: `bfa start coffeebot`, проверить `bfa logs coffeebot`.
 5. ЮKassa → Интеграция → HTTP-уведомления: заменить адрес на новый домен бота.
 
+## Claude через сервер в Нидерландах
+
+Anthropic не принимает запросы из России, поэтому ИИ-подбор и Ассистент ходят к Claude через посредника на VPN-сервере в NL.
+
+1. DNS: запись **A** `ai` → IP сервера в Нидерландах.
+2. На сервере в NL (root):
+   ```
+   curl -fsSL https://raw.githubusercontent.com/zhennyy/botforall/main/deploy/ai-proxy.sh -o ai-proxy.sh
+   DOMAIN=botforall.ru RU_IP=IP_СЕРВЕРА_В_ПЕТЕРБУРГЕ EMAIL=твоя@почта bash ai-proxy.sh
+   ```
+3. Скрипт напишет строку `ANTHROPIC_BASE_URL=...` — добавить её ботам: `bfa env coffeebot`, `radiatorbot`, `assistant`, затем `bfa restart <бот>`.
+
+Посредник пускает только IP российского сервера; ключ Claude идёт по HTTPS и нигде не сохраняется.
+
 ## Команды
 
 `bfa help` — список. Главные: `bfa status`, `bfa logs <бот>`, `bfa restart <бот>`, `bfa update`, `bfa backup`.
