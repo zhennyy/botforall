@@ -17,7 +17,7 @@ npm run dev
 npm run build
 ```
 
-Готовые файлы появятся в `dist/` — их можно закинуть на любой статический хостинг (Vercel, Netlify, GitHub Pages, Railway и т.п.).
+Готовые файлы появятся в `dist/`. Сайт работает на своём сервере (VPS) по адресу https://botforall.ru: nginx отдаёт `dist/`, а обновление делается командой `bfa update` (подтягивает код с GitHub и пересобирает сайт). Установка сервера — в [deploy/README.md](deploy/README.md).
 
 ## Структура
 
