@@ -85,7 +85,7 @@ say "6/8 pm2 (боты запускаются командой: bfa start <бо�
 cat > $ROOT/ecosystem.config.cjs <<ECO
 const r = '$ROOT';
 module.exports = { apps: [
-  { name: 'coffeebot',   cwd: r + '/coffeebot',   script: 'bot.js',    max_memory_restart: '300M' },
+  { name: 'coffeebot',   cwd: r + '/coffeebot',   script: 'index.js',    max_memory_restart: '300M' },
   { name: 'flowerbot',   cwd: r + '/flowerbot',   script: 'bot.js',    max_memory_restart: '300M' },
   { name: 'radiatorbot', cwd: r + '/radiatorbot', script: 'bot.js',    max_memory_restart: '300M' },
   { name: 'assistant',   cwd: r + '/assistant',   script: 'index.js',  max_memory_restart: '300M' },
