@@ -593,9 +593,6 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .kicker { font-weight: 700; }
 }
 
-/* ===== иконки проектов чуть крупнее ===== */
-.neon-ic { width: 72px; height: 72px; top: 16px; right: 18px; }
-.works .work-main { margin-top: 52px; }
-@media (max-width: 860px) { .neon-ic { width: 62px; height: 62px; top: 14px; right: 14px; } .works .work-main { margin-top: 48px; } }
-@media (max-width: 560px) { .neon-ic { width: 54px; height: 54px; top: 12px; right: 12px; } .works .work-main { margin-top: 44px; } }
-@media (max-width: 400px) { .neon-ic { width: 46px; height: 46px; } .works .work-main { margin-top: 42px; } }
+/* ===== иконки проектов крупнее на телефоне ===== */
+@media (max-width: 560px) { .neon-ic { width: 62px; height: 62px; top: 12px; right: 12px; } .works .work-main { margin-top: 52px; } }
+@media (max-width: 400px) { .neon-ic { width: 54px; height: 54px; } .works .work-main { margin-top: 48px; } }
