@@ -52,9 +52,12 @@ export default function ParticlePlane() {
 
     const size = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 3)
-      W = c.clientWidth * dpr; H = c.clientHeight * dpr
+      const nw = Math.round(c.clientWidth * dpr), nh = Math.round(c.clientHeight * dpr)
+      if (nw === W && nh === H) return // адресная строка на телефоне дёргает resize — не пересобираем
+      const first = !W
+      W = nw; H = nh
       c.width = W; c.height = H
-      P.forEach((q) => { q.x = q.ax * W; q.y = q.ay * H })
+      if (first) P.forEach((q) => { q.x = q.ax * W; q.y = q.ay * H })
     }
     size(); readColor()
 

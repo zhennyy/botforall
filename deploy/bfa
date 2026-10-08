@@ -3,7 +3,7 @@
 set -euo pipefail
 ROOT=/opt/bots; DATA=/data; BK=/var/backups/botforall; U=bots
 [ -f /etc/botforall.conf ] && . /etc/botforall.conf
-ALL="coffeebot flowerbot radiatorbot assistant minicrm"
+ALL="coffeebot flowerbot radiatorbot assistant"
 p() { (cd $ROOT && sudo -u $U -H pm2 "$@"); }
 need() { [ -n "${1:-}" ] || { echo "Укажи бота: $ALL"; exit 1; }; [ -d $ROOT/$1 ] || { echo "Нет бота $1"; exit 1; }; }
 
@@ -26,7 +26,7 @@ case "${1:-help}" in
            tar -czf $BK/data-$(date +%F).tar.gz -C $T .; rm -rf $T
            find $BK -name 'data-*.tar.gz' -mtime +14 -delete; ls -lh $BK | tail -3 ;;
   ssl)     D=${DOMAIN:?}; IP=$(curl -fsS https://ipv4.icanhazip.com); ARGS=""
-           for h in $D www.$D coffee.$D fleur.$D radiator.$D crm.$D; do
+           for h in $D www.$D coffee.$D fleur.$D radiator.$D; do
              if [ "$(dig +short $h | tail -1)" = "$IP" ]; then ARGS="$ARGS -d $h"; else echo "⚠ $h ещё не указывает на $IP — пропускаю"; fi; done
            [ -n "$ARGS" ] || { echo "Ни один адрес не указывает на сервер — проверь DNS"; exit 1; }
            certbot --nginx --non-interactive --agree-tos --redirect -m "${EMAIL:?Нет EMAIL в /etc/botforall.conf}" $ARGS ;;

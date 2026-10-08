@@ -13,6 +13,7 @@ export default function Contact() {
       await navigator.clipboard.writeText(EMAIL)
     } catch {
       window.prompt('Скопируйте адрес:', EMAIL)
+      return
     }
     setCopied(true)
     clearTimeout(timer.current)

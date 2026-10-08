@@ -3,8 +3,8 @@ export default function Footer() {
     <footer>
       <div className="wrap foot">
         <nav className="foot-links" aria-label="Документы">
-          <a href="/terms.html">Пользовательское соглашение</a>
-          <a href="/privacy.html">Политика обработки данных</a>
+          <a href="/terms.html">Условия использования</a>
+          <a href="/privacy.html">Политика конфиденциальности</a>
         </nav>
         <span className="foot-copy">© {new Date().getFullYear()} botforall.ru. Все права защищены.</span>
       </div>

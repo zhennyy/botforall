@@ -9,7 +9,9 @@ export default function ThemeToggle() {
   const [theme, setTheme] = useState(() => read() || (systemDark() ? 'dark' : 'light'))
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
+    // на телефоне всегда тёмная тема (переключатель там скрыт)
+    const mobile = window.matchMedia('(max-width: 700px)').matches
+    document.documentElement.setAttribute('data-theme', mobile ? 'dark' : theme)
   }, [theme])
 
   const toggle = () => {

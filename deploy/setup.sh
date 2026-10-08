@@ -19,7 +19,6 @@ BOTS=(
   "flowerbot|flowerbot|3002|fleur"
   "radiatorbot|radiatorbot|3003|radiator"
   "assistant|telegram-assistant-bot||"
-  "minicrm|minicrm|3004|crm"
 )
 
 say() { printf '\n\033[1;36m▶ %s\033[0m\n' "$*"; }
@@ -76,11 +75,9 @@ for b in "${BOTS[@]}"; do
       setenv $E DATA_DIR $DATA/$name; setenv $E PORT $port; setenv $E WEBAPP_URL https://$sub.$DOMAIN ;;
     assistant)
       setenv $E DATA_DIR $DATA/$name ;;
-    minicrm)
-      setenv $E DB_PATH $DATA/$name/crm.db; setenv $E PORT $port ;;
   esac
   case $name in coffeebot|radiatorbot|assistant) [ -n "$AI_URL" ] && setenv $E ANTHROPIC_BASE_URL "$AI_URL" ;; esac
-  [ -n "$AI_URL" ] && [ $name != minicrm ] && setenv $E TELEGRAM_API_ROOT "$AI_URL/tg"
+  [ -n "$AI_URL" ] && setenv $E TELEGRAM_API_ROOT "$AI_URL/tg"
   chown $U:$U $E; chmod 600 $E
 done
 
@@ -92,7 +89,6 @@ module.exports = { apps: [
   { name: 'flowerbot',   cwd: r + '/flowerbot',   script: 'bot.js',    max_memory_restart: '300M' },
   { name: 'radiatorbot', cwd: r + '/radiatorbot', script: 'bot.js',    max_memory_restart: '300M' },
   { name: 'assistant',   cwd: r + '/assistant',   script: 'index.js',  max_memory_restart: '300M' },
-  { name: 'minicrm',     cwd: r + '/minicrm',     script: 'server.js', node_args: '--env-file=.env', max_memory_restart: '200M' },
 ]};
 ECO
 chown $U:$U $ROOT/ecosystem.config.cjs
