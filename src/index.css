@@ -285,7 +285,7 @@ footer .foot { flex-direction: column; align-items: center; text-align: center; 
 .contact-row { width: 100%; max-width: 760px; flex-wrap: nowrap; }
 .cbtn { flex: 1 1 0; max-width: none; }
 .cbtn b { white-space: nowrap; }
-footer nav.foot-links { border: 0; position: static; background: none; backdrop-filter: none; padding: 0; height: auto; }
+footer nav.foot-links { pointer-events: auto; border: 0; position: static; background: none; backdrop-filter: none; padding: 0; height: auto; }
 @media (max-width: 700px) { .contact-row { flex-direction: column; align-items: stretch; max-width: 360px; } .cbtn { flex-basis: auto; } }
 
 /* названия проектов как ники в Telegram */
