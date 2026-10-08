@@ -776,7 +776,7 @@ window.fetch = async (url, o = {}) => {
   .sheet{overscroll-behavior:contain}
 </style>
 </head>
-<body><div id="demoBar" style="background:#7a4a2b;color:#fff;font:12px/1.35 sans-serif;padding:6px 12px;display:flex;gap:10px;align-items:center;justify-content:space-between"><a href="/#projects" class="demoBack" style="color:inherit;text-decoration:none;font-weight:700;white-space:nowrap">← На сайт</a><span style="text-align:right">Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.</span></div>
+<body><div id="demoBar" style="background:#7a4a2b;color:#fff;font:12px/1.35 sans-serif;padding:6px 12px;display:flex;gap:10px;align-items:center;justify-content:space-between"><a href="/#projects" class="demoBack" style="color:inherit;text-decoration:none;font-weight:700;white-space:nowrap">← На сайт</a><span id="demoNote" style="text-align:right">Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.</span></div>
 <div class="wrap">
   <header>
     <div class="logo">CoFFee<span>JD</span> ☕</div>
@@ -915,7 +915,7 @@ function applyLang() {
   document.querySelectorAll('[data-t]').forEach(el => el.textContent = L[el.dataset.t]);
   document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
   $('q').placeholder = L.search;
-  $('demoBar').textContent = tr('Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.', 'Demo: sample data only. Promo code KOFE10 gives 10% off.');
+  $('demoNote').textContent = tr('Демо: данные не настоящие. Промокод KOFE10 — скидка 10%.', 'Demo: sample data only. Promo code KOFE10 gives 10% off.');
   document.querySelectorAll('#roleSw button').forEach(b => { b.textContent = b.dataset.role === 'owner' ? tr('Владелец', 'Owner') : tr('Покупатель', 'Buyer'); });
   const rs = $('roleSw'); if (rs) rs.setAttribute('aria-label', tr('Режим демо', 'Demo mode'));
   $('aiTitle').textContent = L.aiTitle; $('aiQ').placeholder = L.aiPh; $('aiGo').textContent = L.aiGo;
