@@ -1,5 +1,3 @@
-import ThemeToggle from './ThemeToggle'
-
 export default function Nav() {
   return (
     <nav aria-label="Основное меню">
@@ -9,9 +7,6 @@ export default function Nav() {
           <a href="#process">Процесс</a>
           <a href="#projects">Проекты</a>
           <a href="#contact">Контакты</a>
-        </div>
-        <div className="nav-right">
-          <ThemeToggle />
         </div>
       </div>
     </nav>

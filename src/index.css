@@ -576,3 +576,26 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .works .work { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; }
   .works .work > *, .works .work-side > * { grid-column: 1; grid-area: auto; }
 }
+
+/* ===== только тёмная тема ===== */
+:root { --paper: #0F0E0B; --ink: #EDE8DC; --soft: #A39D8F; --line: #2A2823; --accent: #3EB6FF; color-scheme: dark; }
+/* без кнопки темы шапке на телефоне/планшете ничего не нужно */
+@media (max-width: 860px) { nav { display: none; } .hero { padding-top: 56px; } }
+
+/* ===== телефон: текст крупнее и плотнее ===== */
+@media (max-width: 700px) {
+  body { font-size: 17px; font-weight: 500; }
+  .lede { font-size: 1.08rem; font-weight: 500; }
+  .works .work-text, .benefit p, .step p, .step-btn p, .after p, .process .step p, .process .step-btn p { font-size: .95rem; font-weight: 500; line-height: 1.5; }
+  .works .work-kind { font-size: .95rem; font-weight: 500; }
+  .tags span { font-size: .76rem; font-weight: 600; }
+  .contact-sub { font-size: 1.02rem; font-weight: 500; }
+  .kicker { font-weight: 700; }
+}
+
+/* ===== иконки проектов чуть крупнее ===== */
+.neon-ic { width: 72px; height: 72px; top: 16px; right: 18px; }
+.works .work-main { margin-top: 52px; }
+@media (max-width: 860px) { .neon-ic { width: 62px; height: 62px; top: 14px; right: 14px; } .works .work-main { margin-top: 48px; } }
+@media (max-width: 560px) { .neon-ic { width: 54px; height: 54px; top: 12px; right: 12px; } .works .work-main { margin-top: 44px; } }
+@media (max-width: 400px) { .neon-ic { width: 46px; height: 46px; } .works .work-main { margin-top: 42px; } }
