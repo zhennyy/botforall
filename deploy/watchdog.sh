@@ -9,7 +9,7 @@ TOKEN=$(grep -E '^(BOT_TOKEN|TELEGRAM_BOT_TOKEN)=' $ENVF | head -1 | cut -d= -f2
 API=$(grep -E '^TELEGRAM_API_ROOT=' $ENVF | cut -d= -f2- | tr -d '"'); API=${API:-https://api.telegram.org}; API=${API%/}
 [ -n "$CHAT" ] && [ -n "$TOKEN" ] || exit 0
 
-send() { curl -s -m 20 "$API/bot$TOKEN/sendMessage" --data-urlencode "chat_id=$CHAT" --data-urlencode "text=$1" >/dev/null; }
+send() { printf 'url = "%s"\n' "$API/bot$TOKEN/sendMessage" | curl -s -m 20 -K - --data-urlencode "chat_id=$CHAT" --data-urlencode "text=$1" >/dev/null; } # токен не виден в списке процессов
 [ "${1:-}" = test ] && { send "👋 Мониторинг botforall.ru подключён: сайт и боты проверяются каждые 5 минут. Если что-то упадёт — напишу сюда."; exit 0; }
 
 check() { # имя, код (0 = работает). Тревога только после 2 неудач подряд (10 минут), чтобы не дёргать из-за мелких сбоев

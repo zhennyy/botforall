@@ -33,6 +33,9 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/$HOST/privkey.pem;
   allow $RU_IP; deny all;
   client_max_body_size 20m;
+  access_log off; # в адресах запросов к Telegram есть токены ботов — не пишем их в журнал
+  proxy_ssl_verify on; proxy_ssl_verify_depth 3;
+  proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
   location /tg/ {
     proxy_pass https://api.telegram.org/;
     proxy_ssl_server_name on; proxy_set_header Host api.telegram.org;
@@ -47,7 +50,7 @@ server {
 NG
 nginx -t && systemctl reload nginx
 command -v ufw >/dev/null && ufw status | grep -q active && ufw allow 80/tcp && ufw allow $PORT/tcp || true
-echo "deploy-hook = systemctl reload nginx" >> /etc/letsencrypt/cli.ini
+grep -q "^deploy-hook" /etc/letsencrypt/cli.ini 2>/dev/null || echo "deploy-hook = systemctl reload nginx" >> /etc/letsencrypt/cli.ini
 
 U="https://$HOST"; [ $PORT = 443 ] || U="$U:$PORT"
 echo; echo "✅ Готово. На российском сервере добавь ботам строки:"; echo "   ANTHROPIC_BASE_URL=$U"; echo "   TELEGRAM_API_ROOT=$U/tg"

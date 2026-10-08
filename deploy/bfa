@@ -8,7 +8,7 @@ p() { (cd $ROOT && sudo -u $U -H pm2 "$@"); }
 need() { [ -n "${1:-}" ] || { echo "Укажи бота: $ALL"; exit 1; }; [ -d $ROOT/$1 ] || { echo "Нет бота $1"; exit 1; }; }
 
 case "${1:-help}" in
-  env)     need "${2:-}"; nano $ROOT/$2/.env; chown $U:$U $ROOT/$2/.env; chmod 600 $ROOT/$2/.env
+  env)     umask 077; need "${2:-}"; nano $ROOT/$2/.env; chown $U:$U $ROOT/$2/.env; chmod 600 $ROOT/$2/.env
            echo "Сохранено. Применить: bfa restart $2" ;;
   start)   need "${2:-}"; p start $ROOT/ecosystem.config.cjs --only "$2"; p save ;;
   stop)    need "${2:-}"; p stop "$2"; p save ;;
@@ -21,7 +21,7 @@ case "${1:-help}" in
              else (cd $ROOT/$d && if [ -f package-lock.json ]; then sudo -u $U npm ci --omit=dev; else sudo -u $U npm install --omit=dev; fi)
                   p describe $d >/dev/null 2>&1 && p restart $d --update-env; fi; done ;;
   backup)  # копия всех баз и файлов, хранится 14 дней
-           mkdir -p $BK; T=$(mktemp -d); cp -a $DATA/. $T/
+           umask 077; mkdir -p $BK; chmod 700 $BK; T=$(mktemp -d); cp -a $DATA/. $T/
            find $T -name '*.db' | while read -r f; do sqlite3 "${f/$T/$DATA}" ".backup '$f'"; done
            tar -czf $BK/data-$(date +%F).tar.gz -C $T .; rm -rf $T
            find $BK -name 'data-*.tar.gz' -mtime +14 -delete; ls -lh $BK | tail -3 ;;
