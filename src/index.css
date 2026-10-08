@@ -577,10 +577,12 @@ nav { position: static; backdrop-filter: none; background: var(--paper); }
   .works .work > *, .works .work-side > * { grid-column: 1; grid-area: auto; }
 }
 
-/* ===== только тёмная тема ===== */
-:root { --paper: #0F0E0B; --ink: #EDE8DC; --soft: #A39D8F; --line: #2A2823; --accent: #3EB6FF; color-scheme: dark; }
-/* без кнопки темы шапке на телефоне/планшете ничего не нужно */
-@media (max-width: 860px) { nav { display: none; } .hero { padding-top: 56px; } }
+/* ===== телефон: только тёмная тема, без переключателя ===== */
+@media (max-width: 700px) {
+  :root, :root[data-theme="light"] { --paper: #0F0E0B; --ink: #EDE8DC; --soft: #A39D8F; --line: #2A2823; --accent: #3EB6FF; color-scheme: dark; }
+  nav { display: none; }
+  .hero { padding-top: 56px; }
+}
 
 /* ===== телефон: текст крупнее и плотнее ===== */
 @media (max-width: 700px) {
