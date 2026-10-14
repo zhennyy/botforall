@@ -1,0 +1,59 @@
+/* ===== «Контакты»: Telegram — главная яркая кнопка, почта — стеклянная, копирует адрес ===== */
+#contact { padding-block: clamp(56px, 8vw, 96px); border-top: 1px solid var(--line); }
+.contact { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.contact h2 { margin-top: 20px; font-size: clamp(1.5rem, 2.8vw, 2.1rem); font-weight: 600; line-height: 1.08; }
+.contact-sub { margin-top: 12px; color: var(--soft); font-size: .98rem; }
+
+/* две равные карточки в одну строку */
+.contact-row { margin-top: 34px; display: flex; gap: 14px; justify-content: center; width: 100%; max-width: 760px; }
+.contact-card {
+  position: relative; display: flex; align-items: center; gap: 16px; flex: 1 1 0; min-width: 0; min-height: 92px;
+  padding: 18px 20px 18px 18px; text-align: left; color: var(--ink);
+  background: var(--tint); border: 1px solid var(--line); border-radius: 22px;
+  overflow: hidden; isolation: isolate; cursor: pointer;
+  transition: border-color .3s, box-shadow .4s var(--ease), transform .3s var(--ease);
+}
+.contact-card:hover, .contact-card:focus-visible { border-color: var(--accent); box-shadow: var(--neon); outline: 0; }
+.contact-card:active { transform: scale(.98); }
+
+/* иконка слева */
+.contact-card-icon { width: 56px; height: 56px; flex: none; display: grid; place-items: center; border-radius: 16px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent); transition: box-shadow .25s, background .25s; }
+.contact-card-icon svg { width: 30px; height: 30px; }
+.contact-card:hover .contact-card-icon, .contact-card:focus-visible .contact-card-icon { background: color-mix(in srgb, var(--accent) 24%, transparent); box-shadow: 0 0 18px -2px var(--glow); }
+
+/* подпись и адрес */
+.contact-card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.contact-card small { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+.contact-card b { font-size: 1.1rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* значок справа — просто иконка, без кружка */
+.contact-card-action { flex: none; display: grid; place-items: center; width: 28px; height: 28px; font-style: normal; color: var(--soft); transition: transform .35s var(--ease), background .3s, color .3s; }
+.contact-card-action svg { width: 20px; height: 20px; }
+.contact-card:hover .contact-card-action, .contact-card:focus-visible .contact-card-action { color: var(--accent); }
+
+/* Telegram: акцентная рамка, мягкий градиент и пробегающий блик */
+.contact-card-tg { border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent), color-mix(in srgb, var(--accent) 4%, transparent)); box-shadow: 0 12px 30px -18px var(--glow); }
+.contact-card-tg small { color: var(--accent); }
+.contact-card-tg::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 35%, color-mix(in srgb, var(--accent) 16%, transparent) 50%, transparent 65%); transform: translateX(-120%); animation: contact-shine 6s ease-in-out infinite 1.5s; }
+@keyframes contact-shine { 0%, 75% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+.contact-card-tg:hover, .contact-card-tg:focus-visible { border-color: var(--accent); box-shadow: var(--neon); transform: translateY(-2px); }
+.contact-card-tg:hover .contact-card-action, .contact-card-tg:focus-visible .contact-card-action { transform: translate(2px, -2px); }
+
+/* почта: «стекло»; после копирования — зелёная подсветка */
+.contact-card-mail { background: color-mix(in srgb, var(--ink) 4%, transparent); border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent); backdrop-filter: blur(8px); }
+.contact-card-mail.is-copied { border-color: #3ccf7e; box-shadow: 0 0 0 1px #3ccf7e, 0 0 26px -6px #3ccf7e; }
+.contact-card-mail.is-copied small { color: #3ccf7e; }
+.contact-card-mail.is-copied .contact-card-action { color: #3ccf7e; animation: contact-pop .35s var(--ease); }
+@keyframes contact-pop { 50% { transform: scale(1.25); } }
+
+/* телефон: карточки друг под другом */
+@media (max-width: 700px) {
+  .contact-sub { font-size: 1.02rem; font-weight: 500; }
+  .contact-row { flex-direction: column; align-items: stretch; max-width: 360px; }
+  .contact-card { flex-basis: auto; min-height: 84px; padding: 16px 16px 16px 14px; gap: 14px; }
+  .contact-card-icon { width: 50px; height: 50px; border-radius: 14px; }
+  .contact-card b { font-size: 1.02rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-card-tg::after { animation: none; }
+}

@@ -1,0 +1,80 @@
+/* ===== «Процесс»: четыре шага и раскрывающийся блок «После запуска» ===== */
+#process { padding-bottom: clamp(32px, 4vw, 48px); }
+.process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+
+.step { display: flex; flex-direction: column; background: var(--tint); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+.step h4 { margin: 22px 0 10px; font-family: var(--sans); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.025em; line-height: 1.2; }
+.step p { color: var(--soft); font-size: .93rem; max-width: 28ch; }
+.step:not(.step-click):hover { border-color: var(--accent); box-shadow: var(--neon); }
+.step:hover .num::after { width: 64px; background: var(--accent); }
+
+/* шаг «Запуск» — карточка-кнопка, раскрывает варианты после запуска */
+.step-click { padding: 0; }
+.step-click:hover, .step-click[data-open="true"] { border-color: var(--accent); box-shadow: var(--neon); }
+.step-click:active { box-shadow: 0 0 0 1px var(--accent), 0 0 36px 2px var(--glow); }
+.step-btn { all: unset; box-sizing: border-box; display: flex; flex-direction: column; flex: 1; width: 100%; padding: 28px; cursor: pointer; border-radius: var(--radius); }
+.step-btn:focus-visible { outline: 0; box-shadow: var(--neon); }
+
+.step-more { margin-top: auto; padding-top: 24px; display: inline-flex; align-items: center; gap: 10px; font-size: .82rem; font-weight: 600; letter-spacing: .02em; color: var(--ink); }
+/* кружок с плюсом; в раскрытом виде плюс поворачивается в минус */
+.step-plus { position: relative; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); flex: none; transition: transform .5s var(--ease); }
+.step-plus::before, .step-plus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 1.5px; background: #fff; transform: translate(-50%, -50%); }
+.step-plus::after { transition: transform .5s var(--ease); transform: translate(-50%, -50%) rotate(90deg); }
+.step-click[data-open="true"] .step-plus { transform: rotate(180deg); }
+.step-click[data-open="true"] .step-plus::after { transform: translate(-50%, -50%) rotate(0deg); }
+
+/* «После запуска»: высота раскрывается через grid-template-rows 0fr → 1fr */
+.after-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--ease), margin-top .6s var(--ease); }
+.after-wrap[data-open="true"] { grid-template-rows: 1fr; margin-top: 18px; }
+.after-clip { overflow: hidden; min-height: 0; }
+.after-panel { border: 1px solid var(--line); border-radius: calc(var(--radius) + 6px); padding: clamp(22px, 3vw, 36px); background: var(--tint); }
+.after-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; margin-bottom: 22px; }
+.after-title { font-size: clamp(1.3rem, 2.2vw, 1.7rem); line-height: 1.1; }
+.after-hint { color: var(--soft); font-size: .88rem; }
+
+.after { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.after li { display: flex; flex-direction: column; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .5s var(--ease), border-color .3s; }
+.after-wrap[data-open="true"] .after li { opacity: 1; transform: none; }
+.after-wrap[data-open="true"] .after li:nth-child(1) { transition-delay: .12s; }
+.after-wrap[data-open="true"] .after li:nth-child(2) { transition-delay: .2s; }
+.after-wrap[data-open="true"] .after li:nth-child(3) { transition-delay: .28s; }
+.after li:hover { border-color: var(--accent); box-shadow: var(--neon); }
+.after-letter { font-family: var(--sans); font-weight: 700; font-size: .9rem; line-height: 1; color: var(--accent); }
+.after h4 { font-family: var(--sans); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; line-height: 1.1; }
+.after p { color: var(--soft); font-size: .93rem; }
+.after-tag { margin-top: auto; align-self: flex-start; font-size: .72rem; font-weight: 600; letter-spacing: .04em; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--soft); }
+
+@media (max-width: 960px) {
+  .process { grid-template-columns: 1fr 1fr; }
+  .after { grid-template-columns: 1fr; }
+}
+/* планшет и телефон: «После запуска» в два столбика, третий вариант во всю ширину */
+@media (max-width: 860px) {
+  .after { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .after li:last-child { grid-column: 1 / -1; }
+}
+/* телефон: компактные карточки, текст крупнее и светлее */
+@media (max-width: 700px) {
+  #process { padding-top: 44px; }
+  .process { gap: 10px; }
+  .process .step { padding: 18px 16px; }
+  .process .step-click { padding: 0; }
+  .process .step-btn { padding: 18px 16px; }
+  .process .num { font-size: 1.15rem; gap: 10px; }
+  .process .num::after { width: 22px; }
+  .process .step h4 { font-size: 1.05rem; margin: 14px 0 6px; }
+  .process .step p { font-size: 1rem; font-weight: 600; line-height: 1.5; max-width: none; color: color-mix(in srgb, var(--ink) 72%, var(--paper)); }
+  .process .step-more { padding-top: 14px; font-size: .78rem; gap: 8px; }
+  .process .step-plus { width: 22px; height: 22px; }
+
+  .after-panel { padding: 20px 14px; }
+  .after-head { margin-bottom: 16px; }
+  .after li { padding: 16px 14px; gap: 8px; }
+  .after h4 { font-size: 1rem; }
+  .after p { font-size: 1rem; font-weight: 600; line-height: 1.5; color: color-mix(in srgb, var(--ink) 72%, var(--paper)); }
+  .after-tag { font-size: .68rem; padding: 4px 10px; letter-spacing: .02em; white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .after-wrap, .step-plus, .step-plus::after { transition: none; }
+  .after li { transition: none; opacity: 1; transform: none; }
+}

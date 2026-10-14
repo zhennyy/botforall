@@ -1,6 +1,8 @@
-const S = { fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' }
+// общие атрибуты линий: контур без заливки, скруглённые концы
+const STROKE = { fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' }
 
-const icons = {
+// иконки 64×64; классы ni-* анимируются в projects.css
+const ICONS = {
   coffee: (
     <>
       <g className="ni-steam"><path d="M22 16c-3-4 3-6 0-10" /><path d="M32 16c-3-4 3-6 0-10" /><path d="M42 16c-3-4 3-6 0-10" /></g>
@@ -36,7 +38,7 @@ const icons = {
 export default function NeonIcon({ name }) {
   return (
     <span className={`neon-ic neon-${name}`} aria-hidden="true">
-      <svg viewBox="0 0 64 64" {...S}>{icons[name]}</svg>
+      <svg viewBox="0 0 64 64" {...STROKE}>{ICONS[name]}</svg>
     </span>
   )
 }

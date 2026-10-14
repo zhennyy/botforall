@@ -1,14 +1,18 @@
 import ThemeToggle from './ThemeToggle'
 
+const LINKS = [
+  { href: '#process', label: 'Процесс' },
+  { href: '#projects', label: 'Проекты' },
+  { href: '#contact', label: 'Контакты' },
+]
+
 export default function Nav() {
   return (
-    <nav aria-label="Основное меню">
+    <nav className="site-nav" aria-label="Основное меню">
       <div className="wrap">
-        <span className="brand" aria-hidden="true" />
-        <div className="navlinks">
-          <a href="#process">Процесс</a>
-          <a href="#projects">Проекты</a>
-          <a href="#contact">Контакты</a>
+        <span className="nav-spacer" aria-hidden="true" />
+        <div className="nav-links">
+          {LINKS.map(({ href, label }) => <a key={href} href={href}>{label}</a>)}
         </div>
         <div className="nav-right">
           <ThemeToggle />

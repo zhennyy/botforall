@@ -1,0 +1,23 @@
+/* ===== «Всё для продаж»: шесть карточек возможностей ===== */
+#benefits { padding-top: 0; }
+#benefits .section-title { font-weight: 400; letter-spacing: -0.02em; }
+
+.benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.benefit { background: var(--tint); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+.benefit:hover { border-color: var(--accent); box-shadow: var(--neon); }
+.benefit h4 { margin: 22px 0 10px; font-family: var(--sans); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.025em; line-height: 1.2; }
+.benefit p { color: var(--soft); font-size: .93rem; max-width: 30ch; }
+
+@media (max-width: 960px) {
+  .benefits { grid-template-columns: 1fr 1fr; }
+}
+/* телефон: текст под заголовком крупнее, плотнее и светлее */
+@media (max-width: 700px) {
+  .benefit p { font-size: 1rem; font-weight: 600; line-height: 1.5; color: color-mix(in srgb, var(--ink) 72%, var(--paper)); }
+}
+/* узкий телефон: всё ещё два столбика, карточки компактнее */
+@media (max-width: 560px) {
+  .benefits { gap: 10px; }
+  .benefit { padding: 16px 14px; border-radius: 16px; }
+  .benefit h4 { margin: 0 0 8px; font-size: 1.05rem; }
+}

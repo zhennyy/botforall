@@ -1,0 +1,14 @@
+/* ===== Футер: документы и копирайт, по центру ===== */
+footer { border-top: 1px solid var(--line); padding-block: 26px; font-size: .82rem; color: var(--soft); }
+.footer-inner { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+
+/* ссылки на документы. Стили шапки привязаны к .site-nav, поэтому этот nav
+   не наследует её pointer-events: none и остаётся нажимаемым на телефоне */
+.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; }
+.footer-links a { transition: color .2s, text-shadow .2s; }
+.footer-links a:hover, .footer-links a:focus-visible { color: var(--accent); text-shadow: 0 0 14px var(--glow); outline: 0; }
+.footer-copy { font-size: .78rem; opacity: .8; }
+
+@media (max-width: 700px) {
+  .footer-links { flex-direction: column; gap: 10px; }
+}

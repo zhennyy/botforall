@@ -1,34 +1,50 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-function blob(cx, cy, r0, ph) {
-  const pts = []
-  const n = 90
-  for (let k = 0; k <= n; k++) {
-    const t = (k / n) * Math.PI * 2
-    const r = r0 * (1 + 0.18 * Math.sin(3 * t + ph) + 0.1 * Math.sin(5 * t - ph * 1.3) + 0.06 * Math.sin(8 * t + ph * 0.7))
-    pts.push(`${(cx + Math.cos(t) * r * 1.5).toFixed(1)} ${(cy + Math.sin(t) * r).toFixed(1)}`)
+const POINTS_PER_RING = 90
+
+// Замкнутый «волнистый» контур, как линия уровня на топографической карте:
+// окружность, вытянутая по горизонтали в 1.5 раза, с тремя наложенными синусоидами.
+function contourPath(centerX, centerY, radius, phase) {
+  const points = []
+  for (let k = 0; k <= POINTS_PER_RING; k++) {
+    const angle = (k / POINTS_PER_RING) * Math.PI * 2
+    const r = radius * (1 + 0.18 * Math.sin(3 * angle + phase) + 0.1 * Math.sin(5 * angle - phase * 1.3) + 0.06 * Math.sin(8 * angle + phase * 0.7))
+    points.push(`${(centerX + Math.cos(angle) * r * 1.5).toFixed(1)} ${(centerY + Math.sin(angle) * r).toFixed(1)}`)
   }
-  return 'M' + pts.join(' L') + 'Z'
+  return 'M' + points.join(' L') + 'Z'
 }
+
+// две «вершины»: большая слева и поменьше справа (координаты — в системе viewBox)
+const PEAKS = [
+  { x: -120, y: -30, rings: 26, step: 20, phaseStep: 0.28, phaseShift: 0 },
+  { x: 360, y: 150, rings: 14, step: 18, phaseStep: 0.35, phaseShift: 2 },
+]
 
 export default function TopoBg() {
   const ref = useRef(null)
-  const [visible, setVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true)
+
+  // вне экрана вращение ставится на паузу
   useEffect(() => {
-    const el = ref.current
-    if (!el || !('IntersectionObserver' in window)) return
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting))
-    io.observe(el)
-    return () => io.disconnect()
+    const element = ref.current
+    if (!element || !('IntersectionObserver' in window)) return
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting))
+    observer.observe(element)
+    return () => observer.disconnect()
   }, [])
+
   const paths = useMemo(() => {
-    const d = []
-    for (let j = 1; j <= 26; j++) d.push(blob(-120, -30, j * 20, j * 0.28))
-    for (let j = 1; j <= 14; j++) d.push(blob(360, 150, j * 18, j * 0.35 + 2))
-    return d
+    const result = []
+    for (const peak of PEAKS) {
+      for (let ring = 1; ring <= peak.rings; ring++) {
+        result.push(contourPath(peak.x, peak.y, ring * peak.step, ring * peak.phaseStep + peak.phaseShift))
+      }
+    }
+    return result
   }, [])
+
   return (
-    <div ref={ref} className={`topo-bg${visible ? '' : ' is-paused'}`} aria-hidden="true">
+    <div ref={ref} className={`topo-bg${isVisible ? '' : ' is-paused'}`} aria-hidden="true">
       <svg viewBox="-720 -400 1440 800" preserveAspectRatio="xMidYMid slice">
         <g>{paths.map((d, i) => <path key={i} d={d} />)}</g>
       </svg>

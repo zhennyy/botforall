@@ -1,0 +1,113 @@
+/* ===== «Проекты»: карточки ботов ===== */
+#projects { background: color-mix(in srgb, var(--ink) 5%, var(--paper)); margin-top: clamp(24px, 4vw, 48px); border-block: 1px solid var(--line); }
+
+.works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+
+/* карточка: номер — слева сверху, неоновая иконка — справа сверху, всё остальное по центру */
+.works .work {
+  position: relative; display: flex; flex-direction: column; align-items: start; gap: 14px;
+  padding: 26px 28px; border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent); border-radius: calc(var(--radius) + 4px);
+  background: color-mix(in srgb, var(--ink) 2%, transparent);
+  transition: box-shadow .3s var(--ease), border-color .3s, transform .3s var(--ease);
+}
+.works .work:hover, .works .work:focus-within { border-color: var(--accent); box-shadow: var(--neon); transform: translateY(-3px); background: color-mix(in srgb, var(--ink) 3%, transparent); }
+
+.works .work .num { position: absolute; top: 26px; left: 28px; font-size: .95rem; opacity: .9; }
+.work .num::after { display: none; }
+
+.work-main { margin-top: 44px; text-align: center; align-self: stretch; }
+.work h3 { font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.1; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.work-kind { margin-top: 6px; color: color-mix(in srgb, var(--ink) 62%, transparent); font-size: .88rem; }
+.work-text { flex: 0 0 auto; padding-top: 2px; text-align: center; color: color-mix(in srgb, var(--ink) 68%, transparent); font-size: .95rem; line-height: 1.55; }
+
+/* теги и кнопки — внизу карточки */
+.work-side { margin-top: auto; align-self: stretch; display: flex; flex-direction: column; align-items: center; gap: 18px; padding-top: 4px; }
+.tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.tags span { font-size: .7rem; font-weight: 600; letter-spacing: .04em; white-space: nowrap; padding: 4px 11px; border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent); border-radius: 999px; color: color-mix(in srgb, var(--ink) 70%, transparent); }
+
+/* кнопки: главная «Как это выглядит» — во всю ширину, остальные — ровным рядом под ней */
+.work-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: 100%; max-width: 420px; margin: 0 auto; font-size: .9rem; font-weight: 600; }
+.work-links a {
+  flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+  padding: 9px 18px; border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent); border-radius: 999px;
+  font-size: .88rem; font-weight: 600; line-height: 1; text-align: center; white-space: nowrap;
+  transition: color .2s, border-color .2s, box-shadow .25s, background .2s;
+}
+.work-links a:first-child { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.work-links a:first-child:not(:only-child) { flex-basis: 100%; }
+.work-links a:hover, .work-links a:focus-visible { color: var(--accent); border-color: var(--accent); background: transparent; box-shadow: var(--neon); outline: 0; }
+
+/* соседние карточки выравниваются по строкам: заголовок, описание, теги и кнопки
+   в карточках одного ряда начинаются на одной высоте */
+@supports (grid-template-rows: subgrid) {
+  .works .work { display: grid; grid-template-rows: subgrid; grid-row: span 4; grid-template-columns: minmax(0, 1fr); align-content: start; }
+  .work-side { display: contents; }
+  .work-main, .work-text { align-self: start; }
+  .tags { align-self: start; padding-top: 4px; }
+  .work-links { align-self: end; }
+}
+
+/* неоновые иконки проектов */
+.neon-ic { --neon-color: #e8873a; position: absolute; top: 18px; right: 20px; width: 60px; height: 60px; color: var(--neon-color); pointer-events: none; opacity: .92; }
+.neon-ic svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 2px var(--neon-color)) drop-shadow(0 0 7px color-mix(in srgb, var(--neon-color) 55%, transparent)); }
+.works .work:hover .neon-ic { opacity: 1; }
+.neon-flower { --neon-color: #e0559a; }
+.neon-radiator { --neon-color: #e8553a; }
+.neon-person { --neon-color: var(--accent); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .neon-coffee { --neon-color: #ffb36b; }
+  :root:not([data-theme="light"]) .neon-flower { --neon-color: #ff7ab6; }
+  :root:not([data-theme="light"]) .neon-radiator { --neon-color: #ff6a4d; }
+}
+:root[data-theme="dark"] .neon-coffee { --neon-color: #ffb36b; }
+:root[data-theme="dark"] .neon-flower { --neon-color: #ff7ab6; }
+:root[data-theme="dark"] .neon-radiator { --neon-color: #ff6a4d; }
+
+/* анимации иконок: пар, тепло, покачивание цветка, мигание, точки «печатает…» */
+.ni-steam path, .ni-heat path { stroke-dasharray: 5 6; animation: ni-flow 2.2s linear infinite; }
+.ni-steam path:nth-child(2), .ni-heat path:nth-child(2) { animation-delay: -.7s; }
+.ni-steam path:nth-child(3), .ni-heat path:nth-child(3) { animation-delay: -1.4s; }
+.ni-heat path { animation-duration: 1.6s; }
+@keyframes ni-flow { to { stroke-dashoffset: -22; } }
+.ni-sway { transform-origin: 32px 60px; animation: ni-sway 3.6s ease-in-out infinite; }
+@keyframes ni-sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.ni-bloom { transform-origin: 32px 18px; animation: ni-bloom 3.6s ease-in-out infinite; }
+@keyframes ni-bloom { 50% { transform: scale(1.07); } }
+.ni-fins { animation: ni-flick 2.4s ease-in-out infinite; }
+@keyframes ni-flick { 50% { opacity: .45; } }
+.ni-bob { animation: ni-bob 3s ease-in-out infinite; }
+@keyframes ni-bob { 50% { transform: translateY(-2px); } }
+.ni-dots circle { animation: ni-dot 1.4s infinite; }
+.ni-dots circle:nth-child(2) { animation-delay: .2s; }
+.ni-dots circle:nth-child(3) { animation-delay: .4s; }
+@keyframes ni-dot { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
+
+/* планшет: одна колонка, но не во всю ширину — карточки читаются как карточки */
+@media (max-width: 860px) {
+  .works { grid-template-columns: 1fr; max-width: 620px; margin-inline: auto; }
+  .works .work { padding: 24px 22px; }
+  .works .work:hover { transform: none; }
+  .works .work .num { top: 24px; left: 22px; }
+  .neon-ic { top: 16px; right: 16px; width: 54px; height: 54px; }
+}
+/* телефон: текст крупнее и плотнее */
+@media (max-width: 700px) {
+  .work-kind { font-size: .95rem; font-weight: 500; }
+  .work-text { font-size: 1rem; font-weight: 600; line-height: 1.5; color: color-mix(in srgb, var(--ink) 72%, var(--paper)); }
+  .tags span { font-size: .76rem; }
+}
+/* узкий телефон: иконка крупнее, заголовок ниже неё */
+@media (max-width: 560px) {
+  .works .work .num { top: 22px; left: 20px; }
+  .neon-ic { top: 12px; right: 12px; width: 62px; height: 62px; }
+  .work-main { margin-top: 52px; }
+  .work-links a { padding: 9px 13px; font-size: .84rem; }
+}
+/* очень узкие телефоны: иконка чуть меньше, чтобы длинный @ник не задевал её */
+@media (max-width: 400px) {
+  .neon-ic { width: 54px; height: 54px; }
+  .work-main { margin-top: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neon-ic * { animation: none !important; }
+}
