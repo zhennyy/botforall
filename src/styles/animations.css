@@ -3,19 +3,56 @@
    и должен перекрывать их собственные стили той же специфичности. */
 
 /* .rise — появление при загрузке, задержка через --delay */
-.rise { opacity: 0; transform: translateY(18px); animation: rise .9s var(--ease) forwards; animation-delay: var(--delay, 0ms); }
-@keyframes rise { to { opacity: 1; transform: none; } }
+.rise {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: rise 0.9s var(--ease) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* .reveal — дети появляются по очереди, когда блок доходит до экрана (см. Reveal.jsx) */
-.reveal > * { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-.reveal.is-in > * { opacity: 1; transform: none; }
-.reveal.is-in > *:nth-child(2) { transition-delay: .08s; }
-.reveal.is-in > *:nth-child(3) { transition-delay: .16s; }
-.reveal.is-in > *:nth-child(4) { transition-delay: .24s; }
-.reveal.is-in > *:nth-child(5) { transition-delay: .32s; }
-.reveal.is-in > *:nth-child(6) { transition-delay: .4s; }
+.reveal > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+}
+.reveal.is-in > * {
+  opacity: 1;
+  transform: none;
+}
+.reveal.is-in > *:nth-child(2) {
+  transition-delay: 0.08s;
+}
+.reveal.is-in > *:nth-child(3) {
+  transition-delay: 0.16s;
+}
+.reveal.is-in > *:nth-child(4) {
+  transition-delay: 0.24s;
+}
+.reveal.is-in > *:nth-child(5) {
+  transition-delay: 0.32s;
+}
+.reveal.is-in > *:nth-child(6) {
+  transition-delay: 0.4s;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .rise { animation: none; opacity: 1; transform: none; }
-  .reveal > * { transition: none; opacity: 1; transform: none; }
+  .rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .reveal > * {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
 }

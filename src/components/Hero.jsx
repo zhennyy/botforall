@@ -1,12 +1,14 @@
-import TopoBg from './TopoBg.jsx'
-import ParticlePlane from './ParticlePlane.jsx'
+import TopoBg from './TopoBg.jsx';
+import ParticlePlane from './ParticlePlane.jsx';
 
 export default function Hero() {
   return (
     <header className="hero" id="top">
       <TopoBg />
       <div className="wrap hero-center">
-        <p className="kicker rise" style={{ '--delay': '0ms' }}><span>Telegram-боты на заказ</span></p>
+        <p className="kicker rise" style={{ '--delay': '0ms' }}>
+          <span>Telegram-боты на заказ</span>
+        </p>
         <h1 className="rise" style={{ '--delay': '100ms' }}>
           Магазин в Telegram, <em>который продаёт сам.</em>
         </h1>
@@ -14,11 +16,15 @@ export default function Hero() {
           Витрина, оплата, доставка и админка в одном боте.
         </p>
         <div className="hero-actions rise" style={{ '--delay': '320ms' }}>
-          <a className="btn btn-solid" href="#contact">Заказать бота</a>
-          <a className="btn btn-line" href="#projects">Смотреть проекты</a>
+          <a className="btn btn-solid" href="#contact">
+            Заказать бота
+          </a>
+          <a className="btn btn-line" href="#projects">
+            Смотреть проекты
+          </a>
         </div>
         <ParticlePlane />
       </div>
     </header>
-  )
+  );
 }

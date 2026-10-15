@@ -1,45 +1,173 @@
 /* ===== Первый экран: заголовок, кнопки, фон-топография, самолётик из частиц ===== */
-.hero { position: relative; overflow: hidden; isolation: isolate; padding-block: clamp(56px, 8vw, 104px) clamp(28px, 4vw, 48px); text-align: center; }
-.hero-center { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
-.hero h1 { margin-top: 28px; max-width: 18ch; font-size: clamp(2.2rem, 5.2vw, 4rem); font-weight: 600; line-height: 1.06; text-wrap: balance; }
-.lede { margin-top: 28px; font-size: clamp(1.02rem, 1.8vw, 1.2rem); color: var(--soft); max-width: 36ch; }
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-block: clamp(56px, 8vw, 104px) clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+.hero-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero h1 {
+  margin-top: 28px;
+  max-width: 18ch;
+  font-size: clamp(2.2rem, 5.2vw, 4rem);
+  font-weight: 600;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+.lede {
+  margin-top: 28px;
+  font-size: clamp(1.02rem, 1.8vw, 1.2rem);
+  color: var(--soft);
+  max-width: 36ch;
+}
 
 /* кнопки */
-.hero-actions { margin-top: 40px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-.btn { display: inline-flex; align-items: center; padding: 14px 28px; border-radius: 999px; font-size: .92rem; font-weight: 600; border: 1px solid var(--ink); transition: background .25s var(--ease), color .25s var(--ease), border-color .25s, transform .25s var(--ease); }
-.btn-solid { background: var(--ink); color: var(--paper); }
-.btn-solid:hover, .btn-solid:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: var(--neon); outline: 0; }
-.btn-line:hover, .btn-line:focus-visible { border-color: var(--accent); color: var(--accent); box-shadow: var(--neon); outline: 0; }
-.btn:active { transform: scale(.97); box-shadow: 0 0 0 1px var(--accent), 0 0 34px 2px var(--glow); }
+.hero-actions {
+  margin-top: 40px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: 1px solid var(--ink);
+  transition:
+    background 0.25s var(--ease),
+    color 0.25s var(--ease),
+    border-color 0.25s,
+    transform 0.25s var(--ease);
+}
+.btn-solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-solid:hover,
+.btn-solid:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: var(--neon);
+  outline: 0;
+}
+.btn-line:hover,
+.btn-line:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: var(--neon);
+  outline: 0;
+}
+.btn:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 0 34px 2px var(--glow);
+}
 
 /* фон: топография, медленно вращается; низ плавно растворяется */
-.topo-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
-.topo-bg svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.topo-bg g { transform-origin: 50% 50%; animation: topo-spin 120s linear infinite; }
-.topo-bg.is-paused g { animation-play-state: paused; }
-.topo-bg path { fill: none; stroke: color-mix(in srgb, var(--ink) 11%, transparent); stroke-width: 1; }
-.topo-wash { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 55% at 50% 50%, var(--paper) 15%, transparent 100%); opacity: .8; }
-@keyframes topo-spin { to { transform: rotate(360deg); } }
+.topo-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+.topo-bg svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.topo-bg g {
+  transform-origin: 50% 50%;
+  animation: topo-spin 120s linear infinite;
+}
+.topo-bg.is-paused g {
+  animation-play-state: paused;
+}
+.topo-bg path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 11%, transparent);
+  stroke-width: 1;
+}
+.topo-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, var(--paper) 15%, transparent 100%);
+  opacity: 0.8;
+}
+@keyframes topo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* частицы собираются в самолётик Telegram (только на телефоне) */
-.particle-plane-wrap { margin-top: 44px; display: flex; justify-content: center; width: 100%; padding-inline: 4px; }
-.particle-plane { display: block; width: 100%; max-width: 380px; height: 230px; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); }
+.particle-plane-wrap {
+  margin-top: 44px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-inline: 4px;
+}
+.particle-plane {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: 230px;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%);
+}
 
 @media (min-width: 701px) {
-  .particle-plane-wrap { display: none; }
+  .particle-plane-wrap {
+    display: none;
+  }
 }
 /* планшет: место под висящий переключатель темы */
 @media (max-width: 860px) {
-  .hero { padding-top: 76px; }
+  .hero {
+    padding-top: 76px;
+  }
 }
 /* телефон: воздух между hero и «Процессом», спокойный фон */
 @media (max-width: 700px) {
-  .hero { padding-top: 56px; padding-bottom: 0; }
-  .lede { font-size: 1.08rem; font-weight: 500; }
-  .hero-actions { margin-top: 32px; }
-  .topo-bg { opacity: .55; -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 92%); mask-image: linear-gradient(to bottom, #000 30%, transparent 92%); }
-  .topo-wash { background: radial-gradient(ellipse 95% 70% at 50% 45%, var(--paper) 25%, transparent 100%); opacity: .9; }
+  .hero {
+    padding-top: 56px;
+    padding-bottom: 0;
+  }
+  .lede {
+    font-size: 1.08rem;
+    font-weight: 500;
+  }
+  .hero-actions {
+    margin-top: 32px;
+  }
+  .topo-bg {
+    opacity: 0.55;
+    -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+    mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+  }
+  .topo-wash {
+    background: radial-gradient(ellipse 95% 70% at 50% 45%, var(--paper) 25%, transparent 100%);
+    opacity: 0.9;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .topo-bg g { animation: none; }
+  .topo-bg g {
+    animation: none;
+  }
 }

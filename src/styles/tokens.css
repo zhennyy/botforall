@@ -1,27 +1,45 @@
 /* ===== Цветовые токены и общие переменные ===== */
 :root {
-  --paper: #F2EEE6;
-  --ink: #15130F;
-  --soft: #6A6558;
-  --line: #DAD4C6;
+  --paper: #f2eee6;
+  --ink: #15130f;
+  --soft: #6a6558;
+  --line: #dad4c6;
   --tint: color-mix(in srgb, var(--ink) 4%, var(--paper));
-  --accent: #1F5BFF;
+  --accent: #1f5bff;
   --radius: 18px;
   --glow: color-mix(in srgb, var(--accent) 55%, transparent);
   --neon: 0 0 0 1px var(--accent), 0 0 22px -2px var(--glow), 0 0 48px -10px var(--glow);
-  --ease: cubic-bezier(.23, 1, .32, 1);
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
 }
 
 /* тёмная тема: по системной настройке или по переключателю */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0F0E0B; --ink: #EDE8DC; --soft: #9A9486; --line: #2A2823; --accent: #3EB6FF;
+  :root:not([data-theme='light']) {
+    --paper: #0f0e0b;
+    --ink: #ede8dc;
+    --soft: #9a9486;
+    --line: #2a2823;
+    --accent: #3eb6ff;
   }
 }
-:root[data-theme="dark"] { --paper: #0F0E0B; --ink: #EDE8DC; --soft: #9A9486; --line: #2A2823; --accent: #3EB6FF; }
+:root[data-theme='dark'] {
+  --paper: #0f0e0b;
+  --ink: #ede8dc;
+  --soft: #9a9486;
+  --line: #2a2823;
+  --accent: #3eb6ff;
+}
 
 /* телефон: только тёмная тема, без переключателя */
 @media (max-width: 700px) {
-  :root, :root[data-theme="light"] { --paper: #0F0E0B; --ink: #EDE8DC; --soft: #A39D8F; --line: #2A2823; --accent: #3EB6FF; color-scheme: dark; }
+  :root,
+  :root[data-theme='light'] {
+    --paper: #0f0e0b;
+    --ink: #ede8dc;
+    --soft: #a39d8f;
+    --line: #2a2823;
+    --accent: #3eb6ff;
+    color-scheme: dark;
+  }
 }

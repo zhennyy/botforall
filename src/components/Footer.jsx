@@ -9,5 +9,5 @@ export default function Footer() {
         <span className="footer-copy">© {new Date().getFullYear()} botforall.ru. Все права защищены.</span>
       </div>
     </footer>
-  )
+  );
 }

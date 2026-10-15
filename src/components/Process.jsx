@@ -1,23 +1,38 @@
-import { useState } from 'react'
-import Reveal from './Reveal'
+import { useState } from 'react';
+import Reveal from './Reveal';
 
 const STEPS = [
   { title: 'Задача', text: 'Напишите в двух словах, чем занимается бизнес и что бот должен взять на себя.' },
   { title: 'Разбор', text: 'Оцениваю, что реально сделать, и называю сроки.' },
   { title: 'Сборка', text: 'Делаю по этапам и показываю демо на каждом этапе.' },
   { title: 'Запуск', text: 'Бот работает 24/7, после запуска остаюсь на связи.' },
-]
+];
 
 // варианты после запуска — раскрываются по клику на последний шаг
 const HOSTING_OPTIONS = [
-  { letter: 'A', title: 'Хостинг у вас', text: 'Запускаю на вашем сервере или хостинге. Доступ, код и данные остаются у вас, я настраиваю и сопровождаю запуск.', tag: 'Всё у вас' },
-  { letter: 'B', title: 'Хостинг у меня', text: 'Беру запуск и хостинг на себя: резервные копии, обновления и поддержка за ежемесячную плату. Доработки после запуска оплачиваются отдельно.', tag: 'По подписке' },
-  { letter: 'C', title: 'Без поддержки', text: 'Вы получаете готового бота и работаете сами. Доработки после запуска оплачиваются отдельно.', tag: 'Доработки — за отдельную плату' },
-]
+  {
+    letter: 'A',
+    title: 'Хостинг у вас',
+    text: 'Запускаю на вашем сервере или хостинге. Доступ, код и данные остаются у вас, я настраиваю и сопровождаю запуск.',
+    tag: 'Всё у вас',
+  },
+  {
+    letter: 'B',
+    title: 'Хостинг у меня',
+    text: 'Беру запуск и хостинг на себя: резервные копии, обновления и поддержка за ежемесячную плату. Доработки после запуска оплачиваются отдельно.',
+    tag: 'По подписке',
+  },
+  {
+    letter: 'C',
+    title: 'Без поддержки',
+    text: 'Вы получаете готового бота и работаете сами. Доработки после запуска оплачиваются отдельно.',
+    tag: 'Доработки — за отдельную плату',
+  },
+];
 
 export default function Process() {
-  const [isOpen, setIsOpen] = useState(false)
-  const lastIndex = STEPS.length - 1
+  const [isOpen, setIsOpen] = useState(false);
+  const lastIndex = STEPS.length - 1;
 
   return (
     <section id="process">
@@ -49,11 +64,18 @@ export default function Process() {
                 <h4>{title}</h4>
                 <p>{text}</p>
               </li>
-            )
+            ),
           )}
         </Reveal>
 
-        <div id="after-launch" className="after-wrap" data-open={isOpen} role="region" aria-label="Варианты после запуска" inert={isOpen ? undefined : ''}>
+        <div
+          id="after-launch"
+          className="after-wrap"
+          data-open={isOpen}
+          role="region"
+          aria-label="Варианты после запуска"
+          inert={isOpen ? undefined : ''}
+        >
           <div className="after-clip">
             <div className="after-panel">
               <div className="after-head">
@@ -75,5 +97,5 @@ export default function Process() {
         </div>
       </div>
     </section>
-  )
+  );
 }
