@@ -86,8 +86,8 @@ cat > $ROOT/ecosystem.config.cjs <<ECO
 const r = '$ROOT';
 module.exports = { apps: [
   { name: 'coffeebot',   cwd: r + '/coffeebot',   script: 'index.js',    max_memory_restart: '300M' },
-  { name: 'flowerbot',   cwd: r + '/flowerbot',   script: 'bot.js',    max_memory_restart: '300M' },
-  { name: 'radiatorbot', cwd: r + '/radiatorbot', script: 'bot.js',    max_memory_restart: '300M' },
+  { name: 'flowerbot',   cwd: r + '/flowerbot',   script: 'index.js',  max_memory_restart: '300M' },
+  { name: 'radiatorbot', cwd: r + '/radiatorbot', script: 'index.js',  max_memory_restart: '300M' },
   { name: 'assistant',   cwd: r + '/assistant',   script: 'index.js',  max_memory_restart: '300M' },
 ]};
 ECO
