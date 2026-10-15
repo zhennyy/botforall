@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 const TELEGRAM_USERNAME = 'BotFor_All';
-const EMAIL = 'doevev@gmail.com';
+const EMAIL = 'dogevev@gmail.com';
 const COPIED_FEEDBACK_MS = 1800; // сколько держится «Скопировано ✓»
 
 const TelegramIcon = () => (

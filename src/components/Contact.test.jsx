@@ -16,11 +16,11 @@ describe('Contact', () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<Contact />);
-    const mailButton = screen.getByRole('button', { name: 'Скопировать адрес doevev@gmail.com' });
+    const mailButton = screen.getByRole('button', { name: 'Скопировать адрес dogevev@gmail.com' });
     expect(mailButton).toHaveTextContent('Почта');
 
     await user.click(mailButton);
-    await expect(navigator.clipboard.readText()).resolves.toBe('doevev@gmail.com');
+    await expect(navigator.clipboard.readText()).resolves.toBe('dogevev@gmail.com');
     expect(mailButton).toHaveTextContent('Скопировано ✓');
     expect(mailButton).toHaveClass('is-copied');
 
@@ -36,7 +36,7 @@ describe('Contact', () => {
     render(<Contact />);
 
     await user.click(screen.getByRole('button', { name: /Скопировать адрес/ }));
-    expect(prompt).toHaveBeenCalledWith('Скопируйте адрес:', 'doevev@gmail.com');
+    expect(prompt).toHaveBeenCalledWith('Скопируйте адрес:', 'dogevev@gmail.com');
     expect(screen.getByRole('button', { name: /Скопировать адрес/ })).toHaveTextContent('Почта');
   });
 });
