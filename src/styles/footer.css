@@ -32,6 +32,10 @@ footer {
   text-shadow: 0 0 14px var(--glow);
   outline: 0;
 }
+.footer-owner {
+  max-width: 42em;
+  line-height: 1.5;
+}
 .footer-copy {
   font-size: 0.78rem;
   opacity: 0.8;

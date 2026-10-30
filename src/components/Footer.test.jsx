@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import Footer from './Footer';
+import Footer, { OWNER } from './Footer';
 
 describe('Footer', () => {
   it('ведёт на условия использования и политику конфиденциальности', () => {
@@ -15,5 +15,11 @@ describe('Footer', () => {
   it('показывает текущий год', () => {
     render(<Footer />);
     expect(screen.getByText(`© ${new Date().getFullYear()} botforall.ru. Все права защищены.`)).toBeInTheDocument();
+  });
+
+  it('указывает исполнителя: ФИО, статус самозанятой и ИНН', () => {
+    render(<Footer />);
+    expect(screen.getByText(OWNER)).toHaveTextContent('ИНН 120203418021');
+    expect(OWNER).toContain('Догадова Евгения Александровна');
   });
 });
