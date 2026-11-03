@@ -8,13 +8,7 @@
       name="description"
       content="Telegram-магазины и ассистенты под ключ: витрина, оплата, доставка и админка в одном боте."
     />
-    <script>
-      try {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
-        if (matchMedia('(max-width:700px)').matches) document.documentElement.setAttribute('data-theme', 'dark');
-      } catch (error) {}
-    </script>
+    <script src="/theme.js"></script>
     <title>Telegram-боты на заказ — botforall.ru</title>
     <meta name="theme-color" content="#0F0E0B" media="(prefers-color-scheme: dark), (max-width: 700px)" />
     <meta name="theme-color" content="#F2EEE6" media="(prefers-color-scheme: light) and (min-width: 701px)" />

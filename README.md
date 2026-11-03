@@ -53,5 +53,5 @@ src/
 ```
 
 - `public/`: демо ботов (`coffeejd-demo.html`, `fleur-demo.html`, `radiator-demo.html`), `privacy.html`, `terms.html`, `og.png` (превью ссылки), `robots.txt`, `sitemap.xml`, файлы подтверждения Яндекс.Вебмастера и Google Search Console.
-- `deploy/`: `setup.sh`, `harden.sh`, команда `bfa`, `watchdog.sh`, `ai-proxy.sh`.
+- `deploy/`: `setup.sh`, `harden.sh`, `site-headers.conf` (CSP и защита от встраивания для сайта), команда `bfa`, `watchdog.sh`, `ai-proxy.sh`.
 - Адаптив: брейкпоинты 960, 860 (планшет), 700 (телефон), 560 и 400 px; медиазапросы лежат в конце файла своей секции.

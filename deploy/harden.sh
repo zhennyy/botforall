@@ -20,6 +20,16 @@ add_header Strict-Transport-Security "max-age=31536000" always;
 NG
 echo "  ok"
 
+echo "▶ 4б. Content-Security-Policy и защита от встраивания — для сайта-портфолио"
+install -m 644 /opt/bots/site/deploy/site-headers.conf /etc/nginx/snippets/botforall-site-headers.conf
+if [ -f $NG ] && ! grep -q 'botforall-site-headers.conf' $NG; then
+  cp $NG /root/botforall.nginx.bak4
+  # include — в блок сайта (после root …/site/dist) и в его location /assets/ (там свой add_header, он сбрасывает унаследованные)
+  sed -i 's#\(root [^;]*/site/dist; index index.html;\)#\1\n  include snippets/botforall-site-headers.conf;#' $NG
+  sed -i 's#\(location /assets/ {[^}]*add_header Cache-Control "public, immutable";\)#\1 include snippets/botforall-site-headers.conf;#' $NG
+fi
+grep -c 'botforall-site-headers.conf' $NG | sed 's/^/  подключений: /'
+
 echo "▶ 5. Уведомления об оплате — только с адресов ЮKassa"
 if [ -f $NG ] && ! grep -q '185.71.76.0/27' $NG; then
   cp $NG /root/botforall.nginx.bak3
@@ -28,7 +38,7 @@ fi
 grep -c '185.71.76.0/27' $NG | sed 's/^/  правил: /'
 
 echo "▶ 6. Проверка и перезапуск nginx"
-if nginx -t 2>&1 | tail -1; then systemctl reload nginx && echo "  nginx перезапущен"; else echo "  ⚠ ошибка — возвращаю старый конфиг"; cp /root/botforall.nginx.bak3 $NG; rm -f /etc/nginx/conf.d/security.conf; nginx -t && systemctl reload nginx; fi
+if nginx -t 2>&1 | tail -1; then systemctl reload nginx && echo "  nginx перезапущен"; else echo "  ⚠ ошибка — возвращаю старый конфиг"; cp /root/botforall.nginx.bak3 $NG 2>/dev/null; [ -f /root/botforall.nginx.bak4 ] && cp /root/botforall.nginx.bak4 $NG; rm -f /etc/nginx/conf.d/security.conf; nginx -t && systemctl reload nginx; fi
 
 echo "▶ 7. fail2ban — защита от подбора пароля по SSH"
 command -v fail2ban-server >/dev/null || DEBIAN_FRONTEND=noninteractive apt-get install -y -q fail2ban >/dev/null 2>&1
@@ -37,5 +47,6 @@ systemctl enable --now fail2ban >/dev/null 2>&1; systemctl is-active fail2ban | 
 echo "▶ 8. Итог"
 bfa status 2>/dev/null | grep -c online | sed 's/^/  ботов online: /'
 for u in botforall.ru coffee.botforall.ru/shop/ fleur.botforall.ru radiator.botforall.ru; do echo "  $u $(curl -s -o /dev/null -m 10 -w '%{http_code}' https://$u)"; done
+echo "  CSP на сайте: $(curl -s -I -m 10 https://$(. /etc/botforall.conf; echo $DOMAIN) | grep -ci 'content-security-policy') (должно быть 1)"
 echo "  вебхук снаружи (должно быть 403): $(curl -s -o /dev/null -m 10 -w '%{http_code}' -X POST https://botforall.ru/yookassa-webhook)"
 echo "✅ Готово"

@@ -107,13 +107,15 @@ server {
 }
 NG
 }
+install -m 644 "$(dirname "$0")/site-headers.conf" /etc/nginx/snippets/botforall-site-headers.conf 2>/dev/null || install -m 644 $ROOT/site/deploy/site-headers.conf /etc/nginx/snippets/botforall-site-headers.conf
 {
 cat <<NG
 server {
   listen 80; server_name $DOMAIN www.$DOMAIN;
   root $ROOT/site/dist; index index.html;
+  include snippets/botforall-site-headers.conf;
   location / { try_files \$uri \$uri/ /index.html; }
-  location /assets/ { expires 30d; add_header Cache-Control "public, immutable"; }
+  location /assets/ { expires 30d; add_header Cache-Control "public, immutable"; include snippets/botforall-site-headers.conf; }
 }
 NG
 for b in "${BOTS[@]}"; do IFS='|' read -r name _ port sub <<<"$b"; [ -n "$sub" ] && site_conf "$sub.$DOMAIN" "$port"; done
